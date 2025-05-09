@@ -38,15 +38,15 @@ It includes:
 
 ## 🧱 Project Structure
 
-📁 app/                 → App Router structure (Next.js)
-📁 components/          → Reusable UI components
-📁 styles/              → Global SCSS files: tokens, base, mixins
-📁 lib/                 → Utility functions and helpers
-📁 i18n/                → Translation setup
-📁 messages/            → Translation messages
-📁 public/              → Static assets (images, favicons)
-📄 README.md            → Project overview
-📄 LICENSE              → Usage restrictions
+- 📁 app/                 → App Router structure (Next.js)
+- 📁 components/→ Reusable UI components
+- 📁 styles/              → Global SCSS files: tokens, base, mixins
+- 📁 lib/                 → Utility functions and helpers
+- 📁 i18n/                → Translation setup
+- 📁 messages/            → Translation messages
+- 📁 public/              → Static assets (images, favicons)
+- 📄 README.md            → Project overview
+- 📄 LICENSE              → Usage restrictions
 
 ---
 
@@ -105,4 +105,5 @@ See the [LICENSE](./LICENSE) file for full terms.
 This isn’t just a codebase — it’s a reflection of me.  
 As I grow, this project grows with me.  
 Feel free to explore, learn, or just feel something.
+
 Made with ❤️, Sass, and probably too many Jira tickets.
