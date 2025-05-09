@@ -63,7 +63,6 @@
 ---
 
 ## 🛠 טכנולוגיות
-<div dir="rtl">
 - תשתית: Next.js 15 (App Router)
 - שפה: TypeScript
 - עיצוב: SCSS (מערכת עיצוב מרכזית עם טוקנים, mixins וחוקים גלובליים)
@@ -71,7 +70,6 @@
 - ניהול גרסאות: Git + GitHub (עם קומיטים קונבנציונליים)
 - ניהול משימות: Jira (חלוקה לפי אפיקים)
 - תוספים ל־VSCode: Prettier, ESLint, i18n Ally
-</div>
 
 ---
 
@@ -88,14 +86,13 @@
 לפרטים המלאים בדק את [LICENSE](./LICENSE).
 
 ---
+
 ## 🗂️ מסמכי תיעוד נוספים
-<div dir="rtl">
-- 📘 dev.md — סביבת פיתוח, Git conventions, כלי עבודה
-- 🏛 architecture.md — סקירה ארכיטקטונית, החלטות ושיקולים
-- 🎨 design-system.md — טוקנים, מבנה SCSS, ו־Style Guide
-- 🌍 i18n.md — פירוט על תרגום באמצעות next-intl
-- ⚙️ accessibility.md — נגישות: ARIA, מקלדת, ותמיכה במסכים קוראי־מסך
-</div>
+- 📘 קובץ dev.md — סביבת פיתוח, Git conventions, כלי עבודה
+- 🏛 קובץ architecture.md — סקירה ארכיטקטונית, החלטות ושיקולים
+- 🎨 קובץ design-system.md — טוקנים, מבנה SCSS, ו־Style Guide
+- 🌍 קובץ i18n.md — פירוט על תרגום באמצעות next-intl
+- ⚙️ קובץ accessibility.md — נגישות: ARIA, מקלדת, ותמיכה במסכים קוראי־מסך
 
 > המסמכים האלו מתפתחים יחד עם הפרויקט. שום דבר כאן לא קבוע – הכל חי ונושם.
 
