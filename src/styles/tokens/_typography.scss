@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+@font-face {
+	font-family: 'BartaTest';
+	src:
+		url('/fonts/Berta/Berta-Regular.woff2') format('woff2'),
+		url('/fonts/Berta/Berta-Regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+// Typography
+$font-heading: 'Heebo', sans-serif;
+$font-body: 'Assistant', sans-serif;
+$font-fancy: 'BartaTest', cursive;
+$font-code: 'Source Code Pro', monospace;
+
+$font-size-body-big: 16px;
+$font-size-body-medium: 1.2vw;
+$font-size-body-small: 14px;

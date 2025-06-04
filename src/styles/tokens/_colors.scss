@@ -1,0 +1,100 @@
+// Colors
+$color-primary: #ce6f72;
+$color-primary-hover: #b95e61;
+$color-primary-light: #e6b2b3;
+$color-primary-light-hover: #d69c9e;
+$color-default: #3c2c3f;
+
+// Backgrounds
+$color-bg-main: #f9f6f4;
+$color-bg-secondary: #ead9d2;
+$color-bg-muted: #f5f0ed;
+$color-bg-hover-light: rgba(0, 0, 0, 0.03);
+$color-bg-pressed: rgba(0, 0, 0, 0.06);
+
+// Text Colors
+$color-text-default: $color-default;
+$color-text-heading: #2b1d2c;
+$color-text-subheading: #74696f;
+$color-text-muted: #8a7d84;
+$color-text-muted-secondary: #958c91;
+$color-text-primary: $color-primary;
+$color-text-primary-light: $color-primary-light;
+
+// Links
+$color-link: #7b6b8e;
+$color-link-hover: #6a5b7a;
+
+// Buttons
+$color-btn-primary: $color-primary;
+$color-btn-primary-hover: $color-primary-hover;
+$color-btn-primary-light: $color-primary-light;
+$color-btn-primary-light-hover: $color-primary-light-hover;
+$color-btn-outline: $color-primary;
+$color-btn-outline-hover: $color-primary-hover;
+$color-btn-outline-background-hover: rgba(0, 0, 0, 0.03);
+$color-btn-disabled: #d0c3c0;
+$color-btn-success: #9fb3a3;
+$color-btn-success-hover: #8fa297;
+$color-btn-error: #d88383;
+$color-btn-error-hover: #c77373;
+
+// Borders and Box-Shadow
+$color-border: #e4dad6;
+$color-box-shadow: rgba(0, 0, 0, 0.04);
+$color-box-shadow-dark: rgba(0, 0, 0, 0.08);
+
+// Alerts
+$color-alert-info-bg: #f2ecf8;
+$color-alert-info-text: #5e4d6a;
+$color-alert-warning-bg: #fff5e8;
+$color-alert-warning-text: #a46a00;
+$color-alert-error-bg: #fce7e7;
+$color-alert-error-text: #9c3d3d;
+
+// Syntax highlighting
+$color-code-header-bg: #e6e6e6;
+$color-code-header-text: #444;
+$color-code-hover: #d0d0d0;
+
+$color-code-bg: #ededed;
+$color-code-text: $color-default;
+$color-code-border: #d6d3d3;
+$color-code-keyword: #8d6ba8;
+$color-code-string: #f29e5c;
+$color-code-boolean: #4ba9a6;
+$color-code-function: #e26c96;
+$color-code-variable: #9b886f;
+$color-code-number: #5a91c3;
+$color-code-comment: #6a737d;
+$color-code-type: #63b0b7;
+$color-code-property: #a07bc0;
+$color-code-built-in: #50a97f;
+$color-code-tag: #ce6f72;
+$color-code-attribute: #d49c34;
+$color-code-regexp: #008080;
+$color-code-class: #729fcf;
+$color-code-selector-class: #d17ab7;
+
+// Inputs
+$color-input-bg: #ffffff;
+$color-input-border: #e4dad6;
+$color-input-border-focus: #a88db7;
+$color-input-placeholder: #a89da2;
+
+// States
+$color-disabled-text: #b8adaf;
+$color-readonly-bg: #f3efec;
+
+// Cards and Sections
+$color-card-bg: #ffffff;
+$color-section-bg: #f2ebe8;
+
+// Other
+$color-focus: #a88db7; /* soft purple, for input focus */
+$color-skeleton: #ededed; /* neutral gray placeholder */
+$color-overlay: rgba(0, 0, 0, 0.4); /* modal / backdrop layer */
+
+// Utility Colors
+$color-white: #ffffff;
+
