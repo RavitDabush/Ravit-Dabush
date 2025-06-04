@@ -1,0 +1,75 @@
+/* ========= CSS Reset (Mobile-First Friendly) ========= */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+img,
+picture,
+video,
+canvas {
+	display: block;
+	max-width: 100%;
+}
+
+svg {
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+body {
+	min-height: 100vh;
+	line-height: 1.5;
+	text-rendering: optimizeSpeed;
+	-webkit-font-smoothing: antialiased;
+}
+
+button {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
