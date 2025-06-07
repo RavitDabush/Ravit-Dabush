@@ -109,5 +109,5 @@
 	--font-fancy: $font-fancy;
 	--font-code: $font-code;
 
-	font-size: clamp($font-size-body-big, $font-size-body-medium, $font-size-body-small);
+	font-size: clamp(16px, 1.2vw, 14px);
 }
