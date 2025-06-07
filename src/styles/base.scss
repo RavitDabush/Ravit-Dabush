@@ -4,110 +4,110 @@
 
 :root {
 	// Colors
-	--color-primary: $color-primary;
-	--color-primary-hover: $color-primary-hover;
-	--color-primary-light: $color-primary-light;
-	--color-primary-light-hover: $color-primary-light-hover;
-	--color-default: $color-default;
+	--color-primary: #{colors.$color-primary};
+	--color-primary-hover: #{colors.$color-primary-hover};
+	--color-primary-light: #{colors.$color-primary-light};
+	--color-primary-light-hover: #{colors.$color-primary-light-hover};
+	--color-default: #{colors.$color-default};
 
 	// Backgrounds
-	--color-bg-main: $color-bg-main;
-	--color-bg-secondary: $color-bg-secondary;
-	--color-bg-muted: $color-bg-muted;
-	--color-bg-hover-light: $color-bg-hover-light;
-	--color-bg-pressed: $color-bg-pressed;
+	--color-bg-main: #{colors.$color-bg-main};
+	--color-bg-secondary: #{colors.$color-bg-secondary};
+	--color-bg-muted: #{colors.$color-bg-muted};
+	--color-bg-hover-light: #{colors.$color-bg-hover-light};
+	--color-bg-pressed: #{colors.$color-bg-pressed};
 
 	// Text Colors
-	--color-text-default: $color-text-default;
-	--color-text-heading: $color-text-heading;
-	--color-text-subheading: $color-text-subheading;
-	--color-text-muted: $color-text-muted;
-	--color-text-muted-secondary: $color-text-muted-secondary;
-	--color-text-primary: $color-text-primary;
-	--color-text-primary-light: $color-text-primary-light;
+	--color-text-default: #{colors.$color-text-default};
+	--color-text-heading: #{colors.$color-text-heading};
+	--color-text-subheading: #{colors.$color-text-subheading};
+	--color-text-muted: #{colors.$color-text-muted};
+	--color-text-muted-secondary: #{colors.$color-text-muted-secondary};
+	--color-text-primary: #{colors.$color-text-primary};
+	--color-text-primary-light: #{colors.$color-text-primary-light};
 
 	// Links
-	--color-link: $color-link;
-	--color-link-hover: $color-link-hover;
+	--color-link: #{colors.$color-link};
+	--color-link-hover: #{colors.$color-link-hover};
 
 	// Buttons
-	--color-btn-primary: $color-btn-primary;
-	--color-btn-primary-hover: $color-btn-primary-hover;
-	--color-btn-primary-light: $color-btn-primary-light;
-	--color-btn-primary-light-hover: $color-btn-primary-light-hover;
-	--color-btn-outline: $color-btn-outline;
-	--color-btn-outline-hover: $color-btn-outline-hover;
-	--color-btn-outline-background-hover: $color-btn-outline-background-hover;
-	--color-btn-disabled: $color-btn-disabled;
-	--color-btn-success: $color-btn-success;
-	--color-btn-success-hover: $color-btn-success-hover;
-	--color-btn-error: $color-btn-error;
-	--color-btn-error-hover: $color-btn-error-hover;
+	--color-btn-primary: #{colors.$color-btn-primary};
+	--color-btn-primary-hover: #{colors.$color-btn-primary-hover};
+	--color-btn-primary-light: #{colors.$color-btn-primary-light};
+	--color-btn-primary-light-hover: #{colors.$color-btn-primary-light-hover};
+	--color-btn-outline: #{colors.$color-btn-outline};
+	--color-btn-outline-hover: #{colors.$color-btn-outline-hover};
+	--color-btn-outline-background-hover: #{colors.$color-btn-outline-background-hover};
+	--color-btn-disabled: #{colors.$color-btn-disabled};
+	--color-btn-success: #{colors.$color-btn-success};
+	--color-btn-success-hover: #{colors.$color-btn-success-hover};
+	--color-btn-error: #{colors.$color-btn-error};
+	--color-btn-error-hover: #{colors.$color-btn-error-hover};
 
 	// Borders and Box-Shadow
-	--color-border: $color-border;
-	--color-box-shadow: $color-box-shadow;
-	--color-box-shadow-dark: $color-box-shadow-dark;
+	--color-border: #{colors.$color-border};
+	--color-box-shadow: #{colors.$color-box-shadow};
+	--color-box-shadow-dark: #{colors.$color-box-shadow-dark};
 
 	// Alerts
-	--color-alert-info-bg: $color-alert-info-bg;
-	--color-alert-info-text: $color-alert-info-text;
-	--color-alert-warning-bg: $color-alert-warning-bg;
-	--color-alert-warning-text: $color-alert-warning-text;
-	--color-alert-error-bg: $color-alert-error-bg;
-	--color-alert-error-text: $color-alert-error-text;
+	--color-alert-info-bg: #{colors.$color-alert-info-bg};
+	--color-alert-info-text: #{colors.$color-alert-info-text};
+	--color-alert-warning-bg: #{colors.$color-alert-warning-bg};
+	--color-alert-warning-text: #{colors.$color-alert-warning-text};
+	--color-alert-error-bg: #{colors.$color-alert-error-bg};
+	--color-alert-error-text: #{colors.$color-alert-error-text};
 
 	// Syntax highlighting
-	--color-code-header-bg: $color-code-header-bg;
-	--color-code-header-text: $color-code-header-text;
-	--color-code-hover: $color-code-hover;
+	--color-code-header-bg: #{colors.$color-code-header-bg};
+	--color-code-header-text: #{colors.$color-code-header-text};
+	--color-code-hover: #{colors.$color-code-hover};
 
-	--color-code-bg: $color-code-bg;
-	--color-code-text: $color-code-text;
-	--color-code-border: $color-code-border;
-	--color-code-keyword: $color-code-keyword;
-	--color-code-string: $color-code-string;
-	--color-code-boolean: $color-code-boolean;
-	--color-code-function: $color-code-function;
-	--color-code-variable: $color-code-variable;
-	--color-code-number: $color-code-number;
-	--color-code-comment: $color-code-comment;
-	--color-code-type: $color-code-type;
-	--color-code-property: $color-code-property;
-	--color-code-built-in: $color-code-built-in;
-	--color-code-tag: $color-code-tag;
-	--color-code-attribute: $color-code-attribute;
-	--color-code-regexp: $color-code-regexp;
-	--color-code-class: $color-code-class;
-	--color-code-selector-class: $color-code-selector-class;
+	--color-code-bg: #{colors.$color-code-bg};
+	--color-code-text: #{colors.$color-code-text};
+	--color-code-border: #{colors.$color-code-border};
+	--color-code-keyword: #{colors.$color-code-keyword};
+	--color-code-string: #{colors.$color-code-string};
+	--color-code-boolean: #{colors.$color-code-boolean};
+	--color-code-function: #{colors.$color-code-function};
+	--color-code-variable: #{colors.$color-code-variable};
+	--color-code-number: #{colors.$color-code-number};
+	--color-code-comment: #{colors.$color-code-comment};
+	--color-code-type: #{colors.$color-code-type};
+	--color-code-property: #{colors.$color-code-property};
+	--color-code-built-in: #{colors.$color-code-built-in};
+	--color-code-tag: #{colors.$color-code-tag};
+	--color-code-attribute: #{colors.$color-code-attribute};
+	--color-code-regexp: #{colors.$color-code-regexp};
+	--color-code-class: #{colors.$color-code-class};
+	--color-code-selector-class: #{colors.$color-code-selector-class};
 
 	// Inputs
-	--color-input-bg: $color-input-bg;
-	--color-input-border: $color-input-border;
-	--color-input-border-focus: $color-input-border-focus;
-	--color-input-placeholder: $color-input-placeholder;
+	--color-input-bg: #{colors.$color-input-bg};
+	--color-input-border: #{colors.$color-input-border};
+	--color-input-border-focus: #{colors.$color-input-border-focus};
+	--color-input-placeholder: #{colors.$color-input-placeholder};
 
 	// States
-	--color-disabled-text: $color-disabled-text;
-	--color-readonly-bg: $color-readonly-bg;
+	--color-disabled-text: #{colors.$color-disabled-text};
+	--color-readonly-bg: #{colors.$color-readonly-bg};
 
 	// Cards and Sections
-	--color-card-bg: $color-card-bg;
-	--color-section-bg: $color-section-bg;
+	--color-card-bg: #{colors.$color-card-bg};
+	--color-section-bg: #{colors.$color-section-bg};
 
 	// Other
-	--color-focus: $color-focus; /* soft purple, for input focus */
-	--color-skeleton: $color-skeleton; /* neutral gray placeholder */
-	--color-overlay: $color-overlay; /* modal / backdrop layer */
+	--color-focus: #{colors.$color-focus}; /* soft purple, for input focus */
+	--color-skeleton: #{colors.$color-skeleton}; /* neutral gray placeholder */
+	--color-overlay: #{colors.$color-overlay}; /* modal / backdrop layer */
 
 	// Utility Colors
-	--color-white: $color-white;
+	--color-white: #{colors.$color-white};
 
 	// Typography
-	--font-heading: $font-heading;
-	--font-body: $font-body;
-	--font-fancy: $font-fancy;
-	--font-code: $font-code;
+	--font-heading: #{typography.$font-heading};
+	--font-body: #{typography.$font-body};
+	--font-fancy: #{typography.$font-fancy};
+	--font-code: #{typography.$font-code};
 
-	font-size: clamp(16px, 1.2vw, 14px);
+	font-size: clamp(typography.$font-size-body-big, typography.$font-size-body-medium, typography.$font-size-body-small);
 }

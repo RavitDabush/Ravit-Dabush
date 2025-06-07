@@ -8,7 +8,7 @@ import { hasLocale } from 'next-intl';
 import { AnimatePresence } from 'framer-motion';
 import AnimatedPage from '@/components/AnimatedPage';
 
-import '@/styles/base.scss';
+import '@/styles/globals.scss';
 
 const inter = Inter({ subsets: ['latin'] });
 
