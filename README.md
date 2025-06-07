@@ -37,7 +37,7 @@ It includes:
 ---
 
 ## 🧱 Project Structure
-
+```
 Ravit-Dabush/
 ├─ 📁 docs/                 → Project documentation
 ├─ 📁 messages/             → Translations by language and component
@@ -55,7 +55,7 @@ Ravit-Dabush/
 ├─ 📄 README.md             → Project overview in English
 ├─ 📄 README.he.md          → Project overview in Hebrew
 ├─ 📄 LICENSE               → Custom license file restricting reuse
-
+```
 ---
 
 ## 🔄 Development Workflow
