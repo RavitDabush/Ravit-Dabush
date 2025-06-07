@@ -38,15 +38,23 @@ It includes:
 
 ## 🧱 Project Structure
 
-📁 app/                 → App Router structure (Next.js)
-📁 components/          → Reusable UI components
-📁 styles/              → Global SCSS files: tokens, base, mixins
-📁 lib/                 → Utility functions and helpers
-📁 i18n/                → Translation setup
-📁 messages/            → Translation messages
-📁 public/              → Static assets (images, favicons)
-📄 README.md            → Project overview
-📄 LICENSE              → Usage restrictions
+Ravit-Dabush/
+├─ 📁 docs/                 → Project documentation
+├─ 📁 messages/             → Translations by language and component
+├─ 📁 public/               → Static assets served as-is (images, icons, favicon, etc.)
+├─ 📁 scripts/              → Utility scripts (e.g., icon generation, JSON formatting)
+├─ 📁 src/                  → Main application source code
+│  ├─ 📁 app/               → Next.js App Router with locale-based routing
+│  ├─ 📁 assets/            → Raw assets (e.g., inline SVGs, visual resources)
+│  ├─ 📁 components/        → Reusable UI components, each in its own folder
+│  ├─ 📁 i18n/              → `next-intl` configuration files and localization helpers
+│  ├─ 📁 lib/               → Logic utilities, data formatters, hooks
+│  ├─ 📁 pages/             → Optional support for Pages Router (if used alongside App Router)
+│  ├─ 📁 styles/            → Global SCSS structure (base, reset, mixins, tokens)
+│  ├─ 📁 utils/             → Small helpers and utility functions (e.g., formatting, constants)
+├─ 📄 README.md             → Project overview in English
+├─ 📄 README.he.md          → Project overview in Hebrew
+├─ 📄 LICENSE               → Custom license file restricting reuse
 
 ---
 
