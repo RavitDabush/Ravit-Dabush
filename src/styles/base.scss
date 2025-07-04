@@ -1,0 +1,113 @@
+@use './tokens/colors';
+@use './tokens/typography';
+@use './tokens/radius';
+
+:root {
+	// Colors
+	--color-primary: #{colors.$color-primary};
+	--color-primary-hover: #{colors.$color-primary-hover};
+	--color-primary-light: #{colors.$color-primary-light};
+	--color-primary-light-hover: #{colors.$color-primary-light-hover};
+	--color-default: #{colors.$color-default};
+
+	// Backgrounds
+	--color-bg-main: #{colors.$color-bg-main};
+	--color-bg-secondary: #{colors.$color-bg-secondary};
+	--color-bg-muted: #{colors.$color-bg-muted};
+	--color-bg-hover-light: #{colors.$color-bg-hover-light};
+	--color-bg-pressed: #{colors.$color-bg-pressed};
+
+	// Text Colors
+	--color-text-default: #{colors.$color-text-default};
+	--color-text-heading: #{colors.$color-text-heading};
+	--color-text-subheading: #{colors.$color-text-subheading};
+	--color-text-muted: #{colors.$color-text-muted};
+	--color-text-muted-secondary: #{colors.$color-text-muted-secondary};
+	--color-text-primary: #{colors.$color-text-primary};
+	--color-text-primary-light: #{colors.$color-text-primary-light};
+
+	// Links
+	--color-link: #{colors.$color-link};
+	--color-link-hover: #{colors.$color-link-hover};
+
+	// Buttons
+	--color-btn-primary: #{colors.$color-btn-primary};
+	--color-btn-primary-hover: #{colors.$color-btn-primary-hover};
+	--color-btn-primary-light: #{colors.$color-btn-primary-light};
+	--color-btn-primary-light-hover: #{colors.$color-btn-primary-light-hover};
+	--color-btn-outline: #{colors.$color-btn-outline};
+	--color-btn-outline-hover: #{colors.$color-btn-outline-hover};
+	--color-btn-outline-background-hover: #{colors.$color-btn-outline-background-hover};
+	--color-btn-disabled: #{colors.$color-btn-disabled};
+	--color-btn-success: #{colors.$color-btn-success};
+	--color-btn-success-hover: #{colors.$color-btn-success-hover};
+	--color-btn-error: #{colors.$color-btn-error};
+	--color-btn-error-hover: #{colors.$color-btn-error-hover};
+
+	// Borders and Box-Shadow
+	--color-border: #{colors.$color-border};
+	--color-box-shadow: #{colors.$color-box-shadow};
+	--color-box-shadow-dark: #{colors.$color-box-shadow-dark};
+
+	// Alerts
+	--color-alert-info-bg: #{colors.$color-alert-info-bg};
+	--color-alert-info-text: #{colors.$color-alert-info-text};
+	--color-alert-warning-bg: #{colors.$color-alert-warning-bg};
+	--color-alert-warning-text: #{colors.$color-alert-warning-text};
+	--color-alert-error-bg: #{colors.$color-alert-error-bg};
+	--color-alert-error-text: #{colors.$color-alert-error-text};
+
+	// Syntax highlighting
+	--color-code-header-bg: #{colors.$color-code-header-bg};
+	--color-code-header-text: #{colors.$color-code-header-text};
+	--color-code-hover: #{colors.$color-code-hover};
+
+	--color-code-bg: #{colors.$color-code-bg};
+	--color-code-text: #{colors.$color-code-text};
+	--color-code-border: #{colors.$color-code-border};
+	--color-code-keyword: #{colors.$color-code-keyword};
+	--color-code-string: #{colors.$color-code-string};
+	--color-code-boolean: #{colors.$color-code-boolean};
+	--color-code-function: #{colors.$color-code-function};
+	--color-code-variable: #{colors.$color-code-variable};
+	--color-code-number: #{colors.$color-code-number};
+	--color-code-comment: #{colors.$color-code-comment};
+	--color-code-type: #{colors.$color-code-type};
+	--color-code-property: #{colors.$color-code-property};
+	--color-code-built-in: #{colors.$color-code-built-in};
+	--color-code-tag: #{colors.$color-code-tag};
+	--color-code-attribute: #{colors.$color-code-attribute};
+	--color-code-regexp: #{colors.$color-code-regexp};
+	--color-code-class: #{colors.$color-code-class};
+	--color-code-selector-class: #{colors.$color-code-selector-class};
+
+	// Inputs
+	--color-input-bg: #{colors.$color-input-bg};
+	--color-input-border: #{colors.$color-input-border};
+	--color-input-border-focus: #{colors.$color-input-border-focus};
+	--color-input-placeholder: #{colors.$color-input-placeholder};
+
+	// States
+	--color-disabled-text: #{colors.$color-disabled-text};
+	--color-readonly-bg: #{colors.$color-readonly-bg};
+
+	// Cards and Sections
+	--color-card-bg: #{colors.$color-card-bg};
+	--color-section-bg: #{colors.$color-section-bg};
+
+	// Other
+	--color-focus: #{colors.$color-focus}; /* soft purple, for input focus */
+	--color-skeleton: #{colors.$color-skeleton}; /* neutral gray placeholder */
+	--color-overlay: #{colors.$color-overlay}; /* modal / backdrop layer */
+
+	// Utility Colors
+	--color-white: #{colors.$color-white};
+
+	// Typography
+	--font-heading: #{typography.$font-heading};
+	--font-body: #{typography.$font-body};
+	--font-fancy: #{typography.$font-fancy};
+	--font-code: #{typography.$font-code};
+
+	font-size: clamp(typography.$font-size-body-big, typography.$font-size-body-medium, typography.$font-size-body-small);
+}
