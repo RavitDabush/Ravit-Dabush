@@ -1,13 +1,14 @@
 import { useTranslations } from 'next-intl';
 import PageLayout from '@/components/PageLayout';
+import { Heading2, Paragraph } from '@/components/Typography';
 
 export default function HomePage() {
 	const t = useTranslations('HomePage');
 
 	return (
 		<PageLayout>
-			<h2>{t('title')}</h2>
-			<p>{t('description')}</p>
+			<Heading2>{t('title')}</Heading2>
+			<Paragraph>{t('description')}</Paragraph>
 			<button>{t('button')}</button>
 		</PageLayout>
 	);
