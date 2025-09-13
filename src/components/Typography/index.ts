@@ -16,4 +16,6 @@ export { default as TextNote } from './TextNote';
 export { default as BoldText } from './BoldText';
 export { default as ItalicText } from './ItalicText';
 export { default as UnderlineText } from './UnderlineText';
+export { default as LinkText } from './LinkText';
+export { default as LinkButton } from './LinkButton';
 export { default as Divider } from './Divider';
