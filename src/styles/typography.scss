@@ -1,0 +1,171 @@
+// -----------------------------------------
+// Typography Base Setup (by Ravit ✨)
+// All font sizes, spacings, link styles, and code highlighting
+// centralized and consistent
+// -----------------------------------------
+
+// Reset for basic text
+body {
+	font-size: 1rem;
+	line-height: 1.6;
+	font-weight: 400;
+	color: var(--color-text-default);
+	font-family: var(--font-default);
+}
+
+// -----------------------------------------
+// Headings
+// -----------------------------------------
+h1,
+.heading-xl {
+	font-size: 3rem;
+	line-height: 1.2;
+	font-weight: 700;
+	margin-bottom: 2rem;
+}
+
+h2,
+.heading-lg {
+	font-size: 2.5rem;
+	line-height: 1.3;
+	font-weight: 700;
+	margin-bottom: 1.8rem;
+}
+
+h3,
+.heading-md {
+	font-size: 2rem;
+	line-height: 1.4;
+	font-weight: 600;
+	margin-bottom: 1.6rem;
+}
+
+h4,
+.heading-sm {
+	font-size: 1.5rem;
+	line-height: 1.5;
+	font-weight: 600;
+	margin-bottom: 1.4rem;
+}
+
+h5,
+h6,
+.heading-xs {
+	font-size: 1.25rem;
+	line-height: 1.5;
+	font-weight: 600;
+	margin-bottom: 1.2rem;
+}
+
+// Fancy title
+.fancy-title {
+	font-family: var(--font-fancy);
+	line-height: 1.7;
+}
+
+// -----------------------------------------
+// Paragraphs
+// -----------------------------------------
+.paragraph-lg {
+	font-size: clamp(15px, 1.4vw, 18px);
+	line-height: 1.6;
+	font-weight: 400;
+	margin-bottom: 1.5rem;
+}
+
+.paragraph-md,
+p {
+	font-size: clamp(14px, 1.2vw, 16px);
+	line-height: 1.6;
+	font-weight: 400;
+	margin-bottom: 1.5rem;
+	white-space: pre-line;
+}
+
+.paragraph-sm {
+	font-size: clamp(13px, 1vw, 14px);
+	line-height: 1.5;
+	font-weight: 400;
+	margin-bottom: 1.25rem;
+}
+
+// -----------------------------------------
+// Links
+// -----------------------------------------
+.link {
+	color: var(--color-link);
+	text-decoration: none;
+	border-bottom: 1px dashed var(--color-link);
+	transition: color 0.3s;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		color: var(--color-link-hover);
+		border-bottom: 1px solid var(--color-link-hover);
+	}
+
+	&-no-underline {
+		text-decoration: none;
+		border-bottom: none;
+
+		&:hover {
+			color: inherit;
+			text-decoration: none;
+			border-bottom: none;
+		}
+	}
+}
+
+.link-disabled {
+	color: var(--color-text-muted);
+	text-decoration: none;
+	cursor: not-allowed;
+}
+
+// Link as button
+// See @components/Button/Button.scss
+// Use .btn for button look
+// Add style with: .primary / .outline / .light / .success / .error / .disabled
+
+// -----------------------------------------
+// Inline text formatting
+// -----------------------------------------
+strong,
+.text-bold {
+	font-weight: 700;
+}
+
+em,
+.text-italic {
+	font-style: italic;
+}
+
+u,
+.text-underline {
+	text-decoration: underline;
+}
+
+.text-muted {
+	color: var(--color-text-muted);
+}
+
+.text-small,
+small {
+	font-size: clamp(12px, 0.95vw, 14px);
+}
+
+.text-note {
+	font-size: clamp(12px, 0.9vw, 14px);
+	color: var(--color-text-muted);
+}
+
+// -----------------------------------------
+// Divider
+// -----------------------------------------
+hr.divider {
+	border: none;
+	height: 1px;
+	background-color: var(--color-border);
+	margin: 2rem 0;
+}
