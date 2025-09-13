@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import PageLayout from '@/components/PageLayout';
-import { Heading2, Paragraph } from '@/components/Typography';
+import { Heading2, Paragraph, LinkButton } from '@/components/Typography';
 
 export default function HomePage() {
 	const t = useTranslations('HomePage');
@@ -9,7 +9,7 @@ export default function HomePage() {
 		<PageLayout>
 			<Heading2>{t('title')}</Heading2>
 			<Paragraph>{t('description')}</Paragraph>
-			<button>{t('button')}</button>
+			<LinkButton href="#">{t('button')}</LinkButton>
 		</PageLayout>
 	);
 }

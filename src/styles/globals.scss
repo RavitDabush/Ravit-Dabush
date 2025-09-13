@@ -2,6 +2,7 @@
 @use './reset';
 @use './mixins' as *;
 @use './typography.scss';
+@use './button.scss';
 
 html {
 	scroll-behavior: smooth;
