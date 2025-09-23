@@ -166,6 +166,117 @@ small {
 }
 
 // -----------------------------------------
+// Code
+// -----------------------------------------
+code {
+	font-family: var(--font-code);
+	font-size: 0.95rem;
+	background-color: var(--color-code-bg);
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.375rem;
+	color: var(--color-code-text);
+	direction: ltr;
+	unicode-bidi: embed;
+	white-space: pre;
+}
+
+.block-code-container {
+	margin-bottom: 2rem;
+	border: 1px solid var(--color-code-border);
+	border-radius: 0.5rem;
+	background-color: var(--color-code-bg);
+	overflow: hidden;
+	font-family: var(--font-code);
+
+	pre {
+		margin: 0;
+		padding: 1rem;
+		overflow-x: auto;
+		white-space: pre;
+		font-size: 0.95rem;
+		line-height: 1.6;
+
+		code {
+			display: block;
+		}
+	}
+
+	.block-code-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem 1rem;
+		background-color: var(--color-code-header-bg);
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--color-code-header-text);
+		border-bottom: 1px solid var(--color-code-border);
+	}
+}
+
+code .keyword {
+	color: var(--color-code-keyword);
+}
+
+code .string {
+	color: var(--color-code-string);
+}
+
+code .boolean {
+	color: var(--color-code-boolean);
+}
+
+code .function {
+	color: var(--color-code-function);
+}
+
+code .variable {
+	color: var(--color-code-variable);
+}
+
+code .number {
+	color: var(--color-code-number);
+}
+
+code .comment {
+	color: var(--color-code-comment);
+	font-style: italic;
+}
+
+code .type {
+	color: var(--color-code-type);
+}
+
+code .property {
+	color: var(--color-code-property);
+}
+
+code .built_in {
+	color: var(--color-code-built-in);
+}
+
+code .tag {
+	color: var(--color-code-tag);
+}
+
+code .attribute,
+code .attr {
+	color: var(--color-code-attribute);
+}
+
+code .regexp {
+	color: var(--color-code-regexp);
+}
+
+code .class {
+	color: var(--color-code-class);
+}
+
+code .selector-class {
+	color: var(--color-code-selector-class);
+}
+
+// -----------------------------------------
 // Lists
 // -----------------------------------------
 ul.list,
