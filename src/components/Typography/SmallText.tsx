@@ -1,3 +1,5 @@
+'use client';
+
 import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
@@ -11,7 +13,10 @@ export default function SmallText({
 	className = ''
 }: SmallTextProps) {
 	return (
-		<BaseTypography as="small" className={clsx('text-small', className)}>
+		<BaseTypography
+			as="small"
+			className={clsx('text-small', className)}
+		>
 			{children}
 		</BaseTypography>
 	);

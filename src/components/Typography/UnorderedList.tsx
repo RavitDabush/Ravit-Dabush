@@ -1,5 +1,6 @@
 'use client';
 
+import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
 type UnorderedListProps = {
@@ -11,5 +12,12 @@ export default function UnorderedList({
 	children,
 	className = ''
 }: UnorderedListProps) {
-	return <ul className={clsx('list', className)}>{children}</ul>;
+	return (
+		<BaseTypography
+			as="ul"
+			className={clsx('list', className)}
+		>
+			{children}
+		</BaseTypography>
+	);
 }

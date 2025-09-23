@@ -1,3 +1,5 @@
+'use client';
+
 import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
@@ -11,7 +13,10 @@ export default function MutedText({
 	className = ''
 }: MutedTextProps) {
 	return (
-		<BaseTypography as="span" className={clsx('text-muted', className)}>
+		<BaseTypography
+			as="span"
+			className={clsx('text-muted', className)}
+		>
 			{children}
 		</BaseTypography>
 	);

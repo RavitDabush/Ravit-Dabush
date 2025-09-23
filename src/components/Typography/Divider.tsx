@@ -1,3 +1,7 @@
+'use client';
+
+import clsx from 'clsx';
+
 type DividerProps = {
 	className?: string;
 	ariaLabel?: string;
@@ -11,10 +15,12 @@ export default function Divider({
 }: DividerProps) {
 	return (
 		<hr
-			role={decorative ? 'presentation' : 'separator'}
+			role={
+				decorative ? 'presentation' : 'separator'
+			}
 			aria-hidden={decorative ? true : undefined}
 			aria-label={decorative ? undefined : ariaLabel}
-			className={`divider ${className}`.trim()}
+			className={clsx('divider', className)}
 		/>
 	);
 }

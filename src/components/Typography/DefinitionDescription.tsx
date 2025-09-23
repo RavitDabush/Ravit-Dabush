@@ -1,18 +1,19 @@
 'use client';
 
+import BaseTypography from './BaseTypography';
+
 type DefinitionDescriptionProps = {
-  children: React.ReactNode;
-  className?: string;
-  id?: string;
+	children: React.ReactNode;
+	className?: string;
 };
 
 export default function DefinitionDescription({
-  children,
-  className,
+	children,
+	className
 }: DefinitionDescriptionProps) {
-  return (
-    <dd className={className}>
-      {children}
-    </dd>
-  );
+	return (
+		<BaseTypography as="dd" className={className}>
+			{children}
+		</BaseTypography>
+	);
 }

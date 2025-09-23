@@ -1,18 +1,19 @@
 'use client';
 
+import BaseTypography from './BaseTypography';
+
 type DefinitionTermProps = {
-  children: React.ReactNode;
-  className?: string;
-  id?: string;
+	children: React.ReactNode;
+	className?: string;
 };
 
 export default function DefinitionTerm({
-  children,
-  className,
+	children,
+	className
 }: DefinitionTermProps) {
-  return (
-    <dt className={className}>
-      {children}
-    </dt>
-  );
+	return (
+		<BaseTypography as="dt" className={className}>
+			{children}
+		</BaseTypography>
+	);
 }

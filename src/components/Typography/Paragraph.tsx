@@ -1,3 +1,5 @@
+'use client';
+
 import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
@@ -11,7 +13,10 @@ export default function Paragraph({
 	className = ''
 }: ParagraphProps) {
 	return (
-		<BaseTypography as="p" className={clsx('paragraph-md', className)}>
+		<BaseTypography
+			as="p"
+			className={clsx('paragraph-md', className)}
+		>
 			{children}
 		</BaseTypography>
 	);

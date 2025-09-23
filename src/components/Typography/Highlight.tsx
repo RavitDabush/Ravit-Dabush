@@ -1,3 +1,5 @@
+'use client';
+
 import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
@@ -11,7 +13,10 @@ export default function Highlight({
 	className = ''
 }: HighlightProps) {
 	return (
-		<BaseTypography as="span" className={clsx('highlight', className)}>
+		<BaseTypography
+			as="span"
+			className={clsx('highlight', className)}
+		>
 			{children}
 		</BaseTypography>
 	);

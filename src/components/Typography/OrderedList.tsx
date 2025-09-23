@@ -1,5 +1,6 @@
 'use client';
 
+import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
 type OrderedListProps = {
@@ -11,5 +12,12 @@ export default function OrderedList({
 	children,
 	className = ''
 }: OrderedListProps) {
-	return <ol className={clsx('list-ordered', className)}>{children}</ol>;
+	return (
+		<BaseTypography
+			as="ol"
+			className={clsx('list-ordered', className)}
+		>
+			{children}
+		</BaseTypography>
+	);
 }

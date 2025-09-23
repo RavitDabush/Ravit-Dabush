@@ -1,6 +1,7 @@
 'use client';
 
 import BaseTypography from './BaseTypography';
+
 type AbbreviationProps = {
 	className?: string;
 	children: React.ReactNode;
