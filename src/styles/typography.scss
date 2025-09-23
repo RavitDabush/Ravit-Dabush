@@ -166,6 +166,56 @@ small {
 }
 
 // -----------------------------------------
+// Lists
+// -----------------------------------------
+ul.list,
+ol.list-ordered {
+	margin-bottom: 1.5rem;
+	list-style-position: inside;
+}
+
+.list {
+	padding-inline-start: 0;
+	list-style: disc inside;
+
+	li {
+		position: relative;
+		padding-inline-start: 1rem;
+		list-style: none;
+
+		&::before {
+			content: '✦';
+			position: absolute;
+			inset-inline-start: 0;
+			top: 0.4rem;
+			font-size: 0.9rem;
+			line-height: 1;
+		}
+	}
+}
+
+ul.list-no-bullet li {
+	padding-inline-start: 0;
+
+	&::before {
+		content: '';
+	}
+}
+
+dl {
+  margin-block: var(--spacing-md);
+  dt {
+    font-weight: bold;
+    margin-top: var(--spacing-sm);
+  }
+  dd {
+    margin-inline-start: 1rem;
+    margin-bottom: var(--spacing-xs);
+  }
+}
+
+
+// -----------------------------------------
 // Divider
 // -----------------------------------------
 hr.divider {

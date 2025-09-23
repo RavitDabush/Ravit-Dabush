@@ -18,4 +18,7 @@ export { default as ItalicText } from './ItalicText';
 export { default as UnderlineText } from './UnderlineText';
 export { default as LinkText } from './LinkText';
 export { default as LinkButton } from './LinkButton';
+export { default as UnorderedList } from './UnorderedList';
+export { default as OrderedList } from './OrderedList';
+export { default as ListItem } from './ListItem';
 export { default as Divider } from './Divider';
