@@ -3,7 +3,7 @@ import PageLayout from '@/components/PageLayout';
 import { Heading2, Paragraph, LinkButton } from '@/components/Typography';
 
 export default function HomePage() {
-	const t = useTranslations('HomePage');
+	const t = useTranslations('homePage');
 
 	return (
 		<PageLayout>
