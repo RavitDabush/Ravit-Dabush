@@ -1,32 +1,37 @@
 {
-  "name": "ravit-dabush",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "check:updates": "node check-updates.mjs"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.16.0",
-    "next": "15.3.1",
-    "next-intl": "^4.1.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "sass": "^1.89.1"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
-    "@types/node": "^20.17.32",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19",
-    "eslint": "^9.26.0",
-    "eslint-config-next": "15.3.1",
-    "typescript": "^5.5.3"
-  },
+	"name": "ravit-dabush",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "concurrently \"next dev --turbo\" \"npm run open:browser\"",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint src && tsc && prettier src --check",
+		"check:updates": "node check-updates.mjs",
+		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,scss,css,json,md,html}\"",
+		"open:browser": "node -e \"import('open').then(open => open.default('http://localhost:3000'))\""
+	},
+	"dependencies": {
+		"clsx": "^2.1.1",
+		"framer-motion": "^12.16.0",
+		"next": "15.3.1",
+		"next-intl": "^4.1.0",
+		"react": "^19.1.0",
+		"react-dom": "^19.1.0",
+		"sass": "^1.89.1"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3.3.1",
+		"@types/node": "^20.17.32",
+		"@types/react": "^19.0.0",
+		"@types/react-dom": "^19",
+		"concurrently": "^9.2.1",
+		"eslint": "^9.26.0",
+		"eslint-config-next": "15.3.1",
+		"open": "^10.2.0",
+		"typescript": "^5.5.3",
+		"wait-on": "^9.0.1"
+	},
 	"i18n ally": {
 		"localesPaths": [
 			"messages"
@@ -38,5 +43,4 @@
 		"sortKeys": false,
 		"defaultLocale": "he"
 	}
-
 }
