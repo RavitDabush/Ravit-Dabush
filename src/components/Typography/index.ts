@@ -21,4 +21,7 @@ export { default as LinkButton } from './LinkButton';
 export { default as UnorderedList } from './UnorderedList';
 export { default as OrderedList } from './OrderedList';
 export { default as ListItem } from './ListItem';
+export { default as Blockquote } from './Blockquote';
+export { default as InlineCode } from './InlineCode';
+export { default as BlockCode } from './BlockCode';
 export { default as Divider } from './Divider';
