@@ -112,5 +112,5 @@ See the [LICENSE](./LICENSE) file for full terms.
 
 This isn’t just a codebase — it’s a reflection of me.  
 As I grow, this project grows with me.  
-Feel free to explore, learn, or just feel something.
+Feel free to explore, learn, or just feel something.  
 Made with ❤️, Sass, and probably too many Jira tickets.
