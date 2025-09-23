@@ -5,6 +5,7 @@ This document outlines the technical architecture and structural decisions for t
 ---
 
 ## 🎯 Goals
+
 - Modular, scalable structure
 - Clear separation of concerns
 - Developer-friendly file layout
@@ -55,6 +56,7 @@ Ravit-Dabush/
 ---
 
 ## 🔄 Data & Logic Flow
+
 - Routing handled via `app/[locale]/page.tsx` with `next-intl`
 - Layouts composed at `app/layout.tsx` level
 - Components built in isolation and imported
@@ -63,6 +65,7 @@ Ravit-Dabush/
 ---
 
 ## 🧩 Component Strategy
+
 - Each UI component is self-contained and receives global SCSS support
 - Styles are applied via the global design system (tokens, mixins, base)
 - Shared variables and utility classes are defined under `styles/`
@@ -71,12 +74,14 @@ Ravit-Dabush/
 ---
 
 ## 🌍 i18n Layer
+
 - Locale detection and routing based on folder structure
 - Translations injected via `next-intl` provider
 
 ---
 
 ## 🛠 Dev Practices
+
 - Jira used for Epic-driven task breakdown
 - GitHub integration for traceable commits and PRs
 - Conventional commits & structured PRs
@@ -84,6 +89,7 @@ Ravit-Dabush/
 ---
 
 ## 🧠 Future-Proofing
+
 - Designed to support content-layer expansion (e.g. integration with a headless CMS)
 - StyleGuide page can evolve into design system reference or Storybook alternative
 

@@ -5,6 +5,7 @@ This document outlines accessibility principles and implementation strategies us
 ---
 
 ## 🎯 Accessibility Goals
+
 - Fully keyboard-navigable UI
 - Meaningful ARIA roles and labels
 - High-contrast and readable typography
@@ -17,6 +18,7 @@ This project is a reminder — and a commitment — to include them.
 ---
 
 ## 🧩 HTML Semantics
+
 - Use of semantic tags (`<header>`, `<main>`, `<nav>`, `<section>`, etc.)
 - Landmark roles applied implicitly and explicitly
 - Headings structured hierarchically (`h1` → `h6`)
@@ -24,6 +26,7 @@ This project is a reminder — and a commitment — to include them.
 ---
 
 ## 🔗 Navigation
+
 - All interactive components (buttons, links) are accessible via keyboard (`Tab`, `Enter`)
 - Focus indicators are visible and styled for clarity
 - Custom components (e.g., `IconTile`) use `role="button"`, `tabIndex`, and `onKeyDown`
@@ -31,6 +34,7 @@ This project is a reminder — and a commitment — to include them.
 ---
 
 ## 🎙 ARIA Usage
+
 - `aria-label` for icon-only buttons
 - `aria-current="page"` for active nav links
 - Hidden text for screen readers where needed (`.sr-only` class)
@@ -38,6 +42,7 @@ This project is a reminder — and a commitment — to include them.
 ---
 
 ## 🧪 Testing & Validation
+
 - Manual keyboard testing
 - Screen reader checks (VoiceOver/NVDA)
 - Color contrast reviewed against WCAG AA
@@ -45,6 +50,7 @@ This project is a reminder — and a commitment — to include them.
 ---
 
 ## 🧠 Notes
+
 - Accessibility is a continuous process — not a one-time task
 - Focused on usability as well as compliance
 - Built with progressive enhancement in mind
@@ -52,6 +58,7 @@ This project is a reminder — and a commitment — to include them.
 ---
 
 ## 💬 Feedback & Accessibility Support
+
 Accessibility is an ongoing commitment. If you encounter any barriers while using this site — whether visual, structural, or interactive — I genuinely want to hear from you.
 
 Please feel free to open an issue describing the problem.

@@ -2,11 +2,12 @@ import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { hasLocale } from 'next-intl';
 import { AnimatePresence } from 'framer-motion';
 import AnimatedPage from '@/components/AnimatedPage';
+import type { Metadata } from 'next';
 
 import '@/styles/globals.scss';
 
@@ -21,20 +22,42 @@ type Props = {
 	params: { locale: string };
 };
 
-export const metadata = {
-	icons: {
-		icon: [
-			{ url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
-			{ url: '/favicon.svg', type: 'image/svg+xml' }
-		],
-		shortcut: '/favicon.ico',
-		apple: '/apple-touch-icon.png',
-		other: [{ rel: 'manifest', url: '/site.webmanifest' }]
-	},
-	appleWebApp: {
-		title: 'Ravit'
-	}
-};
+/**
+ * Global metadata + fallbacks:
+ * - title.default = siteName (from DefaultMeta)
+ * - title.template = "%s | siteName"  (page with title display as "Title | siteName")
+ * - description = default site description (from DefaultMeta)
+ */
+export async function generateMetadata({
+	params
+}: {
+	params: { locale: string };
+}): Promise<Metadata> {
+	const locale = (await params).locale;
+	const td = await getTranslations({ locale, namespace: 'defaultMeta' });
+	const siteName = td('siteName');
+	const defaultDescription = td('description');
+
+	return {
+		title: {
+			default: siteName,
+			template: `%s | ${siteName}`
+		},
+		description: defaultDescription,
+		icons: {
+			icon: [
+				{ url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+				{ url: '/favicon.svg', type: 'image/svg+xml' }
+			],
+			shortcut: '/favicon.ico',
+			apple: '/apple-touch-icon.png',
+			other: [{ rel: 'manifest', url: '/site.webmanifest' }]
+		},
+		appleWebApp: {
+			title: 'Ravit'
+		}
+	};
+}
 
 export default async function LocaleLayout({ children, params }: Props) {
 	const locale = (await params).locale;

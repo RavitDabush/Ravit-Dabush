@@ -26,10 +26,7 @@ export default function LinkText({
 
 	if (isDisabled) {
 		return (
-			<span
-				className={clsx('link-disabled', className)}
-				aria-disabled="true"
-			>
+			<span className={clsx('link-disabled', className)} aria-disabled="true">
 				{children}
 			</span>
 		);
@@ -39,11 +36,7 @@ export default function LinkText({
 		return (
 			<a
 				href={href}
-				className={clsx(
-					'link',
-					noUnderline && 'link-no-underline',
-					className
-				)}
+				className={clsx('link', noUnderline && 'link-no-underline', className)}
 				target={target || '_blank'}
 				rel={rel || 'noopener noreferrer'}
 			>
@@ -55,11 +48,7 @@ export default function LinkText({
 	return (
 		<Link
 			href={href}
-			className={clsx(
-				'link',
-				noUnderline && 'link-no-underline',
-				className
-			)}
+			className={clsx('link', noUnderline && 'link-no-underline', className)}
 		>
 			{children}
 		</Link>

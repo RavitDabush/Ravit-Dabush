@@ -37,7 +37,12 @@ export default function LinkButton({
 	if (isDisabled) {
 		return (
 			<span
-				className={clsx('button', 'link-button-disabled', getButtonClassNames(buttonType), className)}
+				className={clsx(
+					'button',
+					'link-button-disabled',
+					getButtonClassNames(buttonType),
+					className
+				)}
 				aria-disabled="true"
 			>
 				{children}
@@ -60,11 +65,7 @@ export default function LinkButton({
 	}
 
 	return (
-		<Link
-			href={href}
-			className={commonClassNames}
-			aria-label={ariaLabel}
-		>
+		<Link href={href} className={commonClassNames} aria-label={ariaLabel}>
 			{children}
 		</Link>
 	);
