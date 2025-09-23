@@ -32,7 +32,12 @@ $color-btn-primary-light: $color-primary-light;
 $color-btn-primary-light-hover: $color-primary-light-hover;
 $color-btn-outline: $color-primary;
 $color-btn-outline-hover: $color-primary-hover;
-$color-btn-outline-background-hover: rgba(0, 0, 0, 0.03);
+$color-btn-outline-background-hover: rgba(
+	0,
+	0,
+	0,
+	0.03
+);
 $color-btn-disabled: #d0c3c0;
 $color-btn-success: #9fb3a3;
 $color-btn-success-hover: #8fa297;
@@ -90,10 +95,23 @@ $color-readonly-bg: #f3efec;
 $color-card-bg: #ffffff;
 $color-section-bg: #f2ebe8;
 
+// Tables
+$color-header-bg: $color-primary;
+$color-hover-bg: #f0ebe7;
+$color-selected-bg: rgba(230, 178, 179, 0.4);
+$color-focus-outline: #c3a0c7;
+$color-row-even: #f5f0ec;
+$color-border-row: #e4dad6;
+
 // Other
 $color-focus: #a88db7; /* soft purple, for input focus */
 $color-skeleton: #ededed; /* neutral gray placeholder */
-$color-overlay: rgba(0, 0, 0, 0.4); /* modal / backdrop layer */
+$color-overlay: rgba(
+	0,
+	0,
+	0,
+	0.4
+); /* modal / backdrop layer */
 
 // Utility Colors
 $color-white: #ffffff;
