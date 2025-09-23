@@ -170,6 +170,15 @@ mark {
 	color: var(--color-white);
 }
 
+.typography-caption {
+	font-size: 0.875rem;
+	color: $color-text-muted;
+	text-align: start;
+	margin-top: 0.25rem;
+	margin-bottom: 1rem;
+	line-height: 1.4;
+}
+
 // -----------------------------------------
 // Code
 // -----------------------------------------
@@ -404,4 +413,19 @@ table {
 		background-color: var(--color-header-bg);
 		color: var(--color-white);
 	}
+}
+
+// -----------------------------------------
+// Screen Reader
+// -----------------------------------------
+.visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
 }
