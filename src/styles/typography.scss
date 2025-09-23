@@ -210,7 +210,8 @@ code {
 		font-size: 0.75rem;
 		font-weight: 600;
 		color: var(--color-code-header-text);
-		border-bottom: 1px solid var(--color-code-border);
+		border-bottom: 1px solid
+			var(--color-code-border);
 	}
 }
 
@@ -314,17 +315,16 @@ ul.list-no-bullet li {
 }
 
 dl {
-  margin-block: var(--spacing-md);
-  dt {
-    font-weight: bold;
-    margin-top: var(--spacing-sm);
-  }
-  dd {
-    margin-inline-start: 1rem;
-    margin-bottom: var(--spacing-xs);
-  }
+	margin-block: var(--spacing-md);
+	dt {
+		font-weight: bold;
+		margin-top: var(--spacing-sm);
+	}
+	dd {
+		margin-inline-start: 1rem;
+		margin-bottom: var(--spacing-xs);
+	}
 }
-
 
 // -----------------------------------------
 // Divider
@@ -334,4 +334,69 @@ hr.divider {
 	height: 1px;
 	background-color: var(--color-border);
 	margin: 2rem 0;
+}
+
+// -----------------------------------------
+// Table
+// -----------------------------------------
+.table-wrapper {
+	overflow-x: auto;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+
+	caption {
+		margin-bottom: 1rem;
+	}
+
+	thead {
+		border-bottom: 1px solid var(--color-border-row);
+	}
+
+	tbody tr:not(:last-of-type) {
+		border-bottom: 1px solid var(--color-border-row);
+	}
+
+	tr {
+		transition: background-color 0.2s ease;
+
+		&:nth-child(even) {
+			background-color: var(--color-row-even);
+		}
+
+		&:focus-within {
+			outline: 2px solid var(--color-outline);
+			outline-offset: -1px;
+		}
+
+		&.selected {
+			background-color: var(--color-selected-bg);
+		}
+
+		&:hover {
+			background-color: var(--color-hover-bg);
+		}
+	}
+
+	td,
+	th {
+		padding: 0.75rem;
+		text-align: start;
+		vertical-align: middle;
+	}
+
+	th {
+		font-weight: 400;
+		background-color: var(--color-header-bg);
+		color: var(--color-white);
+	}
+
+	thead th {
+		position: sticky;
+		top: 0;
+		background-color: var(--color-header-bg);
+		color: var(--color-white);
+	}
 }

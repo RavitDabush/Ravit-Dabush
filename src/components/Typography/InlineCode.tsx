@@ -36,8 +36,7 @@ export default function InlineCode({
 	const [highlighted, setHighlighted] = useState<string>('');
 
 	useEffect(() => {
-		const codeString =
-			typeof children === 'string' ? children : String(children);
+		const codeString = typeof children === 'string' ? children : String(children);
 		setHighlighted(highlightCode(codeString, language));
 	}, [children, language]);
 

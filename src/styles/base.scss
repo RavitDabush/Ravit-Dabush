@@ -95,6 +95,14 @@
 	--color-card-bg: #{colors.$color-card-bg};
 	--color-section-bg: #{colors.$color-section-bg};
 
+	// Tables
+	--color-header-bg: #{colors.$color-header-bg};
+	--color-hover-bg: #{colors.$color-hover-bg};
+	--color-selected-bg: #{colors.$color-selected-bg};
+	--color-focus-outline: #{colors.$color-focus-outline};
+	--color-row-even: #{colors.$color-row-even};
+	--color-border-row: #{colors.$color-border-row};
+
 	// Other
 	--color-focus: #{colors.$color-focus}; /* soft purple, for input focus */
 	--color-skeleton: #{colors.$color-skeleton}; /* neutral gray placeholder */
