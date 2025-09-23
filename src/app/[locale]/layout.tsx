@@ -14,12 +14,12 @@ import '@/styles/globals.scss';
 const inter = Inter({ subsets: ['latin'] });
 
 export function generateStaticParams() {
-  return routing.locales.map(locale => ({ locale }));
+	return routing.locales.map(locale => ({ locale }));
 }
 
 type Props = {
-  children: ReactNode;
-  params: { locale: string };
+	children: ReactNode;
+	params: { locale: string };
 };
 
 /**
@@ -28,55 +28,59 @@ type Props = {
  * - title.template = "%s | siteName"  (page with title display as "Title | siteName")
  * - description = default site description (from DefaultMeta)
  */
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  const locale = (await params).locale;
-  const td = await getTranslations({ locale, namespace: 'defaultMeta' });
-  const siteName = td('siteName');
-  const defaultDescription = td('description');
+export async function generateMetadata({
+	params
+}: {
+	params: { locale: string };
+}): Promise<Metadata> {
+	const locale = (await params).locale;
+	const td = await getTranslations({ locale, namespace: 'defaultMeta' });
+	const siteName = td('siteName');
+	const defaultDescription = td('description');
 
-  return {
-    title: {
-      default: siteName,
-      template: `%s | ${siteName}`
-    },
-    description: defaultDescription,
-    icons: {
-      icon: [
-        { url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
-        { url: '/favicon.svg', type: 'image/svg+xml' }
-      ],
-      shortcut: '/favicon.ico',
-      apple: '/apple-touch-icon.png',
-      other: [{ rel: 'manifest', url: '/site.webmanifest' }]
-    },
-    appleWebApp: {
-      title: 'Ravit'
-    }
-  };
+	return {
+		title: {
+			default: siteName,
+			template: `%s | ${siteName}`
+		},
+		description: defaultDescription,
+		icons: {
+			icon: [
+				{ url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+				{ url: '/favicon.svg', type: 'image/svg+xml' }
+			],
+			shortcut: '/favicon.ico',
+			apple: '/apple-touch-icon.png',
+			other: [{ rel: 'manifest', url: '/site.webmanifest' }]
+		},
+		appleWebApp: {
+			title: 'Ravit'
+		}
+	};
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const locale = (await params).locale;
+	const locale = (await params).locale;
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+	if (!hasLocale(routing.locales, locale)) {
+		notFound();
+	}
 
-  const messages = await getMessages({ locale });
+	const messages = await getMessages({ locale });
 
-  return (
-    <html
-      lang={locale}
-      dir={locale === 'he' ? 'rtl' : 'ltr'}
-      className={inter.className}
-    >
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <AnimatePresence mode="wait">
-            <AnimatedPage>{children}</AnimatedPage>
-          </AnimatePresence>
-        </NextIntlClientProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html
+			lang={locale}
+			dir={locale === 'he' ? 'rtl' : 'ltr'}
+			className={inter.className}
+		>
+			<body>
+				<NextIntlClientProvider locale={locale} messages={messages}>
+					<AnimatePresence mode="wait">
+						<AnimatedPage>{children}</AnimatedPage>
+					</AnimatePresence>
+				</NextIntlClientProvider>
+			</body>
+		</html>
+	);
 }

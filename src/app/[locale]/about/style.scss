@@ -1,23 +1,23 @@
 .intro-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2rem;
+	flex-wrap: wrap;
 }
 
 .text-content {
-  flex: 1 1 55%;
+	flex: 1 1 55%;
 }
 
 .image-wrapper {
-  flex: 1 1 35%;
-  display: flex;
-  justify-content: center;
+	flex: 1 1 35%;
+	display: flex;
+	justify-content: center;
 }
 
 .profile-image {
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	object-fit: cover;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

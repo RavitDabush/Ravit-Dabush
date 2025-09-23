@@ -1,30 +1,30 @@
 {
-  "meta": {
-    "title": "About Me",
-    "description": "Front-end developer who loves combining emotion, precision and code."
-  },
-  "title": "Hi, I’m Ravit Dabush",
-  "subtitle": "A front-end developer who loves combining <hl>emotion, precision and code</hl>.",
-  "sections": {
-    "howItStarted": {
-      "heading": "How it all started",
-      "text": "I started building websites at the age of 12, long before I knew it would become my career. Over time, I discovered that I enjoy not only writing code but also shaping the way people experience a product. What began as a childhood hobby of curiosity and experimenting with basic tools eventually turned into a lifelong path, where each project became an opportunity to learn, grow, and refine my ability to blend creativity with technical thinking. From the very beginning, I found myself fascinated by the small details — how typography affects readability, how colors create atmosphere, and how page structure can guide users intuitively. This curiosity has stayed with me to this day and continues to drive me in every new project."
-    },
-    "journey": {
-      "heading": "My journey so far",
-      "text": "Over the years, I’ve worked in a wide range of environments — from academic institutions with thousands of employees and students, to large-scale global e-commerce platforms, to small teams where everyone knows each other. Each stage taught me something different: in academia, I learned how systems must be clear and accessible to users with varying levels of knowledge; in e-commerce, I gained insight into data-driven business thinking and the direct impact design and user experience have on real results; and in smaller teams, I discovered the value of flexibility, personal responsibility, and being able to contribute across almost every part of the product. Taken together, these experiences gave me a broad perspective — how to balance business needs, user experience, and code quality to create solutions that are reliable, elegant, and enjoyable to use."
-    },
-    "drivesMe": {
-      "heading": "What drives me",
-      "text": "I’m at my best when I can dive deep into a project, explore every layer, and pay close attention to the small details that bring everything together. For me, the real strength of a product lies in the balance between thoughtful design and high-quality code. One cannot truly shine without the other: a beautiful design built on messy code won’t last, and clean code without design thinking will feel dry and lifeless. In my work, I strive to create harmony between these two worlds — combining logical structure with engaging visual experiences — while ensuring that both future developers and end users can feel the care put into every step. This balance is what drives me, and it’s the reason I continue to fall in love with my craft, project after project."
-    },
-    "inspiration": {
-      "heading": "Where I find inspiration",
-      "text": "I find inspiration mainly in everyday digital experiences — the websites, apps, and interfaces I interact with. Sometimes it’s the smooth flow of a product that reminds me how powerful intuitive design can be; other times it’s a small friction point that sparks an idea for a better solution. Beyond the screen, I also draw inspiration from the way people behave in the real world — how they search for information, respond to language, and navigate both physical and digital spaces. All of these moments reinforce my belief that a great user experience is built on attention to detail and a genuine understanding of user needs."
-    },
-    "goal": {
-      "heading": "My goal",
-      "text": "My goal is simple: to create digital experiences that feel thoughtful, human, and enjoyable to use."
-    }
-  }
+	"meta": {
+		"title": "About Me",
+		"description": "Front-end developer who loves combining emotion, precision and code."
+	},
+	"title": "Hi, I’m Ravit Dabush",
+	"subtitle": "A front-end developer who loves combining <hl>emotion, precision and code</hl>.",
+	"sections": {
+		"howItStarted": {
+			"heading": "How it all started",
+			"text": "I started building websites at the age of 12, long before I knew it would become my career. Over time, I discovered that I enjoy not only writing code but also shaping the way people experience a product. What began as a childhood hobby of curiosity and experimenting with basic tools eventually turned into a lifelong path, where each project became an opportunity to learn, grow, and refine my ability to blend creativity with technical thinking. From the very beginning, I found myself fascinated by the small details — how typography affects readability, how colors create atmosphere, and how page structure can guide users intuitively. This curiosity has stayed with me to this day and continues to drive me in every new project."
+		},
+		"journey": {
+			"heading": "My journey so far",
+			"text": "Over the years, I’ve worked in a wide range of environments — from academic institutions with thousands of employees and students, to large-scale global e-commerce platforms, to small teams where everyone knows each other. Each stage taught me something different: in academia, I learned how systems must be clear and accessible to users with varying levels of knowledge; in e-commerce, I gained insight into data-driven business thinking and the direct impact design and user experience have on real results; and in smaller teams, I discovered the value of flexibility, personal responsibility, and being able to contribute across almost every part of the product. Taken together, these experiences gave me a broad perspective — how to balance business needs, user experience, and code quality to create solutions that are reliable, elegant, and enjoyable to use."
+		},
+		"drivesMe": {
+			"heading": "What drives me",
+			"text": "I’m at my best when I can dive deep into a project, explore every layer, and pay close attention to the small details that bring everything together. For me, the real strength of a product lies in the balance between thoughtful design and high-quality code. One cannot truly shine without the other: a beautiful design built on messy code won’t last, and clean code without design thinking will feel dry and lifeless. In my work, I strive to create harmony between these two worlds — combining logical structure with engaging visual experiences — while ensuring that both future developers and end users can feel the care put into every step. This balance is what drives me, and it’s the reason I continue to fall in love with my craft, project after project."
+		},
+		"inspiration": {
+			"heading": "Where I find inspiration",
+			"text": "I find inspiration mainly in everyday digital experiences — the websites, apps, and interfaces I interact with. Sometimes it’s the smooth flow of a product that reminds me how powerful intuitive design can be; other times it’s a small friction point that sparks an idea for a better solution. Beyond the screen, I also draw inspiration from the way people behave in the real world — how they search for information, respond to language, and navigate both physical and digital spaces. All of these moments reinforce my belief that a great user experience is built on attention to detail and a genuine understanding of user needs."
+		},
+		"goal": {
+			"heading": "My goal",
+			"text": "My goal is simple: to create digital experiences that feel thoughtful, human, and enjoyable to use."
+		}
+	}
 }

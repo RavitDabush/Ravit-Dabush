@@ -5,6 +5,7 @@ This document outlines the structure, styling philosophy, and SCSS setup for the
 ---
 
 ## 🌈 Design Goals
+
 - Consistent visual language
 - Clear typographic hierarchy
 - Spacing & color tokens
@@ -30,6 +31,7 @@ styles/
 ---
 
 ## ✍️ Typography
+
 - Defined in `tokens/_typography.scss`
 - Supports headings, paragraphs, inline code
 - Semantic elements styled via base selectors
@@ -37,6 +39,7 @@ styles/
 ---
 
 ## 🟣 Components & Utility
+
 - All component styles are derived from the global SCSS design system
 - Tokens and variables are consumed using shared `@use` or `@import` logic
 - Layout and spacing utilities follow a consistent structure across the site
@@ -44,6 +47,7 @@ styles/
 ---
 
 ## 🧪 StyleGuide
+
 - Dedicated route/page for live demo of styles
 - Includes: color palette, spacing grid, typography, buttons, icons
 - Serves as a living reference for future scaling
@@ -51,5 +55,6 @@ styles/
 ---
 
 ## 🧠 Notes
+
 - SCSS variables declared under `:root` for runtime theming flexibility
 - Designed to be extendable (e.g. dark mode, theming in future)

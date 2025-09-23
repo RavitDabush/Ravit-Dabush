@@ -15,10 +15,7 @@ export default function FancyTitle({
 	className = ''
 }: FancyTitleProps) {
 	return (
-		<BaseTypography
-			as={Component}
-			className={clsx('fancy-title', className)}
-		>
+		<BaseTypography as={Component} className={clsx('fancy-title', className)}>
 			{children}
 		</BaseTypography>
 	);

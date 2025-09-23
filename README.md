@@ -22,11 +22,12 @@ It captures emotion, precision, and intention.
 
 ## 📁 Overview
 
-A bilingual, handcrafted portfolio site showcasing my journey as a frontend developer. 
+A bilingual, handcrafted portfolio site showcasing my journey as a frontend developer.
 Built with precision using Next.js, TypeScript, and SCSS, it reflects my design sensibility, technical depth, and attention to user experience.
 
 This site is more than just a portfolio – it's a fully documented, component-based system reflecting how I build, document, and think as a developer.
 It includes:
+
 - A custom design system
 - A living style guide
 - Dynamic routing and i18n with `next-intl`
@@ -37,6 +38,7 @@ It includes:
 ---
 
 ## 🧱 Project Structure
+
 ```
 Ravit-Dabush/
 ├─ 📁 docs/                 → Project documentation
@@ -56,12 +58,14 @@ Ravit-Dabush/
 ├─ 📄 README.he.md          → Project overview in Hebrew
 ├─ 📄 LICENSE               → Custom license file restricting reuse
 ```
+
 ---
 
 ## 🔄 Development Workflow
 
 This project is managed with Jira and GitHub integration.
 Each task has a clear identifier (e.g. `RD-13`) and is tracked across:
+
 - Git branches: `feature/RD-13-component-name`
 - Commits: `feat: create button component [RD-13]`
 - Pull Requests: titled and linked to Jira
@@ -71,6 +75,7 @@ Every major feature lives under a defined Epic.
 ---
 
 ## 🛠 Tech Stack
+
 - Framework: Next.js 15 (App Router)
 - Language: TypeScript
 - Styling: SCSS (centralized design system with tokens, mixins, and global rules)
@@ -90,7 +95,7 @@ Every major feature lives under a defined Epic.
 
 ## ⚖️ License
 
-This project is **not open source**. 
+This project is **not open source**.
 You may explore and learn from it, but **reusing or repurposing the code is not permitted**.
 See the [LICENSE](./LICENSE) file for full terms.
 

@@ -16,9 +16,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
 				.default,
 			homePage: (await import(`../../messages/${locale}/homePage.json`))
 				.default,
-				
+
 			aboutPage: (await import(`../../messages/${locale}/aboutPage.json`))
-				.default,
+				.default
 		}
 	};
 });
