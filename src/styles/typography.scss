@@ -172,7 +172,7 @@ mark {
 
 .typography-caption {
 	font-size: 0.875rem;
-	color: $color-text-muted;
+	color: var(--color-text-muted);
 	text-align: start;
 	margin-top: 0.25rem;
 	margin-bottom: 1rem;

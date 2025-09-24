@@ -1,0 +1,43 @@
+.media {
+	&.media-sized {
+		max-width: max-content;
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		z-index: 0;
+	}
+}
+
+/* Object-fit variants */
+.media-img--fit-cover {
+	object-fit: cover;
+}
+.media-img--fit-contain {
+	object-fit: contain;
+}
+.media-img--fit-fill {
+	object-fit: fill;
+}
+.media-img--fit-none {
+	object-fit: none;
+}
+.media-img--fit-scale-down {
+	object-fit: scale-down;
+}
+
+/* Object-position */
+.media-img--pos-center {
+	object-position: center;
+}
+.media-img--pos-var {
+	object-position: var(--rd-pos, center);
+}
+
+/* Hide the <img> visually when errored to avoid a broken icon */
+.media-img--hidden {
+	opacity: 0 !important;
+	visibility: hidden !important;
+}

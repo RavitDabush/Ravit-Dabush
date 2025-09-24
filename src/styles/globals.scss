@@ -1,8 +1,9 @@
 @use './base';
 @use './reset';
 @use './mixins' as *;
-@use './typography.scss';
-@use './button.scss';
+@use './typography';
+@use './media/media';
+@use './button';
 
 html {
 	scroll-behavior: smooth;
