@@ -1,7 +1,6 @@
 @use './tokens/colors';
 @use './tokens/typography';
 @use './tokens/radius';
-@use './media/media-ratio';
 
 :root {
 	// Colors
@@ -118,5 +117,9 @@
 	--font-fancy: #{typography.$font-fancy};
 	--font-code: #{typography.$font-code};
 
-	font-size: clamp(typography.$font-size-body-big, typography.$font-size-body-medium, typography.$font-size-body-small);
+	font-size: clamp(
+		typography.$font-size-body-big,
+		typography.$font-size-body-medium,
+		typography.$font-size-body-small
+	);
 }

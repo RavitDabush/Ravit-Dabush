@@ -3,6 +3,8 @@
 import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import React from 'react';
 import { MediaSkeleton } from './MediaSkeleton';
+import '@/styles/media/media-ratio.scss';
+import '@/styles/media/media-image.scss';
 
 type ImageProps = NextImageProps & {
 	/** alt is required; use "" for decorative */
