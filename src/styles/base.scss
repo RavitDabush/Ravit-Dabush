@@ -2,6 +2,7 @@
 @use './tokens/typography';
 @use './tokens/radius';
 @use './tokens/spacing';
+@use './tokens/z-index';
 
 :root {
 	// Colors
@@ -136,4 +137,13 @@
 
 	// Spacing
 	@include spacing.generate-vars;
+
+	// Z-index
+	--z-base:     #{z-index.$z-base};
+	--z-raised:   #{z-index.$z-raised};
+	--z-dropdown: #{z-index.$z-dropdown};
+	--z-sticky:   #{z-index.$z-sticky};
+	--z-overlay:  #{z-index.$z-overlay};
+	--z-modal:    #{z-index.$z-modal};
+	--z-toast:    #{z-index.$z-toast};
 }
