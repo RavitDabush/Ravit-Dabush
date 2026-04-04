@@ -1,22 +1,18 @@
 'use client';
 
 import BaseTypography from './BaseTypography';
-import clsx from 'clsx';
 
-type MutedTextProps = {
+type ListItemProps = {
 	children: React.ReactNode;
 	className?: string;
 };
 
-export default function MutedText({
+export default function ListItem({
 	children,
 	className = ''
-}: MutedTextProps) {
+}: ListItemProps) {
 	return (
-		<BaseTypography
-			as="span"
-			className={clsx('text-muted', className)}
-		>
+		<BaseTypography as="li" className={className}>
 			{children}
 		</BaseTypography>
 	);

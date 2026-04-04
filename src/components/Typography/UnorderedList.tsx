@@ -3,19 +3,19 @@
 import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
-type MutedTextProps = {
+type UnorderedListProps = {
 	children: React.ReactNode;
 	className?: string;
 };
 
-export default function MutedText({
+export default function UnorderedList({
 	children,
 	className = ''
-}: MutedTextProps) {
+}: UnorderedListProps) {
 	return (
 		<BaseTypography
-			as="span"
-			className={clsx('text-muted', className)}
+			as="ul"
+			className={clsx('list', className)}
 		>
 			{children}
 		</BaseTypography>

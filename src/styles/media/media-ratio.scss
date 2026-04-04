@@ -1,0 +1,41 @@
+@mixin media-box {
+	position: relative;
+	width: 100%;
+}
+
+@mixin aspect($w, $h) {
+	aspect-ratio: calc(#{$w} / #{$h});
+}
+
+.media {
+	@include media-box;
+}
+
+/* presets */
+.media--ar-1-1 {
+	@include aspect(1, 1);
+}
+.media--ar-3-4 {
+	@include aspect(3, 4);
+}
+.media--ar-4-3 {
+	@include aspect(4, 3);
+}
+.media--ar-16-9 {
+	@include aspect(16, 9);
+}
+.media--ar-21-9 {
+	@include aspect(21, 9);
+}
+
+/* arbitrary ratio via CSS variable */
+.media--ar-var {
+	@include media-box;
+	aspect-ratio: var(--rd-ar);
+}
+
+/* intrinsic path (no ratio) — we still want an overlay context for skeleton */
+.media--intrinsic {
+	position: relative;
+	display: inline-block;
+}

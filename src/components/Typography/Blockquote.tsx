@@ -3,19 +3,19 @@
 import BaseTypography from './BaseTypography';
 import clsx from 'clsx';
 
-type MutedTextProps = {
+type BlockquoteProps = {
 	children: React.ReactNode;
 	className?: string;
 };
 
-export default function MutedText({
+export default function Blockquote({
 	children,
 	className = ''
-}: MutedTextProps) {
+}: BlockquoteProps) {
 	return (
 		<BaseTypography
-			as="span"
-			className={clsx('text-muted', className)}
+			as="blockquote"
+			className={clsx('blockquote', className)}
 		>
 			{children}
 		</BaseTypography>

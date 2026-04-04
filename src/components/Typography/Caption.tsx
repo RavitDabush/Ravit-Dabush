@@ -1,21 +1,20 @@
 'use client';
 
 import BaseTypography from './BaseTypography';
-import clsx from 'clsx';
 
-type MutedTextProps = {
+type CaptionProps = {
 	children: React.ReactNode;
 	className?: string;
 };
 
-export default function MutedText({
+export default function Caption({
 	children,
-	className = ''
-}: MutedTextProps) {
+	className
+}: CaptionProps) {
 	return (
 		<BaseTypography
-			as="span"
-			className={clsx('text-muted', className)}
+			as="figcaption"
+			className={className}
 		>
 			{children}
 		</BaseTypography>
