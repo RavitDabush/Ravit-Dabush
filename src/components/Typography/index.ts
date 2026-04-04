@@ -24,6 +24,8 @@ export { default as ListItem } from './ListItem';
 export { default as Blockquote } from './Blockquote';
 export { default as InlineCode } from './InlineCode';
 export { default as BlockCode } from './BlockCode';
+export { default as Caption } from './Caption';
+export { default as VisuallyHidden } from './VisuallyHidden';
 export { default as Divider } from './Divider';
 export { default as Table } from './Table';
 export { default as TableHeader } from './TableHeader';

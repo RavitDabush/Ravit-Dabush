@@ -1,6 +1,7 @@
 @use './tokens/colors';
 @use './tokens/typography';
 @use './tokens/radius';
+@use './tokens/spacing';
 
 :root {
 	// Colors
@@ -38,6 +39,8 @@
 	--color-btn-outline: #{colors.$color-btn-outline};
 	--color-btn-outline-hover: #{colors.$color-btn-outline-hover};
 	--color-btn-outline-background-hover: #{colors.$color-btn-outline-background-hover};
+	--color-btn-light: #{colors.$color-btn-light};
+	--color-btn-light-hover: #{colors.$color-btn-light-hover};
 	--color-btn-disabled: #{colors.$color-btn-disabled};
 	--color-btn-success: #{colors.$color-btn-success};
 	--color-btn-success-hover: #{colors.$color-btn-success-hover};
@@ -100,6 +103,7 @@
 	--color-hover-bg: #{colors.$color-hover-bg};
 	--color-selected-bg: #{colors.$color-selected-bg};
 	--color-focus-outline: #{colors.$color-focus-outline};
+	--color-outline: #{colors.$color-focus-outline};
 	--color-row-even: #{colors.$color-row-even};
 	--color-border-row: #{colors.$color-border-row};
 
@@ -112,14 +116,24 @@
 	--color-white: #{colors.$color-white};
 
 	// Typography
+	--font-default: #{typography.$font-body};
 	--font-heading: #{typography.$font-heading};
 	--font-body: #{typography.$font-body};
 	--font-fancy: #{typography.$font-fancy};
 	--font-code: #{typography.$font-code};
 
 	font-size: clamp(
-		typography.$font-size-body-big,
+		typography.$font-size-body-small,
 		typography.$font-size-body-medium,
-		typography.$font-size-body-small
+		typography.$font-size-body-big
 	);
+
+	// Radius
+	--radius-sm: #{radius.$radius-sm};
+	--radius-md: #{radius.$radius-md};
+	--radius-lg: #{radius.$radius-lg};
+	--radius-xl: #{radius.$radius-xl};
+
+	// Spacing
+	@include spacing.generate-vars;
 }

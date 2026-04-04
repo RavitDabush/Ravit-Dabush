@@ -1,29 +1,33 @@
+@use './tokens/breakpoints';
+
 /// Media query helper
 /// Usage: @include respond('md') { ... }
 @mixin respond($breakpoint) {
 	@if $breakpoint == 'sm' {
-		@media (min-width: 460px) {
+		@media (min-width: breakpoints.$bp-sm) {
 			@content;
 		}
 	} @else if $breakpoint == 'md' {
-		@media (min-width: 768px) {
+		@media (min-width: breakpoints.$bp-md) {
 			@content;
 		}
 	} @else if $breakpoint == 'lg' {
-		@media (min-width: 1024px) {
+		@media (min-width: breakpoints.$bp-lg) {
 			@content;
 		}
 	} @else if $breakpoint == 'xl' {
-		@media (min-width: 1280px) {
+		@media (min-width: breakpoints.$bp-xl) {
 			@content;
 		}
 	} @else if $breakpoint == 'xxl' {
-		@media (min-width: 1440px) {
+		@media (min-width: breakpoints.$bp-xxl) {
 			@content;
 		}
 	} @else if $breakpoint == 'xxxl' {
-		@media (min-width: 1920px) {
+		@media (min-width: breakpoints.$bp-xxxl) {
 			@content;
 		}
+	} @else {
+		@error "Unknown breakpoint: `#{$breakpoint}`. Valid values: sm, md, lg, xl, xxl, xxxl.";
 	}
 }

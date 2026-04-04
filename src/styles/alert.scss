@@ -1,0 +1,37 @@
+.alert {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	padding: 0.875rem 1rem;
+	border-radius: var(--radius-md);
+	border-inline-start: 4px solid;
+
+	.alert-title {
+		font-weight: 600;
+		font-size: 0.9375rem;
+		margin: 0;
+	}
+
+	.alert-body {
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	&.info {
+		background-color: var(--color-alert-info-bg);
+		color: var(--color-alert-info-text);
+		border-color: var(--color-alert-info-text);
+	}
+
+	&.warning {
+		background-color: var(--color-alert-warning-bg);
+		color: var(--color-alert-warning-text);
+		border-color: var(--color-alert-warning-text);
+	}
+
+	&.error {
+		background-color: var(--color-alert-error-bg);
+		color: var(--color-alert-error-text);
+		border-color: var(--color-alert-error-text);
+	}
+}

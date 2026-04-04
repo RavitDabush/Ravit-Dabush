@@ -30,7 +30,7 @@ export default function Button({
 			tabIndex={isTrulyDisabled ? -1 : undefined}
 		>
 			{isLoading ? (
-				<span className="sr-only">Loading</span> // Screen readers only text
+				<span className="visually-hidden">Loading</span>
 			) : (
 				children
 			)}

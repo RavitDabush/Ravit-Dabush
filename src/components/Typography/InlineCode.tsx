@@ -1,17 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { highlightCode } from '@/utils/highlightCode';
-
-// Define supported language values
-type SupportedLanguage =
-	| 'javascript'
-	| 'typescript'
-	| 'html'
-	| 'xml'
-	| 'css'
-	| 'scss'
-	| 'json';
+import { highlightCode, SupportedLanguage } from '@/utils/highlightCode';
 
 type InlineCodeProps = {
 	children: React.ReactNode;
@@ -33,12 +22,10 @@ export default function InlineCode({
 	language = 'javascript',
 	className = ''
 }: InlineCodeProps) {
-	const [highlighted, setHighlighted] = useState<string>('');
-
-	useEffect(() => {
-		const codeString = typeof children === 'string' ? children : String(children);
-		setHighlighted(highlightCode(codeString, language));
-	}, [children, language]);
+	const highlighted = highlightCode(
+		typeof children === 'string' ? children : String(children),
+		language
+	);
 
 	return (
 		<code

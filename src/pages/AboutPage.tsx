@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslations } from 'next-intl';
 import PageLayout from '@/components/PageLayout';
 import {
@@ -7,7 +6,7 @@ import {
 	Paragraph,
 	Highlight
 } from '@/components/Typography';
-import Image from 'next/image';
+import { Image } from '@/components/Media';
 
 export default function AboutPage() {
 	const t = useTranslations('aboutPage');
@@ -32,7 +31,8 @@ export default function AboutPage() {
 						width={280}
 						height={280}
 						className="profile-image"
-						priority
+						fetchPriority="high"
+						skeleton
 					/>
 				</div>
 			</section>

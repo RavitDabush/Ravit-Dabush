@@ -1,19 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { highlightCode } from '@/utils/highlightCode';
+import { highlightCode, SupportedLanguage } from '@/utils/highlightCode';
 import Button from '@/components/Button/Button';
 
 type BlockCodeProps = {
 	children: string;
-	language?:
-		| 'javascript'
-		| 'typescript'
-		| 'html'
-		| 'xml'
-		| 'css'
-		| 'scss'
-		| 'json';
+	language?: SupportedLanguage;
 	className?: string;
 };
 

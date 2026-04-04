@@ -170,7 +170,23 @@ mark {
 	color: var(--color-white);
 }
 
-.typography-caption {
+.highlight {
+	background-color: var(--color-focus);
+	color: var(--color-white);
+	border-radius: 0.2em;
+	padding: 0.1em 0.3em;
+}
+
+.blockquote {
+	border-inline-start: 3px solid var(--color-primary);
+	padding-inline-start: 1.25rem;
+	padding-block: 0.5rem;
+	margin-block: 1.5rem;
+	color: var(--color-text-subheading);
+	font-style: italic;
+}
+
+.caption {
 	font-size: 0.875rem;
 	color: var(--color-text-muted);
 	text-align: start;

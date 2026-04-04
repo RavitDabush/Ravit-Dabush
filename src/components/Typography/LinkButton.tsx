@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import clsx from 'clsx';
 import { Variant, getButtonClassNames } from '@/components/Button/ButtonConfig';

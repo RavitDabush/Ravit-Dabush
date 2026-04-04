@@ -6,7 +6,6 @@ import { ReactNode } from 'react';
 
 export default function AnimatedPage({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
-	console.log('Animating:', pathname);
 
 	return (
 		<motion.div

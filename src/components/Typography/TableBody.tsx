@@ -1,5 +1,3 @@
-'use client';
-
 type TableBodyProps = {
 	children: React.ReactNode;
 	className?: string;

@@ -1,7 +1,4 @@
-'use client';
-
 import * as React from 'react';
-import clsx from 'clsx';
 
 type BaseTypographyOwnProps = {
 	className?: string;
@@ -32,7 +29,7 @@ export default function BaseTypography<T extends React.ElementType = 'span'>({
 
 	return (
 		<Component
-			className={clsx(className)}
+			className={className}
 			role={role}
 			tabIndex={tabIndex}
 			aria-label={ariaLabel}

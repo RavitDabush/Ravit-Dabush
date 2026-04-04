@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
-import { Inter } from 'next/font/google';
+import { Heebo } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 
 import '@/styles/globals.scss';
 
-const inter = Inter({ subsets: ['latin'] });
+const heebo = Heebo({ subsets: ['latin', 'hebrew'] });
 
 export function generateStaticParams() {
 	return routing.locales.map(locale => ({ locale }));
@@ -72,7 +72,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 		<html
 			lang={locale}
 			dir={locale === 'he' ? 'rtl' : 'ltr'}
-			className={inter.className}
+			className={heebo.className}
 		>
 			<body>
 				<NextIntlClientProvider locale={locale} messages={messages}>

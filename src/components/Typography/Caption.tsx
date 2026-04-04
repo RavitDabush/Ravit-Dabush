@@ -1,5 +1,4 @@
-'use client';
-
+import clsx from 'clsx';
 import BaseTypography from './BaseTypography';
 
 type CaptionProps = {
@@ -7,15 +6,9 @@ type CaptionProps = {
 	className?: string;
 };
 
-export default function Caption({
-	children,
-	className
-}: CaptionProps) {
+export default function Caption({ children, className }: CaptionProps) {
 	return (
-		<BaseTypography
-			as="figcaption"
-			className={className}
-		>
+		<BaseTypography as="figcaption" className={clsx('caption', className)}>
 			{children}
 		</BaseTypography>
 	);

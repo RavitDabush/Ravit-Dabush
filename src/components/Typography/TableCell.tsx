@@ -1,5 +1,3 @@
-'use client';
-
 type TableCellProps = {
 	children: React.ReactNode;
 	className?: string;

@@ -1,5 +1,3 @@
-'use client';
-
 import BaseTypography from './BaseTypography';
 type TimeTagProps = {
 	className?: string;

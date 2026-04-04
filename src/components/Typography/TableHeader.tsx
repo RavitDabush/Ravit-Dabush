@@ -1,5 +1,3 @@
-'use client';
-
 type TableHeaderProps = {
 	children: React.ReactNode;
 	className?: string;

@@ -1,0 +1,37 @@
+@use 'sass:math';
+
+$rootFontSize: 1rem;
+
+/// Strip the unit from a value
+/// @example strip-unit(16px) → 16
+@function strip-unit($value) {
+	@return math.div($value, $value * 0 + 1);
+}
+
+/// Generate a fluid clamp() that scales linearly between two viewport widths
+/// @param {Number} $minSize     - minimum font size (with unit, e.g. 1rem)
+/// @param {Number} $maxSize     - maximum font size (with unit, e.g. 1.5rem)
+/// @param {Number} $minViewport - viewport at which min size applies (e.g. 460px)
+/// @param {Number} $maxViewport - viewport at which max size applies (e.g. 1440px)
+/// @example fluid(1rem, 1.5rem, 460px, 1440px)
+@function fluid($minSize, $maxSize, $minViewport, $maxViewport) {
+	$sizeDiff: math.abs($maxSize - $minSize);
+	$viewportDiff: strip-unit($maxViewport) - strip-unit($minViewport);
+	$sizeDiffPx: $sizeDiff * $rootFontSize;
+	$factor: $sizeDiffPx / $viewportDiff;
+	$factorClean: strip-unit($factor);
+
+	@if $maxSize > $minSize {
+		@return clamp(#{$minSize}, calc(#{$minSize} + (100vw - #{$minViewport}) * #{$factorClean}), #{$maxSize});
+	} @else {
+		@return clamp(#{$maxSize}, calc(#{$minSize} - (100vw - #{$minViewport}) * #{$factorClean}), #{$minSize});
+	}
+}
+
+/// Convert px to rem
+/// @param {Number} $px - pixel value (unitless)
+/// @return {Number} rem value
+/// @example rem(16) → 1rem
+@function rem($px) {
+	@return math.div($px, 16) * 1rem;
+}
