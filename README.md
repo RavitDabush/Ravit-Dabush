@@ -18,8 +18,7 @@ I don’t just write code - I **live it**.
 This project is personal. Every component reflects my standards and values - from precise typography to carefully curated icons.  
 It captures emotion, precision, and intention.
 
-Alongside my structured development approach, I sometimes use **Vibe Coding** - not as a shortcut, but as a creative accelerator.  
-It helps me move faster through iterations, explore directions, and refine ideas - while maintaining full control, ownership, and engineering standards.
+Alongside my structured development approach, I sometimes use **Vibe Coding** - not as a shortcut, but as a creative accelerator. It helps me move faster through iterations, explore directions, and refine ideas - while maintaining full control, ownership, and engineering standards.
 
 ---
 
