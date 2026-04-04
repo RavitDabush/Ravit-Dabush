@@ -18,6 +18,11 @@ I don’t just write code — I **live it**.
 This project is personal. Every component reflects my standards and values — from precise typography to carefully curated icons.  
 It captures emotion, precision, and intention.
 
+Alongside my structured development approach, I sometimes use **Vibe Coding** —  
+not as a shortcut, but as a creative accelerator.  
+It helps me move faster through iterations, explore directions, and refine ideas —  
+while maintaining full control, ownership, and engineering standards.
+
 ---
 
 ## 📁 Overview
@@ -26,6 +31,7 @@ A bilingual, handcrafted portfolio site showcasing my journey as a frontend deve
 Built with precision using Next.js, TypeScript, and SCSS, it reflects my design sensibility, technical depth, and attention to user experience.
 
 This site is more than just a portfolio – it's a fully documented, component-based system reflecting how I build, document, and think as a developer.
+
 It includes:
 
 - A custom design system
@@ -33,7 +39,7 @@ It includes:
 - Dynamic routing and i18n with `next-intl`
 - Accessibility considerations
 - Structured project architecture
-- Developer-first workflows (Git + Jira integration)
+- Developer-first workflows (Git-based)
 
 ---
 
@@ -61,19 +67,6 @@ Ravit-Dabush/
 
 ---
 
-## 🔄 Development Workflow
-
-This project is managed with Jira and GitHub integration.
-Each task has a clear identifier (e.g. `RD-13`) and is tracked across:
-
-- Git branches: `feature/RD-13-component-name`
-- Commits: `feat: create button component [RD-13]`
-- Pull Requests: titled and linked to Jira
-
-Every major feature lives under a defined Epic.
-
----
-
 ## 🛠 Tech Stack
 
 - Framework: Next.js 15 (App Router)
@@ -81,7 +74,6 @@ Every major feature lives under a defined Epic.
 - Styling: SCSS (centralized design system with tokens, mixins, and global rules)
 - i18n: `next-intl`
 - Git + GitHub (conventional commits)
-- Jira (Epic-based task breakdown)
 - VSCode extensions: Prettier, ESLint, i18n Ally
 
 ---
@@ -116,6 +108,7 @@ See the [LICENSE](./LICENSE) file for full terms.
 ## 🤍 Final Note
 
 This isn’t just a codebase — it’s a reflection of me.  
-As I grow, this project grows with me.  
+As I grow, this project grows with me.
+
 Feel free to explore, learn, or just feel something.  
-Made with ❤️, Sass, and probably too many Jira tickets.
+Made with taste, precision, and zero interest in average.
