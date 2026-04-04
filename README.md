@@ -1,6 +1,6 @@
 ## Ravit Dabush – My Personal Website & Creative Dev Space 🌸
 
-Welcome to the repo that powers my personal site — a space that blends design, development, and identity into one evolving creation.
+Welcome to the repo that powers my personal site - a space that blends design, development, and identity into one evolving creation.
 
 This isn’t just a portfolio site.  
 It’s a live, expressive system that represents who I am:  
@@ -12,16 +12,14 @@ It's structured. It's scalable. And yes, it sparkles a little ✨
 
 ## 👩‍💻 About Me
 
-I'm Ravit Dabush — a passionate Front-End Developer with a love for clean code, deep user experience, and refined design principles.  
-I don’t just write code — I **live it**.
+I'm Ravit Dabush - a passionate Front-End Developer with a love for clean code, deep user experience, and refined design principles.  
+I don’t just write code - I **live it**.
 
-This project is personal. Every component reflects my standards and values — from precise typography to carefully curated icons.  
+This project is personal. Every component reflects my standards and values - from precise typography to carefully curated icons.  
 It captures emotion, precision, and intention.
 
-Alongside my structured development approach, I sometimes use **Vibe Coding** —  
-not as a shortcut, but as a creative accelerator.  
-It helps me move faster through iterations, explore directions, and refine ideas —  
-while maintaining full control, ownership, and engineering standards.
+Alongside my structured development approach, I sometimes use **Vibe Coding** - not as a shortcut, but as a creative accelerator.  
+It helps me move faster through iterations, explore directions, and refine ideas - while maintaining full control, ownership, and engineering standards.
 
 ---
 
@@ -95,11 +93,11 @@ See the [LICENSE](./LICENSE) file for full terms.
 
 ## 🗂️ Additional Documentation
 
-- 📘 dev.md — Developer environment, Git conventions, tooling
-- 🏛 architecture.md — Architectural overview, decisions, reasoning
-- 🎨 design-system.md — Tokens, SCSS structure, style guide
-- 🌍 i18n.md — How i18n is set up with `next-intl`
-- ⚙️ accessibility.md — A11y structure, ARIA usage, keyboard handling
+- 📘 dev.md - Developer environment, Git conventions, tooling
+- 🏛 architecture.md - Architectural overview, decisions, reasoning
+- 🎨 design-system.md - Tokens, SCSS structure, style guide
+- 🌍 i18n.md - How i18n is set up with `next-intl`
+- ⚙️ accessibility.md - A11y structure, ARIA usage, keyboard handling
 
 > These documents evolve along with the project. Nothing here is static – it's a live system.
 
@@ -107,7 +105,7 @@ See the [LICENSE](./LICENSE) file for full terms.
 
 ## 🤍 Final Note
 
-This isn’t just a codebase — it’s a reflection of me.  
+This isn’t just a codebase - it’s a reflection of me.  
 As I grow, this project grows with me.
 
 Feel free to explore, learn, or just feel something.  
