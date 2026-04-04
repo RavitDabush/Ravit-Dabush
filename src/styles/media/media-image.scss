@@ -1,9 +1,13 @@
+@use 'sass:list';
+@use './media-ratio.scss' as ratio;
+
 .media {
 	&.media-sized {
 		max-width: max-content;
 	}
 
-	img {
+	picture,
+	&.media-sized img {
 		display: block;
 		max-width: 100%;
 		height: auto;
@@ -40,4 +44,31 @@
 .media-img--hidden {
 	opacity: 0 !important;
 	visibility: hidden !important;
+}
+
+@mixin media-img-fill {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	object-fit: inherit;
+	object-position: inherit;
+}
+
+// Fill behavior for all defined ratios
+@each $name, $ratio in ratio.$media-aspect-ratios {
+	.media--ar-#{$name} picture {
+		@include media-img-fill;
+
+		.media-img {
+			transform: translate(-50%, -50%);
+			top: 50%;
+			left: 50%;
+			position: absolute;
+		}
+	}
+}
+
+// Also support variable ratio
+.media--ar-var picture {
+	@include media-img-fill;
 }

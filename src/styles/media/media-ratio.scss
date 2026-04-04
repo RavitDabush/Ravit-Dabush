@@ -1,41 +1,58 @@
-@mixin media-box {
+@use 'sass:list';
+
+// Define aspect ratios in one place
+$media-aspect-ratios: (
+	'1-1': (
+		1,
+		1
+	),
+	'3-4': (
+		3,
+		4
+	),
+	'4-3': (
+		4,
+		3
+	),
+	'16-9': (
+		16,
+		9
+	),
+	'21-9': (
+		21,
+		9
+	)
+);
+
+// Base wrapper
+.media {
 	position: relative;
 	width: 100%;
 }
 
-@mixin aspect($w, $h) {
-	aspect-ratio: calc(#{$w} / #{$h});
+// Generate wrapper classes
+@each $name, $ratio in $media-aspect-ratios {
+	$w: list.nth($ratio, 1);
+	$h: list.nth($ratio, 2);
+
+	.media--ar-#{$name} {
+		aspect-ratio: calc(#{$w} / #{$h});
+		overflow: hidden;
+
+		.media-img {
+			width: 100%;
+		}
+	}
 }
 
-.media {
-	@include media-box;
-}
-
-/* presets */
-.media--ar-1-1 {
-	@include aspect(1, 1);
-}
-.media--ar-3-4 {
-	@include aspect(3, 4);
-}
-.media--ar-4-3 {
-	@include aspect(4, 3);
-}
-.media--ar-16-9 {
-	@include aspect(16, 9);
-}
-.media--ar-21-9 {
-	@include aspect(21, 9);
-}
-
-/* arbitrary ratio via CSS variable */
+// Arbitrary ratio via CSS variable
 .media--ar-var {
-	@include media-box;
 	aspect-ratio: var(--rd-ar);
+	overflow: hidden;
 }
 
-/* intrinsic path (no ratio) — we still want an overlay context for skeleton */
-.media--intrinsic {
+// Intrinsic/sized fallback
+.media-sized {
+	display: block;
 	position: relative;
-	display: inline-block;
 }
