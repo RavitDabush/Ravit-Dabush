@@ -1,6 +1,6 @@
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import AboutPage from '@/pages/AboutPage';
+import AboutPage from '@/views/AboutPage';
 import './style.scss';
 import { createPageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';

@@ -12,6 +12,7 @@
 		"open:browser": "node -e \"import('open').then(open => open.default('http://localhost:3000'))\""
 	},
 	"dependencies": {
+		"@phosphor-icons/react": "^2.1.10",
 		"clsx": "^2.1.1",
 		"framer-motion": "^12.38.0",
 		"highlight.js": "^11.11.1",

@@ -1,6 +1,6 @@
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import JourneyPage from '@/pages/JourneyPage';
+import JourneyPage from '@/views/JourneyPage';
 import './style.scss';
 import { createPageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';

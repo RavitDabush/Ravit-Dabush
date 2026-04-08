@@ -1,6 +1,5 @@
-import { redirect } from 'next/navigation';
-import { routing } from '@/i18n/routing';
+import { notFound } from 'next/navigation';
 
-export default function RootRedirectPage() {
-	redirect(`/${routing.defaultLocale}`);
+export default function RootPage() {
+	notFound();
 }

@@ -80,30 +80,30 @@ export default function JourneyPage() {
 		<PageLayout>
 			<main className="journey-page">
 				<section className="journey-hero">
-					<FadeIn className="journey-hero__content" distance={32}>
-						<p className="journey-hero__eyebrow">{t('hero.eyebrow')}</p>
+					<FadeIn className="journey-hero-content" distance={32}>
+						<p className="journey-hero-eyebrow">{t('hero.eyebrow')}</p>
 
-						<FancyTitle className="journey-hero__title">{t('hero.title')}</FancyTitle>
+						<FancyTitle className="journey-hero-title">{t('hero.title')}</FancyTitle>
 
-						<Paragraph className="journey-hero__subtitle">{t('hero.subtitle')}</Paragraph>
+						<Paragraph className="journey-hero-subtitle">{t('hero.subtitle')}</Paragraph>
 
-						<Paragraph className="journey-hero__intro">{t('hero.intro')}</Paragraph>
+						<Paragraph className="journey-hero-intro">{t('hero.intro')}</Paragraph>
 					</FadeIn>
 
-					<FadeIn className="journey-hero__visual" aria-hidden="true" delay={0.15} distance={40}>
-						<div className="journey-hero__shape journey-hero__shape--primary" />
-						<div className="journey-hero__shape journey-hero__shape--secondary" />
-						<div className="journey-hero__badge">Frontend</div>
+					<FadeIn className="journey-hero-visual" aria-hidden="true" delay={0.15} distance={40}>
+						<div className="journey-hero-shape journey-hero-shape--primary" />
+						<div className="journey-hero-shape journey-hero-shape--secondary" />
+						<div className="journey-hero-badge">Frontend</div>
 					</FadeIn>
 				</section>
 
 				<section className="journey-section journey-section--origin">
-					<FadeIn className="journey-section__heading" distance={24}>
-						<span className="journey-section__index">01</span>
+					<FadeIn className="journey-section-heading" distance={24}>
+						<span className="journey-section-index">01</span>
 						<Heading3>{t('origin.heading')}</Heading3>
 					</FadeIn>
 
-					<FadeIn className="journey-section__content" delay={0.05} distance={24}>
+					<FadeIn className="journey-section-content" delay={0.05} distance={24}>
 						<Paragraph>{t('origin.text')}</Paragraph>
 
 						<div className="journey-pills" aria-label={t('origin.pillsAriaLabel')}>
@@ -121,58 +121,58 @@ export default function JourneyPage() {
 				</section>
 
 				<section className="journey-section journey-section--craft">
-					<FadeIn className="journey-section__heading" distance={24}>
-						<span className="journey-section__index">02</span>
+					<FadeIn className="journey-section-heading" distance={24}>
+						<span className="journey-section-index">02</span>
 						<Heading3>{t('craft.heading')}</Heading3>
 					</FadeIn>
 
-					<FadeIn className="journey-section__content" delay={0.05} distance={24}>
+					<FadeIn className="journey-section-content" delay={0.05} distance={24}>
 						<Paragraph>{t('craft.text')}</Paragraph>
 
 						<div className="journey-grid" aria-label={t('craft.cardsAriaLabel')}>
 							<FadeIn className="journey-card" as="article" delay={0}>
-								<span className="journey-card__label">01</span>
-								<Heading4 className="journey-card__title">{t('craft.cards.typography.title')}</Heading4>
+								<span className="journey-card-label">01</span>
+								<Heading4 className="journey-card-title">{t('craft.cards.typography.title')}</Heading4>
 
-								<ParagraphSmall className="journey-card__text">{t('craft.cards.typography.text')}</ParagraphSmall>
+								<ParagraphSmall className="journey-card-text">{t('craft.cards.typography.text')}</ParagraphSmall>
 							</FadeIn>
 
 							<FadeIn className="journey-card" as="article" delay={0.08}>
-								<span className="journey-card__label">02</span>
-								<Heading4 className="journey-card__title">{t('craft.cards.color.title')}</Heading4>
-								<ParagraphSmall className="journey-card__text">{t('craft.cards.color.text')}</ParagraphSmall>
+								<span className="journey-card-label">02</span>
+								<Heading4 className="journey-card-title">{t('craft.cards.color.title')}</Heading4>
+								<ParagraphSmall className="journey-card-text">{t('craft.cards.color.text')}</ParagraphSmall>
 							</FadeIn>
 
 							<FadeIn className="journey-card" as="article" delay={0.16}>
-								<span className="journey-card__label">03</span>
-								<Heading4 className="journey-card__title">{t('craft.cards.structure.title')}</Heading4>
-								<ParagraphSmall className="journey-card__text">{t('craft.cards.structure.text')}</ParagraphSmall>
+								<span className="journey-card-label">03</span>
+								<Heading4 className="journey-card-title">{t('craft.cards.structure.title')}</Heading4>
+								<ParagraphSmall className="journey-card-text">{t('craft.cards.structure.text')}</ParagraphSmall>
 							</FadeIn>
 						</div>
 					</FadeIn>
 				</section>
 
 				<section className="journey-section journey-section--timeline">
-					<FadeIn className="journey-section__heading" distance={24}>
-						<span className="journey-section__index">03</span>
+					<FadeIn className="journey-section-heading" distance={24}>
+						<span className="journey-section-index">03</span>
 						<Heading3>{t('timeline.heading')}</Heading3>
 					</FadeIn>
 
-					<FadeIn className="journey-section__content" delay={0.05} distance={24}>
+					<FadeIn className="journey-section-content" delay={0.05} distance={24}>
 						<Paragraph>{t('timeline.intro')}</Paragraph>
 
 						<div className="journey-timeline" aria-label={t('timeline.ariaLabel')}>
 							{timelineItems.map((item, index) => (
-								<FadeIn key={item.title} className="journey-timeline__item" as="article" delay={index * 0.06} distance={28}>
-									<div className="journey-timeline__marker" aria-hidden="true">
-										<span className="journey-timeline__dot" />
+								<FadeIn key={item.title} className="journey-timeline-item" as="article" delay={index * 0.06} distance={28}>
+									<div className="journey-timeline-marker" aria-hidden="true">
+										<span className="journey-timeline-dot" />
 									</div>
 
-									<div className="journey-timeline__card">
-										<span className="journey-timeline__number">{String(index + 1).padStart(2, '0')}</span>
-										<MutedText className="journey-timeline__period">{item.period}</MutedText>
-										<Heading4 className="journey-timeline__title">{item.title}</Heading4>
-										<ParagraphSmall className="journey-timeline__text">{item.text}</ParagraphSmall>
+									<div className="journey-timeline-card">
+										<span className="journey-timeline-number">{String(index + 1).padStart(2, '0')}</span>
+										<MutedText className="journey-timeline-period">{item.period}</MutedText>
+										<Heading4 className="journey-timeline-title">{item.title}</Heading4>
+										<ParagraphSmall className="journey-timeline-text">{item.text}</ParagraphSmall>
 									</div>
 								</FadeIn>
 							))}
@@ -181,20 +181,20 @@ export default function JourneyPage() {
 				</section>
 
 				<section className="journey-section journey-section--mindset">
-					<FadeIn className="journey-section__heading" distance={24}>
-						<span className="journey-section__index">04</span>
+					<FadeIn className="journey-section-heading" distance={24}>
+						<span className="journey-section-index">04</span>
 						<Heading3>{t('mindset.heading')}</Heading3>
 					</FadeIn>
 
-					<FadeIn className="journey-section__content" delay={0.05} distance={24}>
+					<FadeIn className="journey-section-content" delay={0.05} distance={24}>
 						<Paragraph>{t('mindset.intro')}</Paragraph>
 
 						<div className="journey-grid journey-grid--principles" aria-label={t('mindset.ariaLabel')}>
 							{principles.map((item, index) => (
 								<FadeIn key={item.title} className="journey-card journey-card--principle" as="article" delay={index * 0.08}>
-									<span className="journey-card__label">{String(index + 1).padStart(2, '0')}</span>
-									<Heading4 className="journey-card__title">{item.title}</Heading4>
-									<ParagraphSmall className="journey-card__text">{item.text}</ParagraphSmall>
+									<span className="journey-card-label">{String(index + 1).padStart(2, '0')}</span>
+									<Heading4 className="journey-card-title">{item.title}</Heading4>
+									<ParagraphSmall className="journey-card-text">{item.text}</ParagraphSmall>
 								</FadeIn>
 							))}
 						</div>
@@ -202,23 +202,23 @@ export default function JourneyPage() {
 				</section>
 
 				<section className="journey-closing">
-					<FadeIn className="journey-closing__inner" distance={28}>
-						<p className="journey-closing__eyebrow">{t('closing.eyebrow')}</p>
+					<FadeIn className="journey-closing-inner" distance={28}>
+						<p className="journey-closing-eyebrow">{t('closing.eyebrow')}</p>
 						<Heading3>{t('closing.heading')}</Heading3>
-						<Paragraph className="journey-closing__text">{t('closing.text')}</Paragraph>
+						<Paragraph className="journey-closing-text">{t('closing.text')}</Paragraph>
 					</FadeIn>
 				</section>
 
 				<section className="journey-cta">
-					<FadeIn className="journey-cta__inner" distance={28}>
-						<p className="journey-cta__eyebrow">{t('cta.eyebrow')}</p>
-						<FancyTitle className="journey-cta__title">{t('cta.title')}</FancyTitle>
-						<Paragraph className="journey-cta__text">{t('cta.text')}</Paragraph>
+					<FadeIn className="journey-cta-inner" distance={28}>
+						<p className="journey-cta-eyebrow">{t('cta.eyebrow')}</p>
+						<FancyTitle className="journey-cta-title">{t('cta.title')}</FancyTitle>
+						<Paragraph className="journey-cta-text">{t('cta.text')}</Paragraph>
 
-						<div className="journey-cta__links" aria-label={t('cta.linksAriaLabel')}>
+						<div className="journey-cta-links" aria-label={t('cta.linksAriaLabel')}>
 							{ctaLinks.map((link, index) => (
-								<FadeIn key={link.href} as="div" delay={index * 0.08} className="journey-cta__link-wrap">
-									<LinkButton href={link.href} buttonType="light" className="journey-cta__link">
+								<FadeIn key={link.href} as="div" delay={index * 0.08} className="journey-cta-link-wrap">
+									<LinkButton href={link.href} buttonType="light" className="journey-cta-link">
 										{link.label}
 									</LinkButton>
 								</FadeIn>

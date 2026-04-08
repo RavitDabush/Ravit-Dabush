@@ -1,7 +1,7 @@
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { use } from 'react';
-import HomePage from '@/pages/HomePage';
+import HomePage from '@/views/HomePage';
 
 type Props = {
 	params: Promise<{ locale: Locale }>;
