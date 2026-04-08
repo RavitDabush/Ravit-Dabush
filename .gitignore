@@ -31,3 +31,6 @@ coverage/
 .prettierignore
 .eslintrc.js
 eslint.config.mjs
+
+# Other
+*.zip
