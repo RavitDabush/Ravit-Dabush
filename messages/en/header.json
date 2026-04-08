@@ -1,0 +1,23 @@
+{
+	"homeAriaLabel": "Go to homepage",
+	"navAriaLabel": "Main navigation",
+	"openMenu": "Open menu",
+	"closeMenu": "Close menu",
+	"nav": {
+		"home": "Home",
+		"about": "About",
+		"journey": "Journey"
+	},
+	"languageSwitcher": {
+		"label": "Language",
+		"switchTo": "Switch to {language}",
+		"localeName": {
+			"en": "English",
+			"he": "עברית"
+		},
+		"localeShort": {
+			"en": "EN",
+			"he": "עב"
+		}
+	}
+}

@@ -8,6 +8,7 @@ import { hasLocale } from 'next-intl';
 import { AnimatePresence } from 'framer-motion';
 import AnimatedPage from '@/components/AnimatedPage';
 import type { Metadata } from 'next';
+import Header from '@/components/Header';
 
 import '@/styles/globals.scss';
 
@@ -19,7 +20,7 @@ export function generateStaticParams() {
 
 type Props = {
 	children: ReactNode;
-	params: { locale: string };
+	params: Promise<{ locale: string }>;
 };
 
 /**
@@ -28,12 +29,8 @@ type Props = {
  * - title.template = "%s | siteName"  (page with title display as "Title | siteName")
  * - description = default site description (from DefaultMeta)
  */
-export async function generateMetadata({
-	params
-}: {
-	params: { locale: string };
-}): Promise<Metadata> {
-	const locale = (await params).locale;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+	const { locale } = await params;
 	const td = await getTranslations({ locale, namespace: 'defaultMeta' });
 	const siteName = td('siteName');
 	const defaultDescription = td('description');
@@ -60,7 +57,7 @@ export async function generateMetadata({
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
-	const locale = (await params).locale;
+	const { locale } = await params;
 
 	if (!hasLocale(routing.locales, locale)) {
 		notFound();
@@ -69,13 +66,10 @@ export default async function LocaleLayout({ children, params }: Props) {
 	const messages = await getMessages({ locale });
 
 	return (
-		<html
-			lang={locale}
-			dir={locale === 'he' ? 'rtl' : 'ltr'}
-			className={heebo.className}
-		>
+		<html lang={locale} dir={locale === 'he' ? 'rtl' : 'ltr'} className={heebo.className}>
 			<body>
 				<NextIntlClientProvider locale={locale} messages={messages}>
+					<Header />
 					<AnimatePresence mode="wait">
 						<AnimatedPage>{children}</AnimatedPage>
 					</AnimatePresence>

@@ -1,0 +1,23 @@
+{
+	"homeAriaLabel": "חזרה לעמוד הבית",
+	"navAriaLabel": "ניווט ראשי",
+	"openMenu": "פתחי תפריט",
+	"closeMenu": "סגרי תפריט",
+	"nav": {
+		"home": "בית",
+		"about": "אודות",
+		"journey": "המסע שלי"
+	},
+	"languageSwitcher": {
+		"label": "שפה",
+		"switchTo": "החליפי לשפה {language}",
+		"localeName": {
+			"en": "English",
+			"he": "עברית"
+		},
+		"localeShort": {
+			"en": "EN",
+			"he": "עב"
+		}
+	}
+}
