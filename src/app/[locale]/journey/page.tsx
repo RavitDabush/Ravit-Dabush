@@ -1,6 +1,6 @@
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import AboutPage from '@/pages/AboutPage';
+import JourneyPage from '@/pages/JourneyPage';
 import './style.scss';
 import { createPageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
@@ -13,12 +13,12 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
-	return createPageMetadata(locale, 'aboutPage');
+	return createPageMetadata(locale, 'journeyPage');
 }
 
-export default async function LocaleAboutPage({ params }: Props) {
+export default async function LocaleJourneyPage({ params }: Props) {
 	const { locale } = await params;
 	setRequestLocale(locale);
 
-	return <AboutPage />;
+	return <JourneyPage />;
 }

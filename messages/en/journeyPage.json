@@ -1,0 +1,112 @@
+{
+	"meta": {
+		"title": "My Journey",
+		"description": "How I became the kind of frontend developer I am today — through curiosity, precision, and a deep connection between code and experience."
+	},
+	"hero": {
+		"eyebrow": "My Journey",
+		"title": "My Journey into Frontend",
+		"subtitle": "It started long before I knew how to call it a career.",
+		"intro": "What began as curiosity, experimentation, and trial and error gradually became a professional path shaped by technical thinking, sensitivity to detail, and user experience."
+	},
+	"origin": {
+		"heading": "It started early",
+		"text": "I started building websites at the age of 12. Not because I had a clear plan, but because I was genuinely curious about how things work — and how they could look and feel better. At first, it was all experimentation: trying, breaking, fixing, and learning as I went. But even then, I was drawn not only to the code itself, but also to everything around it: structure, readability, atmosphere, and the way a user meets what I build.",
+		"pillsAriaLabel": "Core ideas behind the beginning of my journey",
+		"pills": {
+			"experiment": "Experiment",
+			"learning": "Learning",
+			"precision": "Precision"
+		}
+	},
+	"craft": {
+		"heading": "Not just writing code — shaping experience",
+		"text": "Over time, I realized that what draws me to frontend is the meeting point between logic and emotion. I love building things that work well — but also look right, feel intentional, and guide users in an intuitive way.",
+		"cardsAriaLabel": "Foundations of how I think about frontend",
+		"cards": {
+			"typography": {
+				"title": "Typography",
+				"text": "The way text reads, breathes, and guides the eye can completely shape the experience."
+			},
+			"color": {
+				"title": "Color",
+				"text": "Color is not just decoration. It creates atmosphere, hierarchy, and character."
+			},
+			"structure": {
+				"title": "Structure",
+				"text": "A strong page does not only look good — it knows how to guide people clearly and naturally."
+			}
+		}
+	},
+	"timeline": {
+		"heading": "The milestones that shaped my path",
+		"intro": "Over the years, I worked in very different environments, and each one sharpened something else in me — clarity, ownership, systems thinking, and the connection between design, product, and code.",
+		"ariaLabel": "Timeline of my professional journey",
+		"items": {
+			"early": {
+				"period": "Beginning",
+				"title": "Before the job titles",
+				"text": "My pull toward code, structure, and design began long before the professional world. Even before it had a name, I was drawn to the idea that a full experience could be built from an empty screen."
+			},
+			"academia": {
+				"period": "Academia",
+				"title": "Learning to think clearly",
+				"text": "Working in an academic environment taught me how important it is for systems to stay clear, simple, and accessible to people with very different levels of knowledge. That is where my belief grew stronger: good systems should not demand unnecessary effort from users."
+			},
+			"ecommerce": {
+				"period": "Ecommerce",
+				"title": "Understanding real impact",
+				"text": "In ecommerce, I was exposed to the direct connection between user experience, hierarchy, design, and business outcomes. Small changes suddenly carried real weight and could influence behavior, decisions, and performance."
+			},
+			"smallTeams": {
+				"period": "Small teams",
+				"title": "Learning ownership",
+				"text": "In smaller environments, I learned the value of flexibility, personal responsibility, and broad product thinking. This kind of work asks you not only to execute, but also to think, decide, refine, and take ownership over meaningful parts of the product."
+			},
+			"today": {
+				"period": "Today",
+				"title": "Bringing it all together",
+				"text": "Today, I bring a combination of systems thinking, design sensitivity, and deep care for quality. I enjoy thinking about where code, experience, and business needs meet — and building work that feels precise from every angle."
+			}
+		}
+	},
+	"mindset": {
+		"heading": "What I carry with me from each stage",
+		"intro": "Every environment I worked in sharpened something different in me — but together they shaped one mindset: not thinking only about code, and not only about design, but understanding how everything connects.",
+		"ariaLabel": "The principles that guide me today",
+		"items": {
+			"clarity": {
+				"title": "Clarity",
+				"text": "A good product should not make users work harder than necessary. It should guide, explain, and feel clear."
+			},
+			"craft": {
+				"title": "Craft",
+				"text": "I believe the small details are not decoration — they are part of the overall quality of the product."
+			},
+			"ownership": {
+				"title": "Ownership",
+				"text": "I like taking responsibility, thinking beyond execution itself, and caring about everything around the work."
+			},
+			"experience": {
+				"title": "Experience",
+				"text": "To me, good code is not only code that works — it is code that feels right to the people using it."
+			}
+		}
+	},
+	"closing": {
+		"eyebrow": "Still true",
+		"heading": "What still drives me?",
+		"text": "The same curiosity that was there in the beginning. The desire to understand, refine, improve, and build things that do not just work — but feel right. Every new project is an opportunity for me to connect creativity, technical thinking, and design intuition."
+	},
+	"cta": {
+		"eyebrow": "Next",
+		"title": "Where to go from here",
+		"text": "Want to see how this looks in practice? You can continue from here to the projects I built, to my design system, or simply get to know me a little more.",
+		"linksAriaLabel": "Links to continue exploring",
+		"links": {
+			"projects": "View projects",
+			"styleGuide": "Explore Style Guide",
+			"contact": "Get in touch"
+		}
+	}
+}
