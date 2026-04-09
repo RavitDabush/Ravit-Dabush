@@ -23,12 +23,27 @@ function getSourceConfidence(result: LessinSeatAvailabilityFetchResult): SourceC
 	return 'low';
 }
 
+function getSeatAvailabilitySourceStatus(
+	fallbackSourceStatus: string | undefined,
+	sectionDebugStatus: string,
+	matchedSections: string[]
+): string {
+	const parts = [fallbackSourceStatus, `seat-section:${sectionDebugStatus}`];
+
+	if (matchedSections.length > 0) {
+		parts.push(`matched-sections:${matchedSections.join(', ')}`);
+	}
+
+	return parts.filter(Boolean).join(' | ');
+}
+
 export function normalizePerformance(
 	entry: LessinScheduleEntry,
 	result: LessinSeatAvailabilityFetchResult | undefined
 ): NormalizedPerformance {
 	if (result?.presentation && result.seatplan && result.seatStatus) {
 		const parsedAvailability = parseSeatAvailability(result.seatplan, result.seatStatus);
+		const sourceConfidence: SourceConfidence = parsedAvailability.sectionDebugStatus === 'ambiguous' ? 'medium' : 'high';
 
 		return {
 			id: entry.id,
@@ -39,9 +54,14 @@ export function normalizePerformance(
 			purchaseUrl: entry.purchaseUrl,
 			availableInPreferredRows: parsedAvailability.availableInPreferredRows,
 			matchedRows: parsedAvailability.matchedRows,
+			matchedSections: parsedAvailability.matchedSections,
 			availableSeatCount: parsedAvailability.availableSeatCount,
-			sourceStatus: entry.sourceStatus,
-			sourceConfidence: 'high'
+			sourceStatus: getSeatAvailabilitySourceStatus(
+				entry.sourceStatus,
+				parsedAvailability.sectionDebugStatus,
+				parsedAvailability.matchedSections
+			),
+			sourceConfidence
 		};
 	}
 
@@ -54,6 +74,7 @@ export function normalizePerformance(
 		purchaseUrl: entry.purchaseUrl,
 		availableInPreferredRows: false,
 		matchedRows: [],
+		matchedSections: [],
 		sourceStatus: entry.sourceStatus,
 		sourceConfidence: result ? getSourceConfidence(result) : 'low'
 	};

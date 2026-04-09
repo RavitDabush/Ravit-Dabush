@@ -81,6 +81,7 @@ export type LessinSeatAvailabilityFetchResult = {
 export type FlattenedSeat = {
 	key: string;
 	sectionId: string;
+	sectionLabel: string;
 	groupId: string;
 	rowId: string;
 	rowLabel: string;
@@ -91,7 +92,10 @@ export type FlattenedSeat = {
 export type ParsedSeatAvailability = {
 	availableInPreferredRows: boolean;
 	matchedRows: string[];
+	matchedSections: string[];
 	availableSeatCount: number;
+	sectionDebugStatus: 'main-hall' | 'non-hall-only' | 'ambiguous' | 'unknown';
+	hasStructuredSectionLabels: boolean;
 };
 
 export type NormalizedPerformance = {
@@ -103,6 +107,7 @@ export type NormalizedPerformance = {
 	purchaseUrl?: string;
 	availableInPreferredRows: boolean;
 	matchedRows: string[];
+	matchedSections: string[];
 	availableSeatCount?: number;
 	sourceStatus?: string;
 	sourceConfidence: SourceConfidence;
