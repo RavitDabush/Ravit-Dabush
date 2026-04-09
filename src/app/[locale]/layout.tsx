@@ -9,6 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 import AnimatedPage from '@/components/AnimatedPage';
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 import '@/styles/globals.scss';
 
@@ -73,6 +74,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 					<AnimatePresence mode="wait">
 						<AnimatedPage>{children}</AnimatedPage>
 					</AnimatePresence>
+					<Footer />
 				</NextIntlClientProvider>
 			</body>
 		</html>
