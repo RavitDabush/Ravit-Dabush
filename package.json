@@ -3,13 +3,18 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "concurrently \"next dev --turbo\" \"npm run open:browser\"",
+		"dev": "npm run generate:all && concurrently \"next dev --turbo\" \"npm run open:browser\"",
 		"build": "next build",
 		"start": "next start",
 		"lint": "eslint src && tsc && prettier src --check",
 		"check:updates": "node check-updates.mjs",
 		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,scss,css,json,md,html}\"",
-		"open:browser": "node -e \"import('open').then(open => open.default('http://localhost:3000'))\""
+		"open:browser": "node -e \"import('open').then(open => open.default('http://localhost:3000'))\"",
+		"generate:icon-names": "tsx scripts/generate-icon-names.ts",
+		"generate:icon-list": "tsx scripts/generate-icon-list-from-names.ts",
+		"generate:colors": "tsx scripts/generate-colors-list.ts",
+		"generate:text-colors": "tsx scripts/generate-text-colors.ts",
+		"generate:all": "npm run generate:icon-names && npm run generate:icon-list && npm run generate:colors && npm run generate:text-colors && prettier --write src"
 	},
 	"dependencies": {
 		"@phosphor-icons/react": "^2.1.10",
