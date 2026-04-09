@@ -1,0 +1,33 @@
+{
+	"meta": {
+		"title": "Theater",
+		"description": "Confirmed Beit Lessin performances with available seats in rows 1-7."
+	},
+	"title": "Beit Lessin Performances",
+	"description": "Only performances with confirmed seat availability in rows 1-7 are shown here.",
+	"filter": {
+		"label": "Filter by play",
+		"allOption": "All plays"
+	},
+	"labels": {
+		"time": "Time",
+		"venue": "Venue",
+		"rows": "Available rows",
+		"seats": "Available seats",
+		"confidence": "Confidence",
+		"purchase": "Purchase tickets"
+	},
+	"confidence": {
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low"
+	},
+	"empty": {
+		"title": "No matching performances right now",
+		"description": "There are currently no Beit Lessin performances with confirmed availability in rows 1-7."
+	},
+	"error": {
+		"title": "Unable to load the theater page",
+		"description": "The external ticketing flow did not respond reliably enough to confirm preferred-row availability."
+	}
+}

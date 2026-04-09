@@ -20,7 +20,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 			styleGuidePage: (await import(`../../messages/${locale}/styleGuidePage.json`)).default,
 			homePage: (await import(`../../messages/${locale}/homePage.json`)).default,
 			aboutPage: (await import(`../../messages/${locale}/aboutPage.json`)).default,
-			journeyPage: (await import(`../../messages/${locale}/journeyPage.json`)).default
+			journeyPage: (await import(`../../messages/${locale}/journeyPage.json`)).default,
+			theaterPage: (await import(`../../messages/${locale}/theaterPage.json`)).default
 		}
 	};
 });

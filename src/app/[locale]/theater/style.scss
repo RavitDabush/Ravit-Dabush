@@ -1,0 +1,118 @@
+.theater-page-intro {
+	display: grid;
+	gap: 0.75rem;
+	margin-bottom: 2rem;
+}
+
+.theater-performance-list {
+	display: grid;
+	gap: 2rem;
+}
+
+.theater-browser {
+	display: grid;
+	gap: 1.5rem;
+}
+
+.theater-filter {
+	max-width: 24rem;
+}
+
+.theater-filter__select {
+	appearance: none;
+	background-image:
+		linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+	background-position:
+		calc(100% - 1.2rem) calc(50% - 0.12rem),
+		calc(100% - 0.9rem) calc(50% - 0.12rem);
+	background-size:
+		0.35rem 0.35rem,
+		0.35rem 0.35rem;
+	background-repeat: no-repeat;
+	padding-inline-end: 2.5rem;
+}
+
+.theater-date-group {
+	display: grid;
+	gap: 1rem;
+}
+
+.theater-date-group__grid {
+	display: grid;
+	gap: 1rem;
+}
+
+.theater-performance-card {
+	display: grid;
+	gap: 1rem;
+}
+
+.theater-performance-card__content {
+	display: grid;
+	gap: 0.875rem;
+}
+
+.theater-performance-card__header {
+	display: grid;
+	gap: 0.35rem;
+}
+
+.theater-performance-card__meta {
+	color: var(--color-text-muted);
+}
+
+.theater-performance-card__details {
+	display: grid;
+	gap: 0.35rem;
+}
+
+.theater-performance-card__actions {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.theater-state {
+	margin-top: 1rem;
+}
+
+.theater-state-empty {
+	display: grid;
+	gap: 0.5rem;
+	padding: 1.5rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-card-bg);
+}
+
+.theater-loading-grid {
+	display: grid;
+	gap: 1rem;
+}
+
+.theater-loading-card {
+	min-height: 12rem;
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--color-border);
+	background:
+		linear-gradient(90deg, rgba(255, 255, 255, 0.55) 25%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.55) 75%),
+		var(--color-card-bg);
+	background-size: 200% 100%;
+	animation: theater-loading-shimmer 1.4s infinite linear;
+}
+
+@keyframes theater-loading-shimmer {
+	from {
+		background-position: 200% 0;
+	}
+
+	to {
+		background-position: -200% 0;
+	}
+}
+
+@media (min-width: 768px) {
+	.theater-date-group__grid,
+	.theater-loading-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
