@@ -8,10 +8,7 @@ import type { Metadata } from 'next';
  * - Falls back to DefaultMeta.description if page description is missing.
  * - If page title missing -> omit it, so layout default (site name) is used.
  */
-export async function createPageMetadata(
-	locale: string,
-	namespace: string
-): Promise<Metadata> {
+export async function createPageMetadata(locale: string, namespace: string): Promise<Metadata> {
 	const td = await getTranslations({ locale, namespace: 'defaultMeta' });
 	const defaultDescription = td('description');
 

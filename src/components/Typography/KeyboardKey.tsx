@@ -4,10 +4,7 @@ type KeyboardKeyProps = {
 	children: React.ReactNode;
 };
 
-export default function KeyboardKey({
-	className,
-	children
-}: KeyboardKeyProps) {
+export default function KeyboardKey({ className, children }: KeyboardKeyProps) {
 	return (
 		<BaseTypography as="kbd" className={className}>
 			{children}

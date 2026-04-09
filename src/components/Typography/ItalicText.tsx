@@ -6,10 +6,7 @@ type ItalicTextProps = {
 	className?: string;
 };
 
-export default function ItalicText({
-	children,
-	className = ''
-}: ItalicTextProps) {
+export default function ItalicText({ children, className = '' }: ItalicTextProps) {
 	return (
 		<BaseTypography as="em" className={clsx('text-italic', className)}>
 			{children}

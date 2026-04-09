@@ -44,10 +44,7 @@ export default function LinkText({
 	}
 
 	return (
-		<Link
-			href={href}
-			className={clsx('link', noUnderline && 'link-no-underline', className)}
-		>
+		<Link href={href} className={clsx('link', noUnderline && 'link-no-underline', className)}>
 			{children}
 		</Link>
 	);

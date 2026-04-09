@@ -6,15 +6,9 @@ type SmallTextProps = {
 	className?: string;
 };
 
-export default function SmallText({
-	children,
-	className = ''
-}: SmallTextProps) {
+export default function SmallText({ children, className = '' }: SmallTextProps) {
 	return (
-		<BaseTypography
-			as="small"
-			className={clsx('text-small', className)}
-		>
+		<BaseTypography as="small" className={clsx('text-small', className)}>
 			{children}
 		</BaseTypography>
 	);

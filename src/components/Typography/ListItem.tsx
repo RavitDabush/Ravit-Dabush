@@ -5,10 +5,7 @@ type ListItemProps = {
 	className?: string;
 };
 
-export default function ListItem({
-	children,
-	className = ''
-}: ListItemProps) {
+export default function ListItem({ children, className = '' }: ListItemProps) {
 	return (
 		<BaseTypography as="li" className={className}>
 			{children}

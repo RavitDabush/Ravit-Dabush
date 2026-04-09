@@ -5,10 +5,7 @@ type DefinitionListProps = {
 	className?: string;
 };
 
-export default function DefinitionList({
-	children,
-	className
-}: DefinitionListProps) {
+export default function DefinitionList({ children, className }: DefinitionListProps) {
 	return (
 		<BaseTypography as="dl" className={className}>
 			{children}

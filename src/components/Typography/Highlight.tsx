@@ -6,15 +6,9 @@ type HighlightProps = {
 	className?: string;
 };
 
-export default function Highlight({
-	children,
-	className = ''
-}: HighlightProps) {
+export default function Highlight({ children, className = '' }: HighlightProps) {
 	return (
-		<BaseTypography
-			as="span"
-			className={clsx('highlight', className)}
-		>
+		<BaseTypography as="span" className={clsx('highlight', className)}>
 			{children}
 		</BaseTypography>
 	);

@@ -5,12 +5,7 @@ type TableProps = {
 	ariaLabel?: string; // for screen readers only
 };
 
-export default function Table({
-	children,
-	className,
-	caption,
-	ariaLabel
-}: TableProps) {
+export default function Table({ children, className, caption, ariaLabel }: TableProps) {
 	return (
 		<div className="table-wrapper" role="region" aria-label={ariaLabel}>
 			<table className={className}>

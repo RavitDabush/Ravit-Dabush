@@ -1,11 +1,6 @@
 import { useTranslations } from 'next-intl';
 import PageLayout from '@/components/PageLayout';
-import {
-	FancyTitle,
-	Heading3,
-	Paragraph,
-	Highlight
-} from '@/components/Typography';
+import { FancyTitle, Heading3, Paragraph, Highlight } from '@/components/Typography';
 import { Image } from '@/components/Media';
 
 export default function AboutPage() {

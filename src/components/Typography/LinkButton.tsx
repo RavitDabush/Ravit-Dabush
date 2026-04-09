@@ -25,22 +25,12 @@ export default function LinkButton({
 }: LinkButtonProps) {
 	const isExternal = href.startsWith('http');
 
-	const commonClassNames = clsx(
-		'button',
-		'link-button',
-		getButtonClassNames(buttonType),
-		className
-	);
+	const commonClassNames = clsx('button', 'link-button', getButtonClassNames(buttonType), className);
 
 	if (isDisabled) {
 		return (
 			<span
-				className={clsx(
-					'button',
-					'link-button-disabled',
-					getButtonClassNames(buttonType),
-					className
-				)}
+				className={clsx('button', 'link-button-disabled', getButtonClassNames(buttonType), className)}
 				aria-disabled="true"
 			>
 				{children}

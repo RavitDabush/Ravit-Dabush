@@ -4,10 +4,7 @@ type SubscriptProps = {
 	children: React.ReactNode;
 };
 
-export default function Subscript({
-	className,
-	children
-}: SubscriptProps) {
+export default function Subscript({ className, children }: SubscriptProps) {
 	return (
 		<BaseTypography as="sub" className={className}>
 			{children}

@@ -6,10 +6,7 @@ type UnderlineTextProps = {
 	className?: string;
 };
 
-export default function UnderlineText({
-	children,
-	className = ''
-}: UnderlineTextProps) {
+export default function UnderlineText({ children, className = '' }: UnderlineTextProps) {
 	return (
 		<BaseTypography as="u" className={clsx('text-underline', className)}>
 			{children}

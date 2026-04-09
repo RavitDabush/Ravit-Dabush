@@ -6,17 +6,9 @@ type AbbreviationProps = {
 	title: string;
 };
 
-export default function Abbreviation({
-	className,
-	children,
-	title
-}: AbbreviationProps) {
+export default function Abbreviation({ className, children, title }: AbbreviationProps) {
 	return (
-		<BaseTypography
-			as="abbr"
-			className={className}
-			title={title}
-		>
+		<BaseTypography as="abbr" className={className} title={title}>
 			{children}
 		</BaseTypography>
 	);

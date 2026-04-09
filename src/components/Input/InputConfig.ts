@@ -1,12 +1,4 @@
-export const inputTypes = [
-	'text',
-	'email',
-	'password',
-	'number',
-	'search',
-	'url',
-	'tel'
-] as const;
+export const inputTypes = ['text', 'email', 'password', 'number', 'search', 'url', 'tel'] as const;
 
 export type InputType = (typeof inputTypes)[number];
 

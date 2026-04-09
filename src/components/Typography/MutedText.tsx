@@ -6,15 +6,9 @@ type MutedTextProps = {
 	className?: string;
 };
 
-export default function MutedText({
-	children,
-	className = ''
-}: MutedTextProps) {
+export default function MutedText({ children, className = '' }: MutedTextProps) {
 	return (
-		<BaseTypography
-			as="span"
-			className={clsx('text-muted', className)}
-		>
+		<BaseTypography as="span" className={clsx('text-muted', className)}>
 			{children}
 		</BaseTypography>
 	);

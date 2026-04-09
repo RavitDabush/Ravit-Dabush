@@ -6,15 +6,9 @@ type OrderedListProps = {
 	className?: string;
 };
 
-export default function OrderedList({
-	children,
-	className = ''
-}: OrderedListProps) {
+export default function OrderedList({ children, className = '' }: OrderedListProps) {
 	return (
-		<BaseTypography
-			as="ol"
-			className={clsx('list-ordered', className)}
-		>
+		<BaseTypography as="ol" className={clsx('list-ordered', className)}>
 			{children}
 		</BaseTypography>
 	);

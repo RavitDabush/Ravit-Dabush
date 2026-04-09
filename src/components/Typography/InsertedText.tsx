@@ -5,17 +5,9 @@ type InsertedTextProps = {
 	dateTime?: string;
 };
 
-export default function InsertedText({
-	className,
-	children,
-	dateTime
-}: InsertedTextProps) {
+export default function InsertedText({ className, children, dateTime }: InsertedTextProps) {
 	return (
-		<BaseTypography
-			as="ins"
-			className={className}
-			dateTime={dateTime}
-		>
+		<BaseTypography as="ins" className={className} dateTime={dateTime}>
 			{children}
 		</BaseTypography>
 	);

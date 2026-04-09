@@ -4,10 +4,7 @@ type MarkTextProps = {
 	children: React.ReactNode;
 };
 
-export default function MarkText({
-	className,
-	children
-}: MarkTextProps) {
+export default function MarkText({ className, children }: MarkTextProps) {
 	return (
 		<BaseTypography as="mark" className={className}>
 			{children}

@@ -8,13 +8,9 @@ type BaseTypographyOwnProps = {
 	ariaLabel?: string;
 };
 
-type BaseTypographyProps<T extends React.ElementType> =
-	BaseTypographyOwnProps & {
-		as?: T;
-	} & Omit<
-			React.ComponentPropsWithoutRef<T>,
-			keyof BaseTypographyOwnProps | 'as'
-		>;
+type BaseTypographyProps<T extends React.ElementType> = BaseTypographyOwnProps & {
+	as?: T;
+} & Omit<React.ComponentPropsWithoutRef<T>, keyof BaseTypographyOwnProps | 'as'>;
 
 export default function BaseTypography<T extends React.ElementType = 'span'>({
 	as,
@@ -28,13 +24,7 @@ export default function BaseTypography<T extends React.ElementType = 'span'>({
 	const Component = as || 'span';
 
 	return (
-		<Component
-			className={className}
-			role={role}
-			tabIndex={tabIndex}
-			aria-label={ariaLabel}
-			{...rest}
-		>
+		<Component className={className} role={role} tabIndex={tabIndex} aria-label={ariaLabel} {...rest}>
 			{children}
 		</Component>
 	);

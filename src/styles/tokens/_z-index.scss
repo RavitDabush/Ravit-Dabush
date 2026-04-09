@@ -1,8 +1,8 @@
 // Z-index scale — use these instead of arbitrary numbers
-$z-base:     0;
-$z-raised:   10;   // Slightly elevated elements (e.g. sticky table headers)
-$z-dropdown: 100;  // Dropdowns, floating menus
-$z-sticky:   200;  // Sticky headers / sidebars
-$z-overlay:  300;  // Modal backdrop / overlay
-$z-modal:    400;  // Modal content (above overlay)
-$z-toast:    500;  // Toast notifications (above modals)
+$z-base: 0;
+$z-raised: 10; // Slightly elevated elements (e.g. sticky table headers)
+$z-dropdown: 100; // Dropdowns, floating menus
+$z-sticky: 200; // Sticky headers / sidebars
+$z-overlay: 300; // Modal backdrop / overlay
+$z-modal: 400; // Modal content (above overlay)
+$z-toast: 500; // Toast notifications (above modals)

@@ -5,10 +5,7 @@ type DefinitionTermProps = {
 	className?: string;
 };
 
-export default function DefinitionTerm({
-	children,
-	className
-}: DefinitionTermProps) {
+export default function DefinitionTerm({ children, className }: DefinitionTermProps) {
 	return (
 		<BaseTypography as="dt" className={className}>
 			{children}

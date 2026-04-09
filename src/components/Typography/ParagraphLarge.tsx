@@ -6,10 +6,7 @@ type ParagraphLargeProps = {
 	className?: string;
 };
 
-export default function ParagraphLarge({
-	children,
-	className = ''
-}: ParagraphLargeProps) {
+export default function ParagraphLarge({ children, className = '' }: ParagraphLargeProps) {
 	return (
 		<BaseTypography as="p" className={clsx('paragraph-lg', className)}>
 			{children}

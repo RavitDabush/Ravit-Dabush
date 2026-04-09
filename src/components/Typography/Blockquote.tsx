@@ -6,15 +6,9 @@ type BlockquoteProps = {
 	className?: string;
 };
 
-export default function Blockquote({
-	children,
-	className = ''
-}: BlockquoteProps) {
+export default function Blockquote({ children, className = '' }: BlockquoteProps) {
 	return (
-		<BaseTypography
-			as="blockquote"
-			className={clsx('blockquote', className)}
-		>
+		<BaseTypography as="blockquote" className={clsx('blockquote', className)}>
 			{children}
 		</BaseTypography>
 	);

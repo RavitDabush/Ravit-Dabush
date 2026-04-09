@@ -6,15 +6,9 @@ type UnorderedListProps = {
 	className?: string;
 };
 
-export default function UnorderedList({
-	children,
-	className = ''
-}: UnorderedListProps) {
+export default function UnorderedList({ children, className = '' }: UnorderedListProps) {
 	return (
-		<BaseTypography
-			as="ul"
-			className={clsx('list', className)}
-		>
+		<BaseTypography as="ul" className={clsx('list', className)}>
 			{children}
 		</BaseTypography>
 	);

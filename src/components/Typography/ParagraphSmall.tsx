@@ -6,10 +6,7 @@ type ParagraphSmallProps = {
 	className?: string;
 };
 
-export default function ParagraphSmall({
-	children,
-	className = ''
-}: ParagraphSmallProps) {
+export default function ParagraphSmall({ children, className = '' }: ParagraphSmallProps) {
 	return (
 		<BaseTypography as="p" className={clsx('paragraph-sm', className)}>
 			{children}

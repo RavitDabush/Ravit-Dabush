@@ -5,17 +5,9 @@ type TimeTagProps = {
 	dateTime: string;
 };
 
-export default function TimeTag({
-	className,
-	children,
-	dateTime
-}: TimeTagProps) {
+export default function TimeTag({ className, children, dateTime }: TimeTagProps) {
 	return (
-		<BaseTypography
-			as="time"
-			className={className}
-			dateTime={dateTime}
-		>
+		<BaseTypography as="time" className={className} dateTime={dateTime}>
 			{children}
 		</BaseTypography>
 	);

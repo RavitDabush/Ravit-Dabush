@@ -6,15 +6,9 @@ type ParagraphProps = {
 	className?: string;
 };
 
-export default function Paragraph({
-	children,
-	className = ''
-}: ParagraphProps) {
+export default function Paragraph({ children, className = '' }: ParagraphProps) {
 	return (
-		<BaseTypography
-			as="p"
-			className={clsx('paragraph-md', className)}
-		>
+		<BaseTypography as="p" className={clsx('paragraph-md', className)}>
 			{children}
 		</BaseTypography>
 	);

@@ -4,10 +4,7 @@ type SuperscriptProps = {
 	children: React.ReactNode;
 };
 
-export default function Superscript({
-	className,
-	children
-}: SuperscriptProps) {
+export default function Superscript({ className, children }: SuperscriptProps) {
 	return (
 		<BaseTypography as="sup" className={className}>
 			{children}

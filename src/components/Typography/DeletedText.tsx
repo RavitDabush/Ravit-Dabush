@@ -5,17 +5,9 @@ type DeletedTextProps = {
 	dateTime?: string;
 };
 
-export default function DeletedText({
-	className,
-	children,
-	dateTime
-}: DeletedTextProps) {
+export default function DeletedText({ className, children, dateTime }: DeletedTextProps) {
 	return (
-		<BaseTypography
-			as="del"
-			className={className}
-			dateTime={dateTime}
-		>
+		<BaseTypography as="del" className={className} dateTime={dateTime}>
 			{children}
 		</BaseTypography>
 	);

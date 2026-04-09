@@ -3,7 +3,12 @@
 // Generate spacing map: $spacing-N = N * 0.25rem (1 = 4px, 4 = 16px, 8 = 32px ... 100 = 400px)
 $spacing: ();
 @for $i from 1 through 100 {
-	$spacing: map.merge($spacing, ($i: $i * 0.25rem));
+	$spacing: map.merge(
+		$spacing,
+		(
+			$i: $i * 0.25rem
+		)
+	);
 }
 
 /// Retrieve a spacing value by step number
@@ -19,4 +24,3 @@ $spacing: ();
 		--spacing-#{$i}: #{$i * 0.25rem};
 	}
 }
-

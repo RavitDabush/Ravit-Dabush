@@ -5,10 +5,7 @@ type DefinitionDescriptionProps = {
 	className?: string;
 };
 
-export default function DefinitionDescription({
-	children,
-	className
-}: DefinitionDescriptionProps) {
+export default function DefinitionDescription({ children, className }: DefinitionDescriptionProps) {
 	return (
 		<BaseTypography as="dd" className={className}>
 			{children}

@@ -123,11 +123,7 @@
 	--font-fancy: #{typography.$font-fancy};
 	--font-code: #{typography.$font-code};
 
-	font-size: clamp(
-		typography.$font-size-body-small,
-		typography.$font-size-body-medium,
-		typography.$font-size-body-big
-	);
+	font-size: clamp(typography.$font-size-body-small, typography.$font-size-body-medium, typography.$font-size-body-big);
 
 	// Radius
 	--radius-sm: #{radius.$radius-sm};
@@ -139,11 +135,11 @@
 	@include spacing.generate-vars;
 
 	// Z-index
-	--z-base:     #{z-index.$z-base};
-	--z-raised:   #{z-index.$z-raised};
+	--z-base: #{z-index.$z-base};
+	--z-raised: #{z-index.$z-raised};
 	--z-dropdown: #{z-index.$z-dropdown};
-	--z-sticky:   #{z-index.$z-sticky};
-	--z-overlay:  #{z-index.$z-overlay};
-	--z-modal:    #{z-index.$z-modal};
-	--z-toast:    #{z-index.$z-toast};
+	--z-sticky: #{z-index.$z-sticky};
+	--z-overlay: #{z-index.$z-overlay};
+	--z-modal: #{z-index.$z-modal};
+	--z-toast: #{z-index.$z-toast};
 }

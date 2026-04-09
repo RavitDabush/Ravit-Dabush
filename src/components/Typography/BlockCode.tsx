@@ -10,11 +10,7 @@ type BlockCodeProps = {
 	className?: string;
 };
 
-export default function BlockCode({
-	children,
-	language = 'javascript',
-	className = ''
-}: BlockCodeProps) {
+export default function BlockCode({ children, language = 'javascript', className = '' }: BlockCodeProps) {
 	const [copied, setCopied] = useState(false);
 	const highlighted = highlightCode(children, language);
 
@@ -28,21 +24,13 @@ export default function BlockCode({
 		<div className={`block-code-container ${className}`}>
 			<div className="block-code-header">
 				<span className="block-code-language">{language}</span>
-				<Button
-					variant="copy"
-					onClick={handleCopy}
-					ariaLabel="Copy code to clipboard"
-					title="Copy code"
-				>
+				<Button variant="copy" onClick={handleCopy} ariaLabel="Copy code to clipboard" title="Copy code">
 					{copied ? 'Copied!' : 'Copy'}
 				</Button>
 			</div>
 
 			<pre tabIndex={0}>
-				<code
-					dangerouslySetInnerHTML={{ __html: highlighted }}
-					lang="en"
-				/>
+				<code dangerouslySetInnerHTML={{ __html: highlighted }} lang="en" />
 			</pre>
 		</div>
 	);

@@ -17,14 +17,7 @@ hljs.registerLanguage('css', css);
 hljs.registerLanguage('scss', scss);
 hljs.registerLanguage('json', json);
 
-export type SupportedLanguage =
-	| 'javascript'
-	| 'typescript'
-	| 'html'
-	| 'xml'
-	| 'css'
-	| 'scss'
-	| 'json';
+export type SupportedLanguage = 'javascript' | 'typescript' | 'html' | 'xml' | 'css' | 'scss' | 'json';
 
 export function highlightCode(code: string, language: SupportedLanguage = 'javascript') {
 	// Highlight the code using highlight.js

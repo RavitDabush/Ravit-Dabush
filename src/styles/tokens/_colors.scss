@@ -32,12 +32,7 @@ $color-btn-primary-light: $color-primary-light;
 $color-btn-primary-light-hover: $color-primary-light-hover;
 $color-btn-outline: $color-primary;
 $color-btn-outline-hover: $color-primary-hover;
-$color-btn-outline-background-hover: rgba(
-	0,
-	0,
-	0,
-	0.03
-);
+$color-btn-outline-background-hover: rgba(0, 0, 0, 0.03);
 $color-btn-light: $color-primary-light;
 $color-btn-light-hover: $color-primary-light-hover;
 $color-btn-disabled: #d0c3c0;
@@ -108,12 +103,7 @@ $color-border-row: #e4dad6;
 // Other
 $color-focus: #a88db7; /* soft purple, for input focus */
 $color-skeleton: #ededed; /* neutral gray placeholder */
-$color-overlay: rgba(
-	0,
-	0,
-	0,
-	0.4
-); /* modal / backdrop layer */
+$color-overlay: rgba(0, 0, 0, 0.4); /* modal / backdrop layer */
 
 // Utility Colors
 $color-white: #ffffff;

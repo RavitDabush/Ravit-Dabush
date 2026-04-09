@@ -4,14 +4,9 @@ type VisuallyHiddenProps = {
 	children: React.ReactNode;
 };
 
-export default function VisuallyHidden({
-	children
-}: VisuallyHiddenProps) {
+export default function VisuallyHidden({ children }: VisuallyHiddenProps) {
 	return (
-		<BaseTypography
-			as="span"
-			className="visually-hidden"
-		>
+		<BaseTypography as="span" className="visually-hidden">
 			{children}
 		</BaseTypography>
 	);

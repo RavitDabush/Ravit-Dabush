@@ -17,21 +17,8 @@ type InlineCodeProps = {
  * The returned markup is inserted via dangerouslySetInnerHTML,
  * and class names are cleaned inside highlightCode().
  */
-export default function InlineCode({
-	children,
-	language = 'javascript',
-	className = ''
-}: InlineCodeProps) {
-	const highlighted = highlightCode(
-		typeof children === 'string' ? children : String(children),
-		language
-	);
+export default function InlineCode({ children, language = 'javascript', className = '' }: InlineCodeProps) {
+	const highlighted = highlightCode(typeof children === 'string' ? children : String(children), language);
 
-	return (
-		<code
-			lang="en"
-			className={className}
-			dangerouslySetInnerHTML={{ __html: highlighted }}
-		/>
-	);
+	return <code lang="en" className={className} dangerouslySetInnerHTML={{ __html: highlighted }} />;
 }
