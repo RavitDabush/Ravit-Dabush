@@ -29,11 +29,7 @@ export default function Button({
 			title={title}
 			tabIndex={isTrulyDisabled ? -1 : undefined}
 		>
-			{isLoading ? (
-				<span className="visually-hidden">Loading</span>
-			) : (
-				children
-			)}
+			{isLoading ? <span className="visually-hidden">Loading</span> : children}
 		</button>
 	);
 }

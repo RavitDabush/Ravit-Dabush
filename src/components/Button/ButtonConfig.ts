@@ -1,13 +1,5 @@
 // Available button variants
-export const buttonVariants = [
-	'primary',
-	'outline',
-	'light',
-	'success',
-	'error',
-	'toggle',
-	'copy'
-] as const;
+export const buttonVariants = ['primary', 'outline', 'light', 'success', 'error', 'toggle', 'copy'] as const;
 
 export type Variant = (typeof buttonVariants)[number];
 

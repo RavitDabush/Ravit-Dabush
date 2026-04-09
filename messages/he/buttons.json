@@ -1,0 +1,12 @@
+{
+	"title": "כפתורים",
+	"primary": "ראשי",
+	"outline": "מסגרת",
+	"light": "ראשי בהיר",
+	"success": "הצלחה",
+	"error": "שגיאה",
+	"disabled": "מושבת",
+	"loading": "טוען...",
+	"copy": "העתק",
+	"copied": "✔ \"{variable}\" הועתק ללוח"
+}

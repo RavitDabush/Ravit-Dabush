@@ -1,0 +1,12 @@
+{
+	"title": "Buttons",
+	"primary": "Primary",
+	"outline": "Outline",
+	"light": "Primary Light",
+	"success": "Success",
+	"error": "Error",
+	"disabled": "Disabled",
+	"loading": "Loading...",
+	"copy": "Copy",
+	"copied": "✔ \"{variable}\" copied to clipboard"
+}
