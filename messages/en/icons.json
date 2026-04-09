@@ -1,0 +1,6 @@
+{
+	"title": "Common Icons",
+	"description": "These icons are imported from phosphor-react and commonly used across the project.",
+	"copy": "Copy",
+	"copied": "✔ \"{variable}\" copied to clipboard"
+}
