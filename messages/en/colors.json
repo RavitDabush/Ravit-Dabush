@@ -1,0 +1,20 @@
+{
+	"title": "Color Palette",
+	"description": "List of all SCSS color variables, grouped by usage category.",
+	"Colors": "Brand colors",
+	"Backgrounds": "Background colors",
+	"Text-Colors": "Text colors",
+	"Links": "Links colors",
+	"Buttons": "Buttons colors",
+	"Borders-and-Box-Shadow": "Borders & Box-Shadow",
+	"Alerts": "Alerts colors",
+	"Syntax-highlighting": "Syntax highlighting",
+	"Inputs": "Inputs colors",
+	"States": "States colors",
+	"Cards-and-Sections": "Cards & Sections colors",
+	"Tables": "Tables colors",
+	"Other": "Other  colors",
+	"Utility-Colors": "Utility colors",
+	"copy": "Copy",
+	"copied": "✔ \"{variable}\" copied to clipboard"
+}

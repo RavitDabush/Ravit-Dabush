@@ -1,0 +1,20 @@
+{
+	"title": "פלטת הצבעים",
+	"description": "רשימת כל משתני ה-SCSS בצבע, מחולקים לפי קבוצות שימוש.",
+	"Colors": "צבעי המותג",
+	"Backgrounds": "רקעים",
+	"Text-Colors": "טקסטים",
+	"Links": "קישורים",
+	"Buttons": "כפתורים",
+	"Borders-and-Box-Shadow": "מסגרות וצללים",
+	"Alerts": "הודעות",
+	"Syntax-highlighting": "הצגת קוד",
+	"Inputs": "רכיבי קלט",
+	"States": "מצבים",
+	"Cards-and-Sections": "כרטיסיות ומקטעים",
+	"Tables": "טבלאות",
+	"Other": "צבעים נוספים",
+	"Utility-Colors": "צבעים שימושיים",
+	"copy": "העתק",
+	"copied": "✔ \"{variable}\" הועתק ללוח"
+}
