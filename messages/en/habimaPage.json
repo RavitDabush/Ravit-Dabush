@@ -1,0 +1,33 @@
+{
+	"meta": {
+		"title": "Habima Theater",
+		"description": "Confirmed Habima performances with available seats in rows 1-7."
+	},
+	"title": "Habima Performances",
+	"description": "Only Habima performances with confirmed seat availability in rows 1-7 are shown here.",
+	"filter": {
+		"label": "Filter by play",
+		"allOption": "All plays"
+	},
+	"labels": {
+		"time": "Time",
+		"venue": "Venue",
+		"rows": "Available rows",
+		"seats": "Available seats",
+		"confidence": "Confidence",
+		"purchase": "Purchase tickets"
+	},
+	"confidence": {
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low"
+	},
+	"empty": {
+		"title": "No matching Habima performances right now",
+		"description": "There are currently no Habima performances with confirmed availability in rows 1-7."
+	},
+	"error": {
+		"title": "Unable to load the Habima page",
+		"description": "The external Habima ticketing flow did not respond reliably enough to confirm preferred-row availability."
+	}
+}

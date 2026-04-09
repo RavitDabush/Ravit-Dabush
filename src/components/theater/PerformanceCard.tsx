@@ -1,6 +1,22 @@
 import Card from '@/components/Card/Card';
 import { Heading4, LinkButton, ParagraphSmall, SmallText } from '@/components/Typography';
-import { NormalizedPerformance, SourceConfidence } from '@/lib/lessin/types';
+
+type SourceConfidence = 'high' | 'medium' | 'low';
+
+type Performance = {
+	id: string;
+	showName: string;
+	date: string;
+	time: string;
+	venue?: string;
+	purchaseUrl?: string;
+	availableInPreferredRows: boolean;
+	matchedRows: string[];
+	matchedSections?: string[];
+	availableSeatCount?: number;
+	sourceStatus?: string;
+	sourceConfidence: SourceConfidence;
+};
 
 type PerformanceCardLabels = {
 	time: string;
@@ -13,7 +29,7 @@ type PerformanceCardLabels = {
 };
 
 type Props = {
-	performance: NormalizedPerformance;
+	performance: Performance;
 	labels: PerformanceCardLabels;
 };
 
@@ -36,7 +52,10 @@ export default function PerformanceCard({ performance, labels }: Props) {
 					) : null}
 
 					<ParagraphSmall>
-						<strong>{labels.rows}:</strong> {performance.matchedRows.join(', ')}
+						<strong>{labels.rows}:</strong>{' '}
+						{performance.matchedRows.length > 0
+							? performance.matchedRows.join(', ')
+							: (performance.matchedSections?.join(', ') ?? '')}
 					</ParagraphSmall>
 
 					{typeof performance.availableSeatCount === 'number' ? (
