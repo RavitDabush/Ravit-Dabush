@@ -6,7 +6,7 @@ import { Link } from '@/i18n/navigation';
 type NavbarLinkVariant = 'header' | 'drawer';
 
 type NavbarLinkProps = {
-	href: '/' | '/about' | '/journey';
+	href: '/' | '/about' | '/journey' | '/style-guide' | '/icons-explorer';
 	children: ReactNode;
 	isActive?: boolean;
 	variant?: NavbarLinkVariant;

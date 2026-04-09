@@ -6,7 +6,9 @@
 	"nav": {
 		"home": "בית",
 		"about": "אודות",
-		"journey": "המסע שלי"
+		"journey": "המסע שלי",
+		"style-guide": "מדריך סגנון",
+		"icons-explorer": "חוקר האייקונים"
 	},
 	"languageSwitcher": {
 		"label": "שפה",

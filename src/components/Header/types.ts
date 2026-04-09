@@ -1,6 +1,6 @@
-export type HeaderNavHref = '/' | '/about' | '/journey';
+export type HeaderNavHref = '/' | '/about' | '/journey' | '/style-guide' | '/icons-explorer';
 
-export type HeaderNavKey = 'home' | 'about' | 'journey';
+export type HeaderNavKey = 'home' | 'about' | 'journey' | 'style-guide' | 'icons-explorer';
 
 export type HeaderNavItem = {
 	href: HeaderNavHref;

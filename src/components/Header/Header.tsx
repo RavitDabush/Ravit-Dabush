@@ -14,7 +14,9 @@ import type { HeaderNavItem } from './types';
 const navItems: HeaderNavItem[] = [
 	{ href: '/', key: 'home' },
 	{ href: '/about', key: 'about' },
-	{ href: '/journey', key: 'journey' }
+	{ href: '/journey', key: 'journey' },
+	{ href: '/style-guide', key: 'style-guide' },
+	{ href: '/icons-explorer', key: 'icons-explorer' }
 ];
 
 export default function Header() {

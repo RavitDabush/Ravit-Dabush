@@ -6,7 +6,9 @@
 	"nav": {
 		"home": "Home",
 		"about": "About",
-		"journey": "Journey"
+		"journey": "Journey",
+		"style-guide": "Style Guide",
+		"icons-explorer": "Icons Explorer"
 	},
 	"languageSwitcher": {
 		"label": "Language",
