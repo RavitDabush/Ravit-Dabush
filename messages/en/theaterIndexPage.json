@@ -1,0 +1,20 @@
+{
+	"meta": {
+		"title": "Theater",
+		"description": "Browse theater pages by venue."
+	},
+	"title": "Theater",
+	"description": "Choose a theater page. A unified theater index will be added here later.",
+	"links": {
+		"lessin": {
+			"title": "Beit Lessin",
+			"description": "Confirmed Beit Lessin performances with preferred-row availability.",
+			"cta": "Open Beit Lessin"
+		},
+		"habima": {
+			"title": "Habima",
+			"description": "Confirmed Habima performances with preferred-row availability.",
+			"cta": "Open Habima"
+		}
+	}
+}
