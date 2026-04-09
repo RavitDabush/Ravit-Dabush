@@ -13,18 +13,27 @@ type Props = {
 const pageSize = 60;
 
 export default function IconGrid({ icons, weights, color }: Props) {
-	const [visibleCount, setVisibleCount] = useState(pageSize);
+	const [gridState, setGridState] = useState(() => ({
+		lastIcons: icons,
+		visibleCount: pageSize
+	}));
 	const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-	useEffect(() => {
-		setVisibleCount(pageSize); // Reset visible icons when filters change
-	}, [icons]);
+	if (gridState.lastIcons !== icons) {
+		setGridState({
+			lastIcons: icons,
+			visibleCount: pageSize
+		});
+	}
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
-					setVisibleCount(prev => Math.min(prev + pageSize, icons.length));
+					setGridState(currentState => ({
+						...currentState,
+						visibleCount: Math.min(currentState.visibleCount + pageSize, icons.length)
+					}));
 				}
 			},
 			{ rootMargin: '200px' }
@@ -37,7 +46,7 @@ export default function IconGrid({ icons, weights, color }: Props) {
 		};
 	}, [icons.length]);
 
-	const visibleIcons = icons.slice(0, visibleCount);
+	const visibleIcons = icons.slice(0, gridState.visibleCount);
 
 	return (
 		<div className="grid">

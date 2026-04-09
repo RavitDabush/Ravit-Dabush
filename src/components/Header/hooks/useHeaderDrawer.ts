@@ -50,10 +50,6 @@ export default function useHeaderDrawer() {
 			}
 		};
 
-		if (mediaQuery.matches) {
-			closeDrawer();
-		}
-
 		mediaQuery.addEventListener('change', handleDesktopChange);
 
 		return () => {
@@ -77,7 +73,7 @@ export default function useHeaderDrawer() {
 		}
 
 		menuToggleButtonRef.current?.focus();
-	}, [isOpen]);
+	}, [closeDrawer, isOpen]);
 
 	useEffect(() => {
 		if (!isOpen) {
@@ -139,7 +135,7 @@ export default function useHeaderDrawer() {
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
 		};
-	}, [isOpen]);
+	}, [closeDrawer, isOpen]);
 
 	return {
 		isOpen,
