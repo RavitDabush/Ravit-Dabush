@@ -4,6 +4,7 @@ import { useId, useMemo, useState } from 'react';
 import { Heading3, Paragraph } from '@/components/Typography';
 import { SourceConfidence } from '@/lib/habima/types';
 import PerformanceCard from './PerformanceCard';
+import { Select } from '@/components/Select';
 
 type Performance = {
 	id: string;
@@ -83,22 +84,18 @@ export default function PerformanceList({ performances, groups, emptyState, labe
 	return (
 		<div className="theater-browser">
 			<div className="input-wrapper theater-filter">
-				<label htmlFor={selectId} className="input-label">
-					{filter.label}
-				</label>
-				<select
+				<Select
 					id={selectId}
-					className="input-field theater-filter__select"
+					label={filter.label}
 					value={selectedShowName}
+					placeholder={filter.allOption}
+					options={options.map(showName => ({
+						value: showName,
+						label: showName
+					}))}
+					className="theater-filter"
 					onChange={event => setSelectedShowName(event.target.value)}
-				>
-					<option value="">{filter.allOption}</option>
-					{options.map(showName => (
-						<option key={showName} value={showName}>
-							{showName}
-						</option>
-					))}
-				</select>
+				/>
 			</div>
 
 			{filteredGroups.length === 0 ? (

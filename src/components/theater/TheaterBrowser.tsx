@@ -4,6 +4,7 @@ import { useId, useMemo, useState } from 'react';
 import { Heading3, Paragraph } from '@/components/Typography';
 import { NormalizedPerformance, SourceConfidence } from '@/lib/lessin/types';
 import PerformanceCard from './PerformanceCard';
+import { Select } from '@/components/Select';
 
 type PerformanceGroup = {
 	date: string;
@@ -69,22 +70,18 @@ export default function TheaterBrowser({ performances, groups, emptyState, label
 	return (
 		<div className="theater-browser">
 			<div className="input-wrapper theater-filter">
-				<label htmlFor={selectId} className="input-label">
-					{filter.label}
-				</label>
-				<select
+				<Select
 					id={selectId}
-					className="input-field theater-filter__select"
+					label={filter.label}
 					value={selectedShowName}
+					placeholder={filter.allOption}
+					options={options.map(showName => ({
+						value: showName,
+						label: showName
+					}))}
+					className="theater-filter"
 					onChange={event => setSelectedShowName(event.target.value)}
-				>
-					<option value="">{filter.allOption}</option>
-					{options.map(showName => (
-						<option key={showName} value={showName}>
-							{showName}
-						</option>
-					))}
-				</select>
+				/>
 			</div>
 
 			{filteredGroups.length === 0 ? (
