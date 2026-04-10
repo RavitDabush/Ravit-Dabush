@@ -2,32 +2,18 @@
 
 import { useId, useMemo, useState } from 'react';
 import { Heading3, Paragraph } from '@/components/Typography';
-import { SourceConfidence } from '@/lib/habima/types';
+import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import PerformanceCard from './PerformanceCard';
 import { Select } from '@/components/Select';
-
-type Performance = {
-	id: string;
-	showName: string;
-	date: string;
-	time: string;
-	venue?: string;
-	purchaseUrl?: string;
-	availableInPreferredRows: boolean;
-	matchedRows: string[];
-	availableSeatCount?: number;
-	sourceStatus?: string;
-	sourceConfidence: SourceConfidence;
-};
 
 type PerformanceGroup = {
 	date: string;
 	label: string;
-	performances: Performance[];
+	performances: TheaterNormalizedPerformance[];
 };
 
 type Props = {
-	performances: Performance[];
+	performances: TheaterNormalizedPerformance[];
 	groups: PerformanceGroup[];
 	emptyState: {
 		title: string;
@@ -37,10 +23,13 @@ type Props = {
 		time: string;
 		venue: string;
 		rows: string;
+		zones?: string;
+		availability?: string;
 		seats: string;
 		confidence: string;
 		purchase: string;
-		confidenceValues: Record<SourceConfidence, string>;
+		availabilityValues?: Record<'row' | 'zone' | 'general' | 'unknown', string>;
+		confidenceValues: Record<'high' | 'medium' | 'low', string>;
 	};
 	filter: {
 		label: string;
@@ -48,7 +37,10 @@ type Props = {
 	};
 };
 
-function groupPerformances(performances: Performance[], groups: PerformanceGroup[]): PerformanceGroup[] {
+function groupPerformances(
+	performances: TheaterNormalizedPerformance[],
+	groups: PerformanceGroup[]
+): PerformanceGroup[] {
 	const allowedIds = new Set(performances.map(performance => performance.id));
 
 	return groups

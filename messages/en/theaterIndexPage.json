@@ -15,6 +15,11 @@
 			"title": "Habima",
 			"description": "Confirmed Habima performances with preferred-row availability.",
 			"cta": "Open Habima"
+		},
+		"cameri": {
+			"title": "Cameri",
+			"description": "Confirmed Cameri performances with row, zone, or general ticket availability.",
+			"cta": "Open Cameri"
 		}
 	}
 }

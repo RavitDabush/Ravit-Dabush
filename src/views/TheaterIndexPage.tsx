@@ -29,6 +29,14 @@ export default function TheaterIndexPage() {
 						{t('links.habima.cta')}
 					</LinkButton>
 				</Card>
+
+				<Card className="theater-hub-card">
+					<FancyTitle>{t('links.cameri.title')}</FancyTitle>
+					<Paragraph>{t('links.cameri.description')}</Paragraph>
+					<LinkButton href="/theater/cameri" buttonType="outline">
+						{t('links.cameri.cta')}
+					</LinkButton>
+				</Card>
 			</div>
 		</PageLayout>
 	);

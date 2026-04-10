@@ -1,0 +1,41 @@
+{
+	"meta": {
+		"title": "Cameri Theater",
+		"description": "Confirmed Cameri performances with real ticket availability."
+	},
+	"title": "Cameri Performances",
+	"description": "Only Cameri performances with confirmed ticket availability are shown here. When the ticketing flow exposes rows or sections, they are shown explicitly. Otherwise the page falls back to confirmed general availability.",
+	"filter": {
+		"label": "Filter by play",
+		"allOption": "All plays"
+	},
+	"labels": {
+		"time": "Time",
+		"venue": "Venue",
+		"rows": "Available rows",
+		"zones": "Available zones",
+		"availability": "Availability type",
+		"seats": "Available seats",
+		"confidence": "Confidence",
+		"purchase": "Purchase tickets"
+	},
+	"availability": {
+		"row": "Row-level",
+		"zone": "Zone-level",
+		"general": "General availability",
+		"unknown": "Unknown"
+	},
+	"confidence": {
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low"
+	},
+	"empty": {
+		"title": "No matching Cameri performances right now",
+		"description": "There are currently no Cameri performances with confirmed availability."
+	},
+	"error": {
+		"title": "Unable to load the Cameri page",
+		"description": "The Cameri ticketing flow did not respond reliably enough to confirm availability."
+	}
+}

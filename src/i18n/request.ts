@@ -23,7 +23,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 			journeyPage: (await import(`../../messages/${locale}/journeyPage.json`)).default,
 			theaterPage: (await import(`../../messages/${locale}/theaterPage.json`)).default,
 			theaterIndexPage: (await import(`../../messages/${locale}/theaterIndexPage.json`)).default,
-			habimaPage: (await import(`../../messages/${locale}/habimaPage.json`)).default
+			habimaPage: (await import(`../../messages/${locale}/habimaPage.json`)).default,
+			cameriPage: (await import(`../../messages/${locale}/cameriPage.json`)).default
 		}
 	};
 });
