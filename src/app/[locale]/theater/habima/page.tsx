@@ -5,9 +5,10 @@ import { Alert } from '@/components/Alert';
 import PageLayout from '@/components/PageLayout';
 import PerformanceList from '@/components/theater/PerformanceList';
 import { FancyTitle, Paragraph } from '@/components/Typography';
-import { getNormalizedPreferredPerformances } from '@/lib/habima/normalizePerformance';
 import { NormalizedPerformance, SourceConfidence } from '@/lib/habima/types';
 import { createPageMetadata } from '@/lib/metadata';
+import { collectHabimaPerformances } from '@/lib/theater/collectHabimaPerformances';
+import { groupPerformancesByDate } from '@/lib/theater/groupPerformancesByDate';
 
 import '../style.scss';
 
@@ -16,37 +17,6 @@ export const revalidate = 600;
 type Props = {
 	params: Promise<{ locale: Locale }>;
 };
-
-type PerformanceGroup = {
-	date: string;
-	label: string;
-	performances: NormalizedPerformance[];
-};
-
-function formatDateLabel(date: string, locale: Locale): string {
-	return new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-US', {
-		weekday: 'long',
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric'
-	}).format(new Date(`${date}T00:00:00`));
-}
-
-function groupPerformancesByDate(performances: NormalizedPerformance[], locale: Locale): PerformanceGroup[] {
-	const grouped = new Map<string, NormalizedPerformance[]>();
-
-	for (const performance of performances) {
-		const currentGroup = grouped.get(performance.date) ?? [];
-		currentGroup.push(performance);
-		grouped.set(performance.date, currentGroup);
-	}
-
-	return Array.from(grouped.entries()).map(([date, items]) => ({
-		date,
-		label: formatDateLabel(date, locale),
-		performances: items
-	}));
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
@@ -64,12 +34,13 @@ export default async function LocaleHabimaTheaterPage({ params }: Props) {
 		low: t('confidence.low')
 	};
 
-	let groupedPerformances: PerformanceGroup[] | null = null;
+	let groupedPerformances: ReturnType<typeof groupPerformancesByDate<NormalizedPerformance>> | null = null;
 	let performances: NormalizedPerformance[] = [];
 	let hasError = false;
 
 	try {
-		performances = await getNormalizedPreferredPerformances();
+		const preparedData = await collectHabimaPerformances();
+		performances = preparedData.performances;
 		groupedPerformances = groupPerformancesByDate(performances, locale);
 	} catch {
 		hasError = true;

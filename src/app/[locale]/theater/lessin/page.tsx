@@ -5,8 +5,9 @@ import PageLayout from '@/components/PageLayout';
 import { Alert } from '@/components/Alert';
 import { FancyTitle, Paragraph } from '@/components/Typography';
 import { createPageMetadata } from '@/lib/metadata';
-import { getNormalizedPreferredPerformances } from '@/lib/lessin/normalizePerformance';
 import { NormalizedPerformance, SourceConfidence } from '@/lib/lessin/types';
+import { collectLessinPerformances } from '@/lib/theater/collectLessinPerformances';
+import { groupPerformancesByDate } from '@/lib/theater/groupPerformancesByDate';
 import TheaterBrowser from '@/components/theater/TheaterBrowser';
 
 import '../style.scss';
@@ -16,31 +17,6 @@ export const revalidate = 300;
 type Props = {
 	params: Promise<{ locale: Locale }>;
 };
-
-function formatDateLabel(date: string, locale: Locale): string {
-	return new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-US', {
-		weekday: 'long',
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric'
-	}).format(new Date(`${date}T00:00:00`));
-}
-
-function groupPerformancesByDate(performances: NormalizedPerformance[], locale: Locale) {
-	const grouped = new Map<string, NormalizedPerformance[]>();
-
-	for (const performance of performances) {
-		const currentGroup = grouped.get(performance.date) ?? [];
-		currentGroup.push(performance);
-		grouped.set(performance.date, currentGroup);
-	}
-
-	return Array.from(grouped.entries()).map(([date, items]) => ({
-		date,
-		label: formatDateLabel(date, locale),
-		performances: items
-	}));
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
@@ -57,11 +33,12 @@ export default async function LocaleLessinTheaterPage({ params }: Props) {
 		medium: t('confidence.medium'),
 		low: t('confidence.low')
 	};
-	let groupedPerformances = null as ReturnType<typeof groupPerformancesByDate> | null;
+	let groupedPerformances = null as ReturnType<typeof groupPerformancesByDate<NormalizedPerformance>> | null;
 	let hasError = false;
 
 	try {
-		const performances = await getNormalizedPreferredPerformances();
+		const preparedData = await collectLessinPerformances();
+		const performances = preparedData.performances;
 		groupedPerformances = groupPerformancesByDate(performances, locale);
 	} catch {
 		hasError = true;
