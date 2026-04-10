@@ -2,7 +2,6 @@ import Card from '@/components/Card/Card';
 
 type Props = {
 	ariaLabel: string;
-	cardCount?: number;
 };
 
 function PerformanceCardSkeleton({ alternate = false }: { alternate?: boolean }) {
@@ -23,7 +22,7 @@ function PerformanceCardSkeleton({ alternate = false }: { alternate?: boolean })
 					<div className="theater-loading-pills">
 						<span className="theater-loading-pill theater-loading-pill--short" />
 						<span className="theater-loading-pill theater-loading-pill--medium" />
-						<span className="theater-loading-pill theater-loading-pill--long" />
+						{alternate ? null : <span className="theater-loading-pill theater-loading-pill--long" />}
 					</div>
 				</div>
 			</div>
@@ -35,12 +34,71 @@ function PerformanceCardSkeleton({ alternate = false }: { alternate?: boolean })
 	);
 }
 
-export default function PerformanceListSkeleton({ ariaLabel, cardCount = 3 }: Props) {
+function PerformanceGroupSkeleton({
+	titleWidth = 'medium',
+	cardCount = 2
+}: {
+	titleWidth?: 'short' | 'medium' | 'long';
+	cardCount?: number;
+}) {
 	return (
-		<div className="theater-loading-grid" aria-label={ariaLabel} role="status">
-			{Array.from({ length: cardCount }, (_, index) => (
-				<PerformanceCardSkeleton key={index} alternate={index % 2 === 1} />
-			))}
+		<section className="theater-loading-group" aria-hidden="true">
+			<span
+				className={`theater-loading-line theater-loading-line--group-title theater-loading-line--group-title-${titleWidth}`}
+			/>
+
+			<div className="theater-loading-grid">
+				{Array.from({ length: cardCount }, (_, index) => (
+					<PerformanceCardSkeleton key={index} alternate={index % 2 === 1} />
+				))}
+			</div>
+		</section>
+	);
+}
+
+function TheaterLoadingStatusSkeleton() {
+	return (
+		<div className="theater-loading-status" aria-hidden="true">
+			<div className="theater-loading-status__step">
+				<span className="theater-loading-status__dot" />
+				<span className="theater-loading-line theater-loading-line--status theater-loading-line--status-long" />
+			</div>
+
+			<div className="theater-loading-status__step">
+				<span className="theater-loading-status__dot" />
+				<span className="theater-loading-line theater-loading-line--status theater-loading-line--status-medium" />
+			</div>
+
+			<div className="theater-loading-status__step">
+				<span className="theater-loading-status__dot" />
+				<span className="theater-loading-line theater-loading-line--status theater-loading-line--status-short" />
+			</div>
+		</div>
+	);
+}
+
+export default function PerformanceListSkeleton({ ariaLabel }: Props) {
+	return (
+		<div className="theater-loading-shell" aria-label={ariaLabel} role="status">
+			<section className="theater-page-intro theater-loading-shell__intro" aria-hidden="true">
+				<span className="theater-loading-line theater-loading-line--page-title" />
+				<span className="theater-loading-line theater-loading-line--page-copy" />
+				<span className="theater-loading-line theater-loading-line--page-copy theater-loading-line--page-copy-short" />
+			</section>
+
+			<div className="theater-browser theater-loading-shell__browser" aria-hidden="true">
+				<div className="theater-loading-shell__filter">
+					<span className="theater-loading-line theater-loading-line--filter-label" />
+					<span className="theater-loading-input" />
+				</div>
+
+				<TheaterLoadingStatusSkeleton />
+
+				<div className="theater-performance-list theater-loading-shell__list">
+					<PerformanceGroupSkeleton titleWidth="long" cardCount={2} />
+					<PerformanceGroupSkeleton titleWidth="medium" cardCount={1} />
+				</div>
+			</div>
 		</div>
 	);
 }

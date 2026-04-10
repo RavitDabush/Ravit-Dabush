@@ -29,20 +29,6 @@
 	max-width: 24rem;
 }
 
-.theater-filter__select {
-	appearance: none;
-	background-image:
-		linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-	background-position:
-		calc(100% - 1.2rem) calc(50% - 0.12rem),
-		calc(100% - 0.9rem) calc(50% - 0.12rem);
-	background-size:
-		0.35rem 0.35rem,
-		0.35rem 0.35rem;
-	background-repeat: no-repeat;
-	padding-inline-end: 2.5rem;
-}
-
 .theater-date-group {
 	display: grid;
 	gap: 1rem;
@@ -100,6 +86,34 @@
 	gap: 1rem;
 }
 
+.theater-loading-shell {
+	display: grid;
+	gap: 1.75rem;
+}
+
+.theater-loading-shell__intro {
+	max-width: 42rem;
+}
+
+.theater-loading-shell__browser {
+	gap: 1.25rem;
+}
+
+.theater-loading-shell__filter {
+	display: grid;
+	gap: 0.55rem;
+	max-width: 24rem;
+}
+
+.theater-loading-shell__list {
+	gap: 1.75rem;
+}
+
+.theater-loading-group {
+	display: grid;
+	gap: 1rem;
+}
+
 .theater-loading-card {
 	position: relative;
 	overflow: hidden;
@@ -110,7 +124,7 @@
 	box-shadow:
 		0 1.25rem 2.75rem rgba(68, 50, 58, 0.06),
 		inset 0 1px 0 rgba(255, 255, 255, 0.7);
-	animation: theater-loading-breathe 5.8s ease-in-out infinite;
+	animation: theater-loading-breathe 5.2s ease-in-out infinite;
 }
 
 .theater-loading-card::before {
@@ -120,14 +134,14 @@
 	background: linear-gradient(
 		108deg,
 		rgba(255, 255, 255, 0) 0%,
-		rgba(255, 255, 255, 0.08) 32%,
-		rgba(255, 248, 239, 0.26) 48%,
-		rgba(255, 255, 255, 0.1) 62%,
+		rgba(255, 255, 255, 0.12) 30%,
+		rgba(255, 248, 239, 0.38) 48%,
+		rgba(255, 255, 255, 0.16) 64%,
 		rgba(255, 255, 255, 0) 100%
 	);
 	background-size: 220% 100%;
 	transform: translateX(-12%);
-	animation: theater-loading-shimmer 4.8s ease-in-out infinite;
+	animation: theater-loading-shimmer 3.8s ease-in-out infinite;
 	pointer-events: none;
 }
 
@@ -168,17 +182,22 @@
 
 .theater-loading-line,
 .theater-loading-pill,
-.theater-loading-button {
+.theater-loading-button,
+.theater-loading-input,
+.theater-loading-status__dot {
 	position: relative;
 	display: block;
 	overflow: hidden;
 	border-radius: 999px;
 	background: linear-gradient(180deg, rgba(125, 111, 116, 0.12) 0%, rgba(125, 111, 116, 0.08) 100%);
+	animation: theater-loading-breathe-soft 4.2s ease-in-out infinite;
 }
 
 .theater-loading-line::after,
 .theater-loading-pill::after,
-.theater-loading-button::after {
+.theater-loading-button::after,
+.theater-loading-input::after,
+.theater-loading-status__dot::after {
 	content: '';
 	position: absolute;
 	inset: 0;
@@ -198,6 +217,21 @@
 	border-radius: 0.7rem;
 }
 
+.theater-loading-line--page-title {
+	width: min(38rem, 68%);
+	height: clamp(1.6rem, 4vw, 2.2rem);
+	border-radius: 0.9rem;
+}
+
+.theater-loading-line--page-copy {
+	width: min(36rem, 82%);
+	height: 0.95rem;
+}
+
+.theater-loading-line--page-copy-short {
+	width: min(28rem, 64%);
+}
+
 .theater-loading-line--title-alt {
 	width: min(62%, 16rem);
 }
@@ -214,6 +248,44 @@
 
 .theater-loading-line--detail-short {
 	width: 74%;
+}
+
+.theater-loading-line--filter-label {
+	width: 6.5rem;
+	height: 0.82rem;
+}
+
+.theater-loading-line--group-title {
+	height: 1.05rem;
+	border-radius: 0.7rem;
+}
+
+.theater-loading-line--group-title-short {
+	width: min(11rem, 34%);
+}
+
+.theater-loading-line--group-title-medium {
+	width: min(15rem, 46%);
+}
+
+.theater-loading-line--group-title-long {
+	width: min(19rem, 58%);
+}
+
+.theater-loading-line--status {
+	height: 0.78rem;
+}
+
+.theater-loading-line--status-short {
+	width: 6rem;
+}
+
+.theater-loading-line--status-medium {
+	width: 9rem;
+}
+
+.theater-loading-line--status-long {
+	width: 11.5rem;
 }
 
 .theater-loading-pills {
@@ -246,6 +318,107 @@
 	border-radius: 999px;
 }
 
+.theater-loading-input {
+	position: relative;
+	height: 3rem;
+	border-radius: var(--radius-md);
+	border: 1px solid rgba(122, 111, 118, 0.12);
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(249, 246, 243, 0.98) 100%),
+		linear-gradient(180deg, rgba(125, 111, 116, 0.1) 0%, rgba(125, 111, 116, 0.08) 100%);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.theater-loading-input::before {
+	content: '';
+	position: absolute;
+	inset-block-start: 50%;
+	inset-inline-start: 1rem;
+	inline-size: 46%;
+	block-size: 0.82rem;
+	border-radius: 999px;
+	background: linear-gradient(180deg, rgba(125, 111, 116, 0.12) 0%, rgba(125, 111, 116, 0.08) 100%);
+	transform: translateY(-50%);
+	animation: theater-loading-breathe-soft 4.2s ease-in-out infinite;
+}
+
+.theater-loading-input::after {
+	inset: auto 1rem 1rem auto;
+	inset-inline-end: 0.95rem;
+	inset-block-start: 50%;
+	inline-size: 0.95rem;
+	block-size: 0.95rem;
+	transform: translateY(-50%);
+	border-radius: 999px;
+}
+
+.theater-loading-status {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 1rem;
+	padding: 0.95rem 1rem;
+	border: 1px solid rgba(122, 111, 118, 0.12);
+	border-radius: var(--radius-lg);
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(248, 244, 241, 0.94) 100%), var(--color-card-bg);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+	animation: theater-loading-breathe-soft 4.8s ease-in-out infinite;
+}
+
+.theater-loading-status__step {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.55rem;
+	min-inline-size: 0;
+}
+
+.theater-loading-status__dot {
+	inline-size: 0.6rem;
+	block-size: 0.6rem;
+	flex: 0 0 auto;
+	border-radius: 999px;
+}
+
+.theater-loading-card:nth-child(2) {
+	animation-delay: 0.35s;
+}
+
+.theater-loading-card:nth-child(3) {
+	animation-delay: 0.7s;
+}
+
+.theater-loading-group:nth-child(2) .theater-loading-card {
+	animation-delay: 0.45s;
+}
+
+.theater-loading-group:nth-child(2) .theater-loading-line,
+.theater-loading-group:nth-child(2) .theater-loading-pill,
+.theater-loading-group:nth-child(2) .theater-loading-button,
+.theater-loading-group:nth-child(2) .theater-loading-input,
+.theater-loading-group:nth-child(2) .theater-loading-status__dot,
+.theater-loading-group:nth-child(2) .theater-loading-input::before,
+.theater-loading-group:nth-child(2) .theater-loading-status {
+	animation-delay: 0.55s;
+}
+
+.theater-loading-card:nth-child(2) .theater-loading-line,
+.theater-loading-card:nth-child(2) .theater-loading-pill,
+.theater-loading-card:nth-child(2) .theater-loading-button,
+.theater-loading-card:nth-child(2) .theater-loading-input,
+.theater-loading-card:nth-child(2) .theater-loading-status__dot,
+.theater-loading-card:nth-child(2) .theater-loading-input::before {
+	animation-delay: 0.25s;
+}
+
+.theater-loading-card:nth-child(3) .theater-loading-line,
+.theater-loading-card:nth-child(3) .theater-loading-pill,
+.theater-loading-card:nth-child(3) .theater-loading-button,
+.theater-loading-card:nth-child(3) .theater-loading-input,
+.theater-loading-card:nth-child(3) .theater-loading-status__dot,
+.theater-loading-card:nth-child(3) .theater-loading-input::before {
+	animation-delay: 0.5s;
+}
+
 @keyframes theater-loading-shimmer {
 	0% {
 		background-position: 160% 0;
@@ -265,20 +438,48 @@
 
 	50% {
 		opacity: 1;
-		filter: saturate(1) brightness(1.015);
+		filter: saturate(1) brightness(1.02);
+	}
+}
+
+@keyframes theater-loading-breathe-soft {
+	0%,
+	100% {
+		opacity: 0.92;
+		filter: brightness(0.985);
+	}
+
+	50% {
+		opacity: 1;
+		filter: brightness(1.04);
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	.theater-loading-card,
 	.theater-loading-card::before,
+	.theater-loading-line,
+	.theater-loading-pill,
+	.theater-loading-button,
+	.theater-loading-input,
+	.theater-loading-input::before,
+	.theater-loading-status,
+	.theater-loading-status__dot,
 	.theater-loading-line::after,
 	.theater-loading-pill::after,
-	.theater-loading-button::after {
+	.theater-loading-button::after,
+	.theater-loading-input::after,
+	.theater-loading-status__dot::after {
 		animation: none;
 	}
 
-	.theater-loading-card {
+	.theater-loading-card,
+	.theater-loading-line,
+	.theater-loading-pill,
+	.theater-loading-button,
+	.theater-loading-input,
+	.theater-loading-status,
+	.theater-loading-status__dot {
 		opacity: 1;
 		filter: none;
 	}
@@ -289,5 +490,13 @@
 	.theater-date-group__grid,
 	.theater-loading-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.theater-loading-shell {
+		gap: 2rem;
+	}
+
+	.theater-loading-status {
+		align-items: center;
 	}
 }
