@@ -13,6 +13,35 @@ export type LessinScheduleEntry = {
 	sourceDay?: string;
 	sourceShowId?: string;
 	isSoldOut: boolean;
+	featureId?: number;
+	seatplanId?: number | null;
+	ticketSaleStop?: string | null;
+};
+
+export type LessinFeature = {
+	id: number;
+	name: string;
+	closestPresentationDateTime?: string | null;
+};
+
+export type LessinPresentationSummary = {
+	id: number;
+	businessDate: string;
+	dateTime: string;
+	featureName: string;
+	featureId: number;
+	venueName: string;
+	seatplanId: number | null;
+	soldout: number;
+	ticketSaleStop?: string | null;
+};
+
+export type LessinFeaturesResponse = LessinFeature[];
+
+export type LessinPresentationsResponse = {
+	presentations: LessinPresentationSummary[];
+	hasReserved?: number;
+	hasGA?: boolean;
 };
 
 export type LessinPresentation = {

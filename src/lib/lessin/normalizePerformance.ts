@@ -1,8 +1,8 @@
 import 'server-only';
 
+import { fetchAllPresentations, fetchFeatures } from './fetchFeatures';
 import { fetchSeatAvailabilityBatch } from './fetchSeatAvailability';
-import { fetchSchedule } from './fetchSchedule';
-import { parseSchedule } from './parseSchedule';
+import { parseTicketingDiscovery } from './parseDiscovery';
 import { parseSeatAvailability } from './parseSeatAvailability';
 import {
 	LessinScheduleEntry,
@@ -83,12 +83,13 @@ export function normalizePerformance(
 }
 
 export async function getNormalizedPreferredPerformances(): Promise<NormalizedPerformance[]> {
-	const scheduleHtml = await fetchSchedule();
-	const scheduleEntries = parseSchedule(scheduleHtml);
-	const availabilityResults = await fetchSeatAvailabilityBatch(scheduleEntries);
+	const features = await fetchFeatures();
+	const presentations = await fetchAllPresentations(features);
+	const discoveryEntries = parseTicketingDiscovery(features, presentations);
+	const availabilityResults = await fetchSeatAvailabilityBatch(discoveryEntries);
 	const resultMap = new Map(availabilityResults.map(result => [result.presentationId, result]));
 
-	return scheduleEntries
+	return discoveryEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
 		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => {
