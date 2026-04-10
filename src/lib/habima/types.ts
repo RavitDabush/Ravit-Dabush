@@ -1,4 +1,6 @@
-export type SourceConfidence = 'high' | 'medium' | 'low';
+import { TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
+
+export type SourceConfidence = TheaterSourceConfidence;
 
 export type HabimaSchedulePresentation = {
 	id: number;
@@ -125,17 +127,4 @@ export type ParsedSeatAvailability = {
 	sourceConfidence: SourceConfidence;
 };
 
-export type NormalizedPerformance = {
-	id: string;
-	showName: string;
-	date: string;
-	time: string;
-	venue?: string;
-	purchaseUrl?: string;
-	availableInPreferredRows: boolean;
-	matchedRows: string[];
-	matchedSections: string[];
-	availableSeatCount?: number;
-	sourceStatus?: string;
-	sourceConfidence: SourceConfidence;
-};
+export type NormalizedPerformance = TheaterNormalizedPerformance;

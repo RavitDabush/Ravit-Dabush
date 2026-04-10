@@ -12,10 +12,20 @@
 	"labels": {
 		"time": "שעה",
 		"venue": "אולם",
+		"sections": "אזורים",
 		"rows": "שורות זמינות",
+		"availability": "סוג זמינות",
 		"seats": "מספר מושבים זמינים",
 		"confidence": "רמת ודאות",
+		"status": "סטטוס מקור",
+		"notAvailable": "לא זמין",
 		"purchase": "לרכישת כרטיסים"
+	},
+	"availability": {
+		"row": "ברמת שורה",
+		"section": "ברמת אזור",
+		"general": "זמינות כללית",
+		"unknown": "לא ידוע"
 	},
 	"confidence": {
 		"high": "גבוהה",

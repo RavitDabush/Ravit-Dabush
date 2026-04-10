@@ -12,16 +12,18 @@
 	"labels": {
 		"time": "Time",
 		"venue": "Venue",
+		"sections": "Sections",
 		"rows": "Available rows",
-		"zones": "Available zones",
 		"availability": "Availability type",
 		"seats": "Available seats",
 		"confidence": "Confidence",
+		"status": "Source status",
+		"notAvailable": "Not available",
 		"purchase": "Purchase tickets"
 	},
 	"availability": {
 		"row": "Row-level",
-		"zone": "Zone-level",
+		"section": "Section-level",
 		"general": "General availability",
 		"unknown": "Unknown"
 	},

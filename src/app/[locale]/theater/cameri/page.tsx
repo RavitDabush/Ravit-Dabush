@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import { NormalizedPerformance } from '@/lib/cameri/types';
 import { createPageMetadata } from '@/lib/metadata';
+import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import { collectCameriPerformances } from '@/lib/theater/collectCameriPerformances';
 import CameriTheaterPage from '@/views/CameriTheaterPage';
 
@@ -23,7 +23,7 @@ export default async function LocaleCameriTheaterPage({ params }: Props) {
 	const { locale } = await params;
 	setRequestLocale(locale);
 
-	let performances: NormalizedPerformance[] = [];
+	let performances: TheaterNormalizedPerformance[] = [];
 	let hasError = false;
 
 	try {

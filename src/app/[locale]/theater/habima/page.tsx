@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Locale } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
-import { NormalizedPerformance } from '@/lib/habima/types';
 import { createPageMetadata } from '@/lib/metadata';
+import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import { collectHabimaPerformances } from '@/lib/theater/collectHabimaPerformances';
 import HabimaTheaterPage from '@/views/HabimaTheaterPage';
 
@@ -23,7 +23,7 @@ export default async function LocaleHabimaTheaterPage({ params }: Props) {
 	const { locale } = await params;
 	setRequestLocale(locale);
 
-	let performances: NormalizedPerformance[] = [];
+	let performances: TheaterNormalizedPerformance[] = [];
 	let hasError = false;
 
 	try {

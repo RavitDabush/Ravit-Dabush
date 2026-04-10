@@ -1,6 +1,8 @@
-export type SourceConfidence = 'high' | 'medium' | 'low';
+import { TheaterAvailabilityType, TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
 
-export type AvailabilityType = 'row' | 'zone' | 'general' | 'unknown';
+export type SourceConfidence = TheaterSourceConfidence;
+
+export type AvailabilityType = TheaterAvailabilityType;
 
 export type CameriScheduleTimeEntry = [number, string, string, string];
 
@@ -121,26 +123,10 @@ export type ParsedSeatAvailability = {
 	availabilityType: AvailabilityType;
 	availableInPreferred: boolean;
 	matchedRows: string[];
-	matchedZones: string[];
+	matchedSections: string[];
 	availableSeatCount: number;
 	sourceStatus: string;
 	sourceConfidence: SourceConfidence;
 };
 
-export type NormalizedPerformance = {
-	id: string;
-	showName: string;
-	date: string;
-	time: string;
-	venue?: string;
-	purchaseUrl?: string;
-	available: boolean;
-	availabilityType: AvailabilityType;
-	availableInPreferred?: boolean;
-	matchedZones?: string[];
-	matchedRows?: string[];
-	availableSeatCount?: number;
-	sourceStatus?: string;
-	sourceConfidence: SourceConfidence;
-	availableInPreferredRows?: boolean;
-};
+export type NormalizedPerformance = TheaterNormalizedPerformance;

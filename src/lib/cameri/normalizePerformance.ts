@@ -37,15 +37,13 @@ export function normalizePerformance(
 			time: entry.time,
 			venue: result.presentation.venueName || entry.venue,
 			purchaseUrl: entry.purchaseUrl,
-			available: parsedAvailability.available,
+			hasPreferredAvailability: parsedAvailability.availableInPreferred,
 			availabilityType: parsedAvailability.availabilityType,
-			availableInPreferred: parsedAvailability.availableInPreferred,
-			matchedZones: parsedAvailability.matchedZones,
+			matchedSections: parsedAvailability.matchedSections,
 			matchedRows: parsedAvailability.matchedRows,
 			availableSeatCount: parsedAvailability.availableSeatCount,
 			sourceStatus: `${result.sourceStatus} | ${parsedAvailability.sourceStatus}`,
-			sourceConfidence: parsedAvailability.sourceConfidence,
-			availableInPreferredRows: parsedAvailability.availableInPreferred
+			sourceConfidence: parsedAvailability.sourceConfidence
 		};
 	}
 
@@ -57,14 +55,12 @@ export function normalizePerformance(
 			time: entry.time,
 			venue: result.presentation.venueName || entry.venue,
 			purchaseUrl: entry.purchaseUrl,
-			available: false,
+			hasPreferredAvailability: false,
 			availabilityType: 'unknown',
-			availableInPreferred: false,
-			matchedZones: [],
+			matchedSections: [],
 			matchedRows: [],
 			sourceStatus: `${result.sourceStatus} | seat_level_data_required`,
-			sourceConfidence: 'medium',
-			availableInPreferredRows: false
+			sourceConfidence: 'medium'
 		};
 	}
 
@@ -75,14 +71,12 @@ export function normalizePerformance(
 		time: entry.time,
 		venue: entry.venue,
 		purchaseUrl: entry.purchaseUrl,
-		available: false,
+		hasPreferredAvailability: false,
 		availabilityType: 'unknown',
-		availableInPreferred: false,
-		matchedZones: [],
+		matchedSections: [],
 		matchedRows: [],
 		sourceStatus: result?.sourceStatus ?? entry.sourceStatus,
-		sourceConfidence: getFallbackConfidence(result),
-		availableInPreferredRows: false
+		sourceConfidence: getFallbackConfidence(result)
 	};
 }
 
@@ -94,6 +88,6 @@ export async function getNormalizedAvailablePerformances(): Promise<NormalizedPe
 
 	return scheduleEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
-		.filter(performance => performance.available)
+		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
 }

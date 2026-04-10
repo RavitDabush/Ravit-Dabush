@@ -37,7 +37,8 @@ export function normalizePerformance(
 			time: entry.time,
 			venue: result.presentation.venueName || entry.venue,
 			purchaseUrl: entry.purchaseUrl,
-			availableInPreferredRows: parsedAvailability.availableInPreferredRows,
+			hasPreferredAvailability: parsedAvailability.availableInPreferredRows,
+			availabilityType: parsedAvailability.availableInPreferredRows ? 'row' : 'unknown',
 			matchedRows: parsedAvailability.matchedRows,
 			matchedSections: parsedAvailability.matchedSections,
 			availableSeatCount: parsedAvailability.availableSeatCount,
@@ -53,7 +54,8 @@ export function normalizePerformance(
 		time: entry.time,
 		venue: entry.venue,
 		purchaseUrl: entry.purchaseUrl,
-		availableInPreferredRows: false,
+		hasPreferredAvailability: false,
+		availabilityType: 'unknown',
 		matchedRows: [],
 		matchedSections: [],
 		sourceStatus: result?.sourceStatus,
@@ -69,6 +71,6 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 
 	return scheduleEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
-		.filter(performance => performance.availableInPreferredRows)
+		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
 }

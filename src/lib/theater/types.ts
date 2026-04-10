@@ -1,13 +1,24 @@
-import { NormalizedPerformance as HabimaNormalizedPerformance } from '@/lib/habima/types';
-import { NormalizedPerformance as LessinNormalizedPerformance } from '@/lib/lessin/types';
-import { NormalizedPerformance as CameriNormalizedPerformance } from '@/lib/cameri/types';
-
 export type TheaterId = 'habima' | 'lessin' | 'cameri';
 
-export type TheaterNormalizedPerformance =
-	| HabimaNormalizedPerformance
-	| LessinNormalizedPerformance
-	| CameriNormalizedPerformance;
+export type TheaterSourceConfidence = 'high' | 'medium' | 'low';
+
+export type TheaterAvailabilityType = 'row' | 'section' | 'general' | 'unknown';
+
+export type TheaterNormalizedPerformance = {
+	id: string;
+	showName: string;
+	date: string;
+	time: string;
+	venue?: string;
+	purchaseUrl?: string;
+	hasPreferredAvailability: boolean;
+	availabilityType: TheaterAvailabilityType;
+	matchedSections: string[];
+	matchedRows: string[];
+	availableSeatCount?: number;
+	sourceStatus?: string;
+	sourceConfidence: TheaterSourceConfidence;
+};
 
 export type TheaterCollectorResult<TPerformance extends TheaterNormalizedPerformance = TheaterNormalizedPerformance> = {
 	theaterId: TheaterId;

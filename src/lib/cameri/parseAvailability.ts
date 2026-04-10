@@ -42,7 +42,7 @@ function getSectionMatchKind(sectionLabel: string): FlattenedSeat['sectionMatchK
 		return 'excluded';
 	}
 
-	return 'unknown';
+	return 'excluded';
 }
 
 function flattenSeatplan(seatplan: CameriSeatplanResponse): FlattenedSeat[] {
@@ -90,7 +90,7 @@ export function parseAvailability(
 	const matchedRows = Array.from(new Set(groupASeats.map(seat => seat.rowLabel))).sort(
 		(left, right) => Number(left) - Number(right)
 	);
-	const matchedZones = Array.from(new Set(preferredSeats.map(seat => seat.sectionLabel))).sort((left, right) =>
+	const matchedSections = Array.from(new Set(preferredSeats.map(seat => seat.sectionLabel))).sort((left, right) =>
 		left.localeCompare(right)
 	);
 	const hasSupportedPreferredSections = flattenedSeats.some(
@@ -104,7 +104,7 @@ export function parseAvailability(
 			availabilityType: 'unknown',
 			availableInPreferred: false,
 			matchedRows: [],
-			matchedZones: [],
+			matchedSections: [],
 			availableSeatCount: 0,
 			sourceStatus: 'ambiguous_section_labels',
 			sourceConfidence: 'low'
@@ -117,7 +117,7 @@ export function parseAvailability(
 			availabilityType: 'unknown',
 			availableInPreferred: false,
 			matchedRows: [],
-			matchedZones: [],
+			matchedSections: [],
 			availableSeatCount: 0,
 			sourceStatus: 'no_available_seats',
 			sourceConfidence: hasSupportedPreferredSections ? 'high' : 'medium'
@@ -125,12 +125,14 @@ export function parseAvailability(
 	}
 
 	if (preferredSeats.length > 0) {
+		const availabilityType = groupASeats.length > 0 ? 'row' : 'section';
+
 		return {
 			available: true,
-			availabilityType: 'row',
+			availabilityType,
 			availableInPreferred: true,
 			matchedRows,
-			matchedZones,
+			matchedSections,
 			availableSeatCount: preferredSeats.length,
 			sourceStatus: 'preferred_sections_confirmed',
 			sourceConfidence: 'high'
@@ -142,7 +144,7 @@ export function parseAvailability(
 		availabilityType: 'unknown',
 		availableInPreferred: false,
 		matchedRows: [],
-		matchedZones: [],
+		matchedSections: [],
 		availableSeatCount: 0,
 		sourceStatus: 'available_outside_preferred_sections',
 		sourceConfidence: hasSupportedPreferredSections ? 'medium' : 'low'

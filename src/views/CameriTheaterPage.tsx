@@ -3,18 +3,18 @@ import PageLayout from '@/components/PageLayout';
 import PerformanceList from '@/components/theater/PerformanceList';
 import { FancyTitle, Paragraph } from '@/components/Typography';
 import { Locale, useTranslations } from 'next-intl';
-import { NormalizedPerformance, SourceConfidence } from '@/lib/cameri/types';
+import { TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
 import { groupPerformancesByDate } from '@/lib/theater/groupPerformancesByDate';
 
 type Props = {
 	locale: Locale;
-	performances: NormalizedPerformance[];
+	performances: TheaterNormalizedPerformance[];
 	hasError: boolean;
 };
 
 export default function CameriTheaterPage({ locale, performances, hasError }: Props) {
 	const t = useTranslations('cameriPage');
-	const confidenceValues: Record<SourceConfidence, string> = {
+	const confidenceValues: Record<TheaterSourceConfidence, string> = {
 		high: t('confidence.high'),
 		medium: t('confidence.medium'),
 		low: t('confidence.low')
@@ -47,15 +47,17 @@ export default function CameriTheaterPage({ locale, performances, hasError }: Pr
 					labels={{
 						time: t('labels.time'),
 						venue: t('labels.venue'),
+						sections: t('labels.sections'),
 						rows: t('labels.rows'),
-						zones: t('labels.zones'),
 						availability: t('labels.availability'),
 						seats: t('labels.seats'),
 						confidence: t('labels.confidence'),
+						status: t('labels.status'),
+						notAvailable: t('labels.notAvailable'),
 						purchase: t('labels.purchase'),
 						availabilityValues: {
 							row: t('availability.row'),
-							zone: t('availability.zone'),
+							section: t('availability.section'),
 							general: t('availability.general'),
 							unknown: t('availability.unknown')
 						},

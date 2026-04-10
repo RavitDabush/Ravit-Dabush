@@ -1,48 +1,30 @@
 import Card from '@/components/Card/Card';
 import { Heading4, LinkButton, ParagraphSmall, SmallText } from '@/components/Typography';
-
-type SourceConfidence = 'high' | 'medium' | 'low';
-type AvailabilityType = 'row' | 'zone' | 'general' | 'unknown';
-
-type Performance = {
-	id: string;
-	showName: string;
-	date: string;
-	time: string;
-	venue?: string;
-	purchaseUrl?: string;
-	availableInPreferredRows?: boolean;
-	availableInPreferred?: boolean;
-	availabilityType?: AvailabilityType;
-	matchedRows?: string[];
-	matchedSections?: string[];
-	matchedZones?: string[];
-	availableSeatCount?: number;
-	sourceStatus?: string;
-	sourceConfidence: SourceConfidence;
-};
+import { TheaterAvailabilityType, TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
 
 type PerformanceCardLabels = {
 	time: string;
 	venue: string;
+	sections: string;
 	rows: string;
-	zones?: string;
 	availability?: string;
 	seats: string;
 	confidence: string;
+	status: string;
+	notAvailable: string;
 	purchase: string;
-	availabilityValues?: Partial<Record<AvailabilityType, string>>;
-	confidenceValues: Record<SourceConfidence, string>;
+	availabilityValues?: Partial<Record<TheaterAvailabilityType, string>>;
+	confidenceValues: Record<TheaterSourceConfidence, string>;
 };
 
 type Props = {
-	performance: Performance;
+	performance: TheaterNormalizedPerformance;
 	labels: PerformanceCardLabels;
 };
 
 export default function PerformanceCard({ performance, labels }: Props) {
-	const matchedRows = performance.matchedRows ?? [];
-	const matchedZones = performance.matchedZones ?? performance.matchedSections ?? [];
+	const matchedRows = performance.matchedRows;
+	const matchedSections = performance.matchedSections;
 	const availabilityValue = performance.availabilityType
 		? (labels.availabilityValues?.[performance.availabilityType] ?? performance.availabilityType)
 		: null;
@@ -64,17 +46,14 @@ export default function PerformanceCard({ performance, labels }: Props) {
 						</ParagraphSmall>
 					) : null}
 
-					{matchedRows.length > 0 ? (
-						<ParagraphSmall>
-							<strong>{labels.rows}:</strong> {matchedRows.join(', ')}
-						</ParagraphSmall>
-					) : null}
+					<ParagraphSmall>
+						<strong>{labels.sections}:</strong>{' '}
+						{matchedSections.length > 0 ? matchedSections.join(', ') : labels.notAvailable}
+					</ParagraphSmall>
 
-					{matchedZones.length > 0 ? (
-						<ParagraphSmall>
-							<strong>{labels.zones ?? labels.rows}:</strong> {matchedZones.join(', ')}
-						</ParagraphSmall>
-					) : null}
+					<ParagraphSmall>
+						<strong>{labels.rows}:</strong> {matchedRows.length > 0 ? matchedRows.join(', ') : labels.notAvailable}
+					</ParagraphSmall>
 
 					{availabilityValue && labels.availability ? (
 						<ParagraphSmall>
@@ -82,14 +61,17 @@ export default function PerformanceCard({ performance, labels }: Props) {
 						</ParagraphSmall>
 					) : null}
 
-					{typeof performance.availableSeatCount === 'number' ? (
-						<ParagraphSmall>
-							<strong>{labels.seats}:</strong> {performance.availableSeatCount}
-						</ParagraphSmall>
-					) : null}
+					<ParagraphSmall>
+						<strong>{labels.seats}:</strong>{' '}
+						{typeof performance.availableSeatCount === 'number' ? performance.availableSeatCount : labels.notAvailable}
+					</ParagraphSmall>
 
 					<ParagraphSmall>
 						<strong>{labels.confidence}:</strong> {labels.confidenceValues[performance.sourceConfidence]}
+					</ParagraphSmall>
+
+					<ParagraphSmall>
+						<strong>{labels.status}:</strong> {performance.sourceStatus || labels.notAvailable}
 					</ParagraphSmall>
 				</div>
 			</div>

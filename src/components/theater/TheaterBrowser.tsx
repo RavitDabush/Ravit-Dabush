@@ -22,13 +22,15 @@ type Props = {
 	labels: {
 		time: string;
 		venue: string;
+		sections: string;
 		rows: string;
-		zones?: string;
 		availability?: string;
 		seats: string;
 		confidence: string;
+		status: string;
+		notAvailable: string;
 		purchase: string;
-		availabilityValues?: Record<'row' | 'zone' | 'general' | 'unknown', string>;
+		availabilityValues?: Record<'row' | 'section' | 'general' | 'unknown', string>;
 		confidenceValues: Record<'high' | 'medium' | 'low', string>;
 	};
 	filter: {
