@@ -1,9 +1,9 @@
 import 'server-only';
 
 import { fetchAvailabilityBatch } from './fetchAvailability';
-import { fetchSchedule } from './fetchSchedule';
+import { fetchPresentations } from './fetchPresentations';
 import { parseAvailability } from './parseAvailability';
-import { parseSchedule } from './parseSchedule';
+import { parsePresentations } from './parsePresentations';
 import {
 	CameriScheduleEntry,
 	CameriSeatAvailabilityFetchResult,
@@ -81,12 +81,12 @@ export function normalizePerformance(
 }
 
 export async function getNormalizedAvailablePerformances(): Promise<NormalizedPerformance[]> {
-	const scheduleHtml = await fetchSchedule();
-	const scheduleEntries = parseSchedule(scheduleHtml);
-	const availabilityResults = await fetchAvailabilityBatch(scheduleEntries);
+	const presentationsResponse = await fetchPresentations();
+	const presentationEntries = parsePresentations(presentationsResponse);
+	const availabilityResults = await fetchAvailabilityBatch(presentationEntries);
 	const resultMap = new Map(availabilityResults.map(result => [result.presentationId, result]));
 
-	return scheduleEntries
+	return presentationEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
 		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));

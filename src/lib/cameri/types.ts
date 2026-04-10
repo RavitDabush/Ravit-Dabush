@@ -28,6 +28,22 @@ export type CameriScheduleEntry = {
 	sourceStatus?: string;
 };
 
+export type CameriPresentationListItem = {
+	id: number;
+	featureName: string;
+	businessDate: string;
+	dateTime: string;
+	venueName: string;
+	seatplanId: number | null;
+	soldout: number;
+	ticketSaleStop?: string | null;
+	[key: string]: unknown;
+};
+
+export type CameriPresentationListResponse = {
+	presentations: CameriPresentationListItem[];
+};
+
 export type CameriPresentation = {
 	id: number;
 	businessDate: string;
