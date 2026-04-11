@@ -1,2 +1,5 @@
+echo "Running tests..."
 npm test
+
+echo "Running lint..."
 npm run lint
