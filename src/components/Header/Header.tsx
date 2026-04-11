@@ -38,7 +38,7 @@ export default function Header() {
 	const { isOpen, closeDrawer, toggleDrawer, menuToggleButtonRef, drawerCloseButtonRef, drawerRef } = useHeaderDrawer();
 
 	const logoSrc = locale === 'he' ? '/logos/logo-medium-he.svg' : '/logos/logo-medium-en.svg';
-	const logoAlt = locale === 'he' ? 'הלוגו של רוית דבוש' : 'Ravit Dabush logo';
+	const logoAlt = t('logoAlt');
 
 	useEffect(() => {
 		closeDrawer();
