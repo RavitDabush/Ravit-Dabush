@@ -62,7 +62,8 @@ export default function ComingSoonTheaterPage({ locale, performances, hasError }
 	const theaterNames: Record<TheaterId, string> = {
 		lessin: t('theaters.lessin'),
 		habima: t('theaters.habima'),
-		cameri: t('theaters.cameri')
+		cameri: t('theaters.cameri'),
+		tomix: t('theaters.tomix')
 	};
 	const groups = groupBySaleStart(performances, locale);
 

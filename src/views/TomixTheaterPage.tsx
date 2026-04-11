@@ -12,8 +12,8 @@ type Props = {
 	hasError: boolean;
 };
 
-export default function LessinTheaterPage({ locale, performances, hasError }: Props) {
-	const t = useTranslations('theaterPage');
+export default function TomixTheaterPage({ locale, performances, hasError }: Props) {
+	const t = useTranslations('tomixPage');
 	const confidenceValues: Record<TheaterSourceConfidence, string> = {
 		high: t('confidence.high'),
 		medium: t('confidence.medium'),
@@ -40,6 +40,10 @@ export default function LessinTheaterPage({ locale, performances, hasError }: Pr
 						title: t('empty.title'),
 						description: t('empty.description')
 					}}
+					filter={{
+						label: t('filter.label'),
+						allOption: t('filter.allOption')
+					}}
 					labels={{
 						time: t('labels.time'),
 						venue: t('labels.venue'),
@@ -58,10 +62,6 @@ export default function LessinTheaterPage({ locale, performances, hasError }: Pr
 							unknown: t('availability.unknown')
 						},
 						confidenceValues
-					}}
-					filter={{
-						label: t('filter.label'),
-						allOption: t('filter.allOption')
 					}}
 				/>
 			)}

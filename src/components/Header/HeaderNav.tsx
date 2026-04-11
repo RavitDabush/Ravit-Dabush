@@ -1,5 +1,6 @@
 'use client';
 
+import { CaretDown } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
 import { usePathname } from '@/i18n/navigation';
 import NavbarLink from '@/components/NavbarLink';
@@ -35,12 +36,43 @@ export default function HeaderNav({ items, variant = 'desktop', onNavigate }: He
 			<ul className={listClassName}>
 				{items.map(item => {
 					const isActive = isActiveLink(item.href);
+					const hasChildren = Boolean(item.children?.length);
 
 					return (
-						<li key={item.key} className={itemClassName}>
-							<NavbarLink href={item.href} isActive={isActive} variant={linkVariant} onClick={onNavigate}>
-								{t(`nav.${item.key}`)}
-							</NavbarLink>
+						<li
+							key={item.key}
+							className={`${itemClassName}${hasChildren ? ` ${isDrawer ? 'site-header-drawer-item--has-children' : 'site-header-nav-item--has-children'}` : ''}`}
+						>
+							<div className={isDrawer ? 'site-header-drawer-link-group' : 'site-header-nav-link-group'}>
+								<NavbarLink href={item.href} isActive={isActive} variant={linkVariant} onClick={onNavigate}>
+									{t(`nav.${item.key}`)}
+								</NavbarLink>
+
+								{hasChildren && !isDrawer ? (
+									<span className="site-header-nav-caret" aria-hidden="true">
+										<CaretDown size={14} weight="bold" />
+									</span>
+								) : null}
+							</div>
+
+							{hasChildren ? (
+								<ul className={isDrawer ? 'site-header-drawer-submenu' : 'site-header-nav-submenu'}>
+									{item.children?.map(child => {
+										const isChildActive = isActiveLink(child.href);
+
+										return (
+											<li
+												key={child.key}
+												className={isDrawer ? 'site-header-drawer-submenu-item' : 'site-header-nav-submenu-item'}
+											>
+												<NavbarLink href={child.href} isActive={isChildActive} variant={linkVariant} onClick={onNavigate}>
+													{t(`nav.${child.key}`)}
+												</NavbarLink>
+											</li>
+										);
+									})}
+								</ul>
+							) : null}
 						</li>
 					);
 				})}

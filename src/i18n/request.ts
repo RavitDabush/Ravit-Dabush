@@ -25,7 +25,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
 			theaterIndexPage: (await import(`../../messages/${locale}/theaterIndexPage.json`)).default,
 			comingSoonPage: (await import(`../../messages/${locale}/comingSoonPage.json`)).default,
 			habimaPage: (await import(`../../messages/${locale}/habimaPage.json`)).default,
-			cameriPage: (await import(`../../messages/${locale}/cameriPage.json`)).default
+			cameriPage: (await import(`../../messages/${locale}/cameriPage.json`)).default,
+			tomixPage: (await import(`../../messages/${locale}/tomixPage.json`)).default
 		}
 	};
 });

@@ -82,7 +82,7 @@ export default function PerformanceCard({ performance, labels, theaterName, hide
 							</ParagraphSmall>
 
 							{availabilityValue && labels.availability ? (
-								<ParagraphSmall>
+								<ParagraphSmall className="visually-hidden">
 									<strong>{labels.availability}:</strong> {availabilityValue}
 								</ParagraphSmall>
 							) : null}
@@ -92,11 +92,11 @@ export default function PerformanceCard({ performance, labels, theaterName, hide
 								{typeof performance.availableSeatCount === 'number' ? performance.availableSeatCount : labels.notAvailable}
 							</ParagraphSmall>
 
-							<ParagraphSmall>
+							<ParagraphSmall className="visually-hidden">
 								<strong>{labels.confidence}:</strong> {labels.confidenceValues[performance.sourceConfidence]}
 							</ParagraphSmall>
 
-							<ParagraphSmall>
+							<ParagraphSmall className="visually-hidden">
 								<strong>{labels.status}:</strong> {performance.sourceStatus || labels.notAvailable}
 							</ParagraphSmall>
 						</>

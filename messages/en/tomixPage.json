@@ -1,0 +1,43 @@
+{
+	"meta": {
+		"title": "TOMIX Theater",
+		"description": "TOMIX theater productions with confirmed Eventer seats in rows 1-7."
+	},
+	"title": "TOMIX Theater",
+	"description": "Only TOMIX theater-category performances with confirmed Eventer seats in rows 1-7 are shown here.",
+	"filter": {
+		"label": "Filter by production",
+		"allOption": "All productions"
+	},
+	"labels": {
+		"time": "Time",
+		"venue": "Venue",
+		"sections": "Sections",
+		"rows": "Available rows",
+		"availability": "Availability type",
+		"seats": "Available seats",
+		"confidence": "Confidence",
+		"status": "Source status",
+		"notAvailable": "Not available",
+		"purchase": "Purchase tickets"
+	},
+	"availability": {
+		"row": "Row-level",
+		"section": "Section-level",
+		"general": "General availability",
+		"unknown": "Unknown"
+	},
+	"confidence": {
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low"
+	},
+	"empty": {
+		"title": "No matching TOMIX performances right now",
+		"description": "There are currently no TOMIX theater performances with confirmed Eventer seats in rows 1-7."
+	},
+	"error": {
+		"title": "Unable to load TOMIX theater",
+		"description": "The TOMIX or Eventer sources did not respond reliably enough to confirm preferred-row availability."
+	}
+}

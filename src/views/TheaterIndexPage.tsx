@@ -45,6 +45,14 @@ export default function TheaterIndexPage() {
 						{t('links.cameri.cta')}
 					</LinkButton>
 				</Card>
+
+				<Card className="theater-hub-card">
+					<FancyTitle>{t('links.tomix.title')}</FancyTitle>
+					<Paragraph>{t('links.tomix.description')}</Paragraph>
+					<LinkButton href="/theater/tomix" buttonType="outline">
+						{t('links.tomix.cta')}
+					</LinkButton>
+				</Card>
 			</div>
 		</PageLayout>
 	);

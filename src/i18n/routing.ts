@@ -13,6 +13,7 @@ export const routing = defineRouting({
 		'/theater/lessin': '/theater/lessin',
 		'/theater/habima': '/theater/habima',
 		'/theater/cameri': '/theater/cameri',
+		'/theater/tomix': '/theater/tomix',
 		'/style-guide': '/style-guide',
 		'/icons-explorer': '/icons-explorer'
 	}

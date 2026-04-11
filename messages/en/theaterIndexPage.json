@@ -25,6 +25,11 @@
 			"title": "Cameri",
 			"description": "Confirmed Cameri performances with row, zone, or general ticket availability.",
 			"cta": "Open Cameri"
+		},
+		"tomix": {
+			"title": "TOMIX Theater",
+			"description": "TOMIX theater productions with confirmed Eventer seats in rows 1-7.",
+			"cta": "Open TOMIX"
 		}
 	}
 }

@@ -8,6 +8,7 @@ export type HeaderNavHref =
 	| '/theater/coming-soon'
 	| '/theater/habima'
 	| '/theater/cameri'
+	| '/theater/tomix'
 	| '/theater/lessin';
 
 export type HeaderNavKey =
@@ -19,12 +20,14 @@ export type HeaderNavKey =
 	| 'theater'
 	| 'habima'
 	| 'cameri'
+	| 'tomix'
 	| 'lessin'
 	| 'coming-soon';
 
 export type HeaderNavItem = {
 	href: HeaderNavHref;
 	key: HeaderNavKey;
+	children?: HeaderNavItem[];
 };
 
 export type HeaderNavVariant = 'desktop' | 'drawer';

@@ -1,0 +1,43 @@
+{
+	"meta": {
+		"title": "TOMIX תיאטרון",
+		"description": "הפקות תיאטרון של TOMIX עם מושבים מאומתים בשורות 1-7."
+	},
+	"title": "TOMIX תיאטרון",
+	"description": "כאן מוצגות רק הפקות תיאטרון מקטגוריית TOMIX עם מושבים מאומתים בשורות 1-7 דרך Eventer.",
+	"filter": {
+		"label": "סינון לפי שם ההפקה",
+		"allOption": "כל ההפקות"
+	},
+	"labels": {
+		"time": "שעה",
+		"venue": "אולם",
+		"sections": "אזורים",
+		"rows": "שורות זמינות",
+		"availability": "סוג זמינות",
+		"seats": "מספר מושבים זמינים",
+		"confidence": "רמת ודאות",
+		"status": "סטטוס מקור",
+		"notAvailable": "לא זמין",
+		"purchase": "לרכישת כרטיסים"
+	},
+	"availability": {
+		"row": "ברמת שורה",
+		"section": "ברמת אזור",
+		"general": "זמינות כללית",
+		"unknown": "לא ידוע"
+	},
+	"confidence": {
+		"high": "גבוהה",
+		"medium": "בינונית",
+		"low": "נמוכה"
+	},
+	"empty": {
+		"title": "כרגע אין הפקות TOMIX מתאימות",
+		"description": "כרגע אין הפקות תיאטרון של TOMIX עם מושבים מאומתים בשורות 1-7."
+	},
+	"error": {
+		"title": "לא ניתן לטעון את עמוד TOMIX",
+		"description": "מקורות TOMIX או Eventer לא החזירו מידע יציב מספיק כדי לאשר זמינות בשורות המועדפות."
+	}
+}
