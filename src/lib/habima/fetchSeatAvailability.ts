@@ -55,6 +55,10 @@ async function fetchPresentation(presentationId: string): Promise<HabimaPresenta
 	return response.json();
 }
 
+export async function fetchPresentationMetadata(presentationId: string): Promise<HabimaPresentationResponse> {
+	return fetchPresentation(presentationId);
+}
+
 async function fetchSeatplan(venueId: number, seatplanId: number): Promise<HabimaSeatplanResponse> {
 	const response = await fetch(`${TICKETS_BASE_URL}/api/seats/seatplanV2?venueId=${venueId}&seatplanId=${seatplanId}`, {
 		method: 'POST',

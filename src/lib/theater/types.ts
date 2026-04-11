@@ -4,6 +4,14 @@ export type TheaterSourceConfidence = 'high' | 'medium' | 'low';
 
 export type TheaterAvailabilityType = 'row' | 'section' | 'general' | 'unknown';
 
+export type SaleState = 'not_started' | 'on_sale' | 'sold_out' | 'ended' | 'unknown';
+
+export type SaleLifecycle = {
+	saleState: SaleState;
+	ticketSaleStart?: string;
+	ticketSaleStop?: string;
+};
+
 export type TheaterNormalizedPerformance = {
 	id: string;
 	showName: string;
@@ -18,6 +26,7 @@ export type TheaterNormalizedPerformance = {
 	availableSeatCount?: number;
 	sourceStatus?: string;
 	sourceConfidence: TheaterSourceConfidence;
+	saleLifecycle: SaleLifecycle;
 };
 
 export type TheaterCollectorResult<TPerformance extends TheaterNormalizedPerformance = TheaterNormalizedPerformance> = {

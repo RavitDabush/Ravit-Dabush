@@ -4,6 +4,7 @@ import { fetchAllPresentations, fetchFeatures } from './fetchFeatures';
 import { fetchSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseTicketingDiscovery } from './parseDiscovery';
 import { parseSeatAvailability } from './parseSeatAvailability';
+import { resolveSaleLifecycle } from '@/lib/theater/resolveSaleLifecycle';
 import {
 	LessinScheduleEntry,
 	LessinSeatAvailabilityFetchResult,
@@ -37,10 +38,20 @@ function getSeatAvailabilitySourceStatus(
 	return parts.filter(Boolean).join(' | ');
 }
 
+function resolveLessinLifecycle(entry: LessinScheduleEntry, result: LessinSeatAvailabilityFetchResult | undefined) {
+	return resolveSaleLifecycle(entry, {
+		soldout: result?.presentation?.soldout ?? entry.isSoldOut,
+		ticketSaleStart: result?.presentation?.ticketSaleStart ?? entry.ticketSaleStart,
+		ticketSaleStop: result?.presentation?.ticketSaleStop ?? entry.ticketSaleStop
+	});
+}
+
 export function normalizePerformance(
 	entry: LessinScheduleEntry,
 	result: LessinSeatAvailabilityFetchResult | undefined
 ): NormalizedPerformance {
+	const saleLifecycle = resolveLessinLifecycle(entry, result);
+
 	if (result?.presentation && result.seatplan && result.seatStatus) {
 		const parsedAvailability = parseSeatAvailability(result.seatplan, result.seatStatus);
 		const sourceConfidence: SourceConfidence = parsedAvailability.sectionDebugStatus === 'ambiguous' ? 'medium' : 'high';
@@ -62,7 +73,8 @@ export function normalizePerformance(
 				parsedAvailability.sectionDebugStatus,
 				parsedAvailability.matchedSections
 			),
-			sourceConfidence
+			sourceConfidence,
+			saleLifecycle
 		};
 	}
 
@@ -78,7 +90,8 @@ export function normalizePerformance(
 		matchedRows: [],
 		matchedSections: [],
 		sourceStatus: entry.sourceStatus,
-		sourceConfidence: result ? getSourceConfidence(result) : 'low'
+		sourceConfidence: result ? getSourceConfidence(result) : 'low',
+		saleLifecycle
 	};
 }
 
@@ -98,4 +111,14 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 
 			return leftDateTime.localeCompare(rightDateTime);
 		});
+}
+
+export async function getNormalizedSaleLifecyclePerformances(): Promise<NormalizedPerformance[]> {
+	const features = await fetchFeatures();
+	const presentations = await fetchAllPresentations(features);
+	const discoveryEntries = parseTicketingDiscovery(features, presentations);
+
+	return discoveryEntries
+		.map(entry => normalizePerformance(entry, undefined))
+		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
 }

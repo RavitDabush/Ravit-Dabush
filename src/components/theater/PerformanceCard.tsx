@@ -3,8 +3,11 @@ import { Heading4, LinkButton, ParagraphSmall, SmallText } from '@/components/Ty
 import { TheaterAvailabilityType, TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
 
 type PerformanceCardLabels = {
+	date?: string;
 	time: string;
 	venue: string;
+	theater?: string;
+	saleStart?: string;
 	sections: string;
 	rows: string;
 	availability?: string;
@@ -20,14 +23,17 @@ type PerformanceCardLabels = {
 type Props = {
 	performance: TheaterNormalizedPerformance;
 	labels: PerformanceCardLabels;
+	theaterName?: string;
+	hideAvailabilityDetails?: boolean;
 };
 
-export default function PerformanceCard({ performance, labels }: Props) {
+export default function PerformanceCard({ performance, labels, theaterName, hideAvailabilityDetails = false }: Props) {
 	const matchedRows = performance.matchedRows;
 	const matchedSections = performance.matchedSections;
 	const availabilityValue = performance.availabilityType
 		? (labels.availabilityValues?.[performance.availabilityType] ?? performance.availabilityType)
 		: null;
+	const ticketSaleStart = performance.saleLifecycle?.ticketSaleStart;
 
 	return (
 		<Card className="theater-performance-card">
@@ -40,39 +46,61 @@ export default function PerformanceCard({ performance, labels }: Props) {
 				</div>
 
 				<div className="theater-performance-card__details">
+					{labels.date ? (
+						<ParagraphSmall>
+							<strong>{labels.date}:</strong> {performance.date}
+						</ParagraphSmall>
+					) : null}
+
 					{performance.venue ? (
 						<ParagraphSmall>
 							<strong>{labels.venue}:</strong> {performance.venue}
 						</ParagraphSmall>
 					) : null}
 
-					<ParagraphSmall>
-						<strong>{labels.sections}:</strong>{' '}
-						{matchedSections.length > 0 ? matchedSections.join(', ') : labels.notAvailable}
-					</ParagraphSmall>
-
-					<ParagraphSmall>
-						<strong>{labels.rows}:</strong> {matchedRows.length > 0 ? matchedRows.join(', ') : labels.notAvailable}
-					</ParagraphSmall>
-
-					{availabilityValue && labels.availability ? (
+					{theaterName && labels.theater ? (
 						<ParagraphSmall>
-							<strong>{labels.availability}:</strong> {availabilityValue}
+							<strong>{labels.theater}:</strong> {theaterName}
 						</ParagraphSmall>
 					) : null}
 
-					<ParagraphSmall>
-						<strong>{labels.seats}:</strong>{' '}
-						{typeof performance.availableSeatCount === 'number' ? performance.availableSeatCount : labels.notAvailable}
-					</ParagraphSmall>
+					{ticketSaleStart && labels.saleStart ? (
+						<ParagraphSmall>
+							<strong>{labels.saleStart}:</strong> {ticketSaleStart}
+						</ParagraphSmall>
+					) : null}
 
-					<ParagraphSmall>
-						<strong>{labels.confidence}:</strong> {labels.confidenceValues[performance.sourceConfidence]}
-					</ParagraphSmall>
+					{hideAvailabilityDetails ? null : (
+						<>
+							<ParagraphSmall>
+								<strong>{labels.sections}:</strong>{' '}
+								{matchedSections.length > 0 ? matchedSections.join(', ') : labels.notAvailable}
+							</ParagraphSmall>
 
-					<ParagraphSmall>
-						<strong>{labels.status}:</strong> {performance.sourceStatus || labels.notAvailable}
-					</ParagraphSmall>
+							<ParagraphSmall>
+								<strong>{labels.rows}:</strong> {matchedRows.length > 0 ? matchedRows.join(', ') : labels.notAvailable}
+							</ParagraphSmall>
+
+							{availabilityValue && labels.availability ? (
+								<ParagraphSmall>
+									<strong>{labels.availability}:</strong> {availabilityValue}
+								</ParagraphSmall>
+							) : null}
+
+							<ParagraphSmall>
+								<strong>{labels.seats}:</strong>{' '}
+								{typeof performance.availableSeatCount === 'number' ? performance.availableSeatCount : labels.notAvailable}
+							</ParagraphSmall>
+
+							<ParagraphSmall>
+								<strong>{labels.confidence}:</strong> {labels.confidenceValues[performance.sourceConfidence]}
+							</ParagraphSmall>
+
+							<ParagraphSmall>
+								<strong>{labels.status}:</strong> {performance.sourceStatus || labels.notAvailable}
+							</ParagraphSmall>
+						</>
+					)}
 				</div>
 			</div>
 

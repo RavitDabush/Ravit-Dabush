@@ -15,6 +15,7 @@ export type LessinScheduleEntry = {
 	isSoldOut: boolean;
 	featureId?: number;
 	seatplanId?: number | null;
+	ticketSaleStart?: string | null;
 	ticketSaleStop?: string | null;
 };
 
@@ -33,6 +34,7 @@ export type LessinPresentationSummary = {
 	venueName: string;
 	seatplanId: number | null;
 	soldout: number;
+	ticketSaleStart?: string | null;
 	ticketSaleStop?: string | null;
 };
 
@@ -58,6 +60,8 @@ export type LessinPresentation = {
 	soldout: number;
 	isReserved: number;
 	isGA: number;
+	ticketSaleStart?: string | null;
+	ticketSaleStop?: string | null;
 	specialMessage?: string | null;
 	specialMessage2?: string | null;
 	viewAreaName?: string | null;

@@ -1,0 +1,40 @@
+{
+	"meta": {
+		"title": "Coming Soon",
+		"description": "Theater performances whose ticket sales have not started yet."
+	},
+	"title": "Coming Soon",
+	"description": "Performances whose ticket sales have not started yet.",
+	"theaters": {
+		"lessin": "Beit Lessin",
+		"habima": "Habima",
+		"cameri": "Cameri"
+	},
+	"labels": {
+		"performanceDate": "Performance date",
+		"time": "Time",
+		"venue": "Venue",
+		"theater": "Theater",
+		"saleStart": "Sale starts",
+		"sections": "Sections",
+		"rows": "Available rows",
+		"seats": "Available seats",
+		"confidence": "Confidence",
+		"status": "Source status",
+		"notAvailable": "Not available",
+		"purchase": "Open ticket page"
+	},
+	"confidence": {
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low"
+	},
+	"empty": {
+		"title": "No upcoming sale starts right now",
+		"description": "There are currently no performances with a future ticket sale start."
+	},
+	"error": {
+		"title": "Unable to load coming soon performances",
+		"description": "The external ticketing sources did not respond reliably enough to confirm sale start dates."
+	}
+}

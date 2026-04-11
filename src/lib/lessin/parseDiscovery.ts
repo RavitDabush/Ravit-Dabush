@@ -71,6 +71,7 @@ export function parseTicketingDiscovery(
 			isSoldOut: Boolean(presentation.soldout),
 			featureId: presentation.featureId,
 			seatplanId: presentation.seatplanId,
+			ticketSaleStart: presentation.ticketSaleStart ?? null,
 			ticketSaleStop: presentation.ticketSaleStop ?? null
 		});
 	}

@@ -26,6 +26,8 @@ export type CameriScheduleEntry = {
 	showUrl?: string;
 	subtitles?: string;
 	sourceStatus?: string;
+	ticketSaleStart?: string | null;
+	ticketSaleStop?: string | null;
 };
 
 export type CameriPresentationListItem = {
@@ -36,6 +38,7 @@ export type CameriPresentationListItem = {
 	venueName: string;
 	seatplanId: number | null;
 	soldout: number;
+	ticketSaleStart?: string | null;
 	ticketSaleStop?: string | null;
 	[key: string]: unknown;
 };

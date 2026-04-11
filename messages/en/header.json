@@ -8,7 +8,12 @@
 		"about": "About",
 		"journey": "Journey",
 		"style-guide": "Style Guide",
-		"icons-explorer": "Icons Explorer"
+		"icons-explorer": "Icons Explorer",
+		"theater": "Theater",
+		"habima": "Habima",
+		"cameri": "Cameri",
+		"lessin": "Beit Lessin",
+		"coming-soon": "Coming Soon"
 	},
 	"languageSwitcher": {
 		"label": "Language",

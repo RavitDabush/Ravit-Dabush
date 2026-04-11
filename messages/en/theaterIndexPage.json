@@ -6,6 +6,11 @@
 	"title": "Theater",
 	"description": "Choose a theater page. A unified theater index will be added here later.",
 	"links": {
+		"comingSoon": {
+			"title": "Coming Soon",
+			"description": "Performances whose ticket sales have not started yet.",
+			"cta": "Open Coming Soon"
+		},
 		"lessin": {
 			"title": "Beit Lessin",
 			"description": "Confirmed Beit Lessin performances with preferred-row availability.",

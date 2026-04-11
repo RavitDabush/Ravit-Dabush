@@ -9,6 +9,7 @@ export const routing = defineRouting({
 		'/about': '/about',
 		'/journey': '/journey',
 		'/theater': '/theater',
+		'/theater/coming-soon': '/theater/coming-soon',
 		'/theater/lessin': '/theater/lessin',
 		'/theater/habima': '/theater/habima',
 		'/theater/cameri': '/theater/cameri',

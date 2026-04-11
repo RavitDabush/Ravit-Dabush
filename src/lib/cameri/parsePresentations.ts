@@ -44,7 +44,9 @@ function normalizePresentation(presentation: CameriPresentationListItem): Cameri
 		time: getPresentationTime(presentation.dateTime),
 		venue: presentation.venueName?.trim() || undefined,
 		purchaseUrl: `https://tickets.cameri.co.il/order/${presentation.id}`,
-		sourceStatus: 'ticketing_presentations'
+		sourceStatus: 'ticketing_presentations',
+		ticketSaleStart: presentation.ticketSaleStart ?? null,
+		ticketSaleStop: presentation.ticketSaleStop ?? null
 	};
 }
 

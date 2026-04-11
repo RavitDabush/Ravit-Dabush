@@ -15,6 +15,14 @@ export default function TheaterIndexPage() {
 
 			<div className="theater-hub-grid">
 				<Card className="theater-hub-card">
+					<FancyTitle>{t('links.comingSoon.title')}</FancyTitle>
+					<Paragraph>{t('links.comingSoon.description')}</Paragraph>
+					<LinkButton href="/theater/coming-soon" buttonType="outline">
+						{t('links.comingSoon.cta')}
+					</LinkButton>
+				</Card>
+
+				<Card className="theater-hub-card">
 					<FancyTitle>{t('links.lessin.title')}</FancyTitle>
 					<Paragraph>{t('links.lessin.description')}</Paragraph>
 					<LinkButton href="/theater/lessin" buttonType="outline">

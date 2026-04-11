@@ -16,7 +16,12 @@ const navItems: HeaderNavItem[] = [
 	{ href: '/about', key: 'about' },
 	{ href: '/journey', key: 'journey' },
 	{ href: '/style-guide', key: 'style-guide' },
-	{ href: '/icons-explorer', key: 'icons-explorer' }
+	{ href: '/icons-explorer', key: 'icons-explorer' },
+	{ href: '/theater', key: 'theater' },
+	{ href: '/theater/habima', key: 'habima' },
+	{ href: '/theater/cameri', key: 'cameri' },
+	{ href: '/theater/lessin', key: 'lessin' },
+	{ href: '/theater/coming-soon', key: 'coming-soon' }
 ];
 
 export default function Header() {

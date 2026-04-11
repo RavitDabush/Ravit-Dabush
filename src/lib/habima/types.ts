@@ -57,6 +57,8 @@ export type HabimaPresentation = {
 	soldout: number;
 	isReserved: number;
 	isGA: number;
+	ticketSaleStart?: string | null;
+	ticketSaleStop?: string | null;
 	newBookingUrl?: string | null;
 };
 
