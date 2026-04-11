@@ -15,7 +15,8 @@
 		"generate:icon-list": "tsx scripts/generate-icon-list-from-names.ts",
 		"generate:colors": "tsx scripts/generate-colors-list.ts",
 		"generate:text-colors": "tsx scripts/generate-text-colors.ts",
-		"generate:all": "npm run generate:icon-names && npm run generate:icon-list && npm run generate:colors && npm run generate:text-colors && prettier --write src"
+		"generate:all": "npm run generate:icon-names && npm run generate:icon-list && npm run generate:colors && npm run generate:text-colors && prettier --write src",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@phosphor-icons/react": "^2.1.10",
@@ -36,6 +37,7 @@
 		"concurrently": "^9.2.1",
 		"eslint": "^9.39.4",
 		"eslint-config-next": "^16.2.3",
+		"husky": "^9.1.7",
 		"open": "^11.0.0",
 		"prettier": "3.8.1",
 		"typescript": "^6.0.2",
