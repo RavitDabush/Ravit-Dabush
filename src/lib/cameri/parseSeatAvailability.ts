@@ -76,7 +76,7 @@ function flattenSeatplan(seatplan: CameriSeatplanResponse): FlattenedSeat[] {
 	return flattenedSeats;
 }
 
-export function parseAvailability(
+export function parseSeatAvailability(
 	seatplan: CameriSeatplanResponse,
 	seatStatus: CameriSeatStatusResponse
 ): ParsedSeatAvailability {

@@ -10,6 +10,13 @@ function formatDateLabel(date: string, locale: Locale): string {
 	}).format(new Date(`${date}T00:00:00`));
 }
 
+function comparePerformanceDateTime<TPerformance extends TheaterNormalizedPerformance>(
+	left: TPerformance,
+	right: TPerformance
+): number {
+	return `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`);
+}
+
 export function groupPerformancesByDate<TPerformance extends TheaterNormalizedPerformance>(
 	performances: TPerformance[],
 	locale: Locale
@@ -22,9 +29,11 @@ export function groupPerformancesByDate<TPerformance extends TheaterNormalizedPe
 		grouped.set(performance.date, currentGroup);
 	}
 
-	return Array.from(grouped.entries()).map(([date, items]) => ({
-		date,
-		label: formatDateLabel(date, locale),
-		performances: items
-	}));
+	return Array.from(grouped.entries())
+		.sort(([leftDate], [rightDate]) => leftDate.localeCompare(rightDate))
+		.map(([date, items]) => ({
+			date,
+			label: formatDateLabel(date, locale),
+			performances: [...items].sort(comparePerformanceDateTime)
+		}));
 }

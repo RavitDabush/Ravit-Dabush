@@ -41,6 +41,11 @@ export function normalizePerformance(
 
 	if (result?.presentation && result.seatplan && result.seatStatus) {
 		const parsedAvailability = parseSeatAvailability(result.seatplan, result.seatStatus);
+		const availabilityType = parsedAvailability.availableInPreferredRows
+			? parsedAvailability.sourceStatus === 'confirmed_table_preferred_seats'
+				? 'section'
+				: 'row'
+			: 'unknown';
 
 		return {
 			id: entry.id,
@@ -50,7 +55,7 @@ export function normalizePerformance(
 			venue: result.presentation.venueName || entry.venue,
 			purchaseUrl: entry.purchaseUrl,
 			hasPreferredAvailability: parsedAvailability.availableInPreferredRows,
-			availabilityType: parsedAvailability.availableInPreferredRows ? 'row' : 'unknown',
+			availabilityType,
 			matchedRows: parsedAvailability.matchedRows,
 			matchedSections: parsedAvailability.matchedSections,
 			availableSeatCount: parsedAvailability.availableSeatCount,

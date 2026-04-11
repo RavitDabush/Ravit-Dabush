@@ -2,7 +2,7 @@ import 'server-only';
 
 import { fetchAvailabilityBatch } from './fetchAvailability';
 import { fetchPresentations } from './fetchPresentations';
-import { parseAvailability } from './parseAvailability';
+import { parseSeatAvailability } from './parseSeatAvailability';
 import { parsePresentations } from './parsePresentations';
 import { resolveSaleLifecycle } from '@/lib/theater/resolveSaleLifecycle';
 import {
@@ -35,7 +35,7 @@ export function normalizePerformance(
 	});
 
 	if (result?.presentation && result.seatplan && result.seatStatus) {
-		const parsedAvailability = parseAvailability(result.seatplan, result.seatStatus);
+		const parsedAvailability = parseSeatAvailability(result.seatplan, result.seatStatus);
 
 		return {
 			id: entry.id,

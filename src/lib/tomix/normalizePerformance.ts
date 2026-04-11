@@ -102,6 +102,7 @@ export function normalizePerformance(
 	const parsedAvailability = result ? parseTomixSeatAvailability(result.seats, entry.venue, entry.ticketTypeIds) : null;
 	const saleLifecycle = resolveSaleLifecycle(entry, {
 		soldout: entry.soldOut,
+		ticketSaleStart: entry.ticketSaleStart,
 		ticketSaleStop: entry.ticketSaleStop
 	});
 
@@ -129,24 +130,28 @@ async function collectEntries(): Promise<TomixScheduleEntry[]> {
 	const products = await fetchTomixTheaterProducts();
 
 	const entryGroups = await mapWithConcurrency(products, TOMIX_EVENT_DISCOVERY_CONCURRENCY, async product => {
-		const source = await resolveEventerSource(product);
+		try {
+			const source = await resolveEventerSource(product);
 
-		if (!source) {
+			if (!source) {
+				return [];
+			}
+
+			const eventerData = await fetchEventerData(source);
+			const entries: TomixScheduleEntry[] = [];
+
+			for (const event of eventerData.events ?? []) {
+				const entry = mapEventToEntry(source, event);
+
+				if (entry) {
+					entries.push(entry);
+				}
+			}
+
+			return entries;
+		} catch {
 			return [];
 		}
-
-		const eventerData = await fetchEventerData(source);
-		const entries: TomixScheduleEntry[] = [];
-
-		for (const event of eventerData.events ?? []) {
-			const entry = mapEventToEntry(source, event);
-
-			if (entry) {
-				entries.push(entry);
-			}
-		}
-
-		return entries;
 	});
 
 	return entryGroups.flat();
@@ -155,9 +160,13 @@ async function collectEntries(): Promise<TomixScheduleEntry[]> {
 export async function getNormalizedPreferredPerformances(): Promise<NormalizedPerformance[]> {
 	const entries = await collectEntries();
 	const performances = await mapWithConcurrency(entries, TOMIX_SEAT_FETCH_CONCURRENCY, async entry => {
-		const availability = await fetchTomixSeatAvailability(entry.eventId);
+		try {
+			const availability = await fetchTomixSeatAvailability(entry.eventId);
 
-		return normalizePerformance(entry, availability);
+			return normalizePerformance(entry, availability);
+		} catch {
+			return normalizePerformance(entry, undefined);
+		}
 	});
 
 	return performances

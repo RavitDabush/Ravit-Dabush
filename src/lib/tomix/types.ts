@@ -86,6 +86,7 @@ export type TomixScheduleEntry = {
 	eventId: string;
 	ticketTypeIds: string[];
 	sourceStatus?: string;
+	ticketSaleStart?: string;
 	ticketSaleStop?: string;
 	soldOut?: boolean;
 };

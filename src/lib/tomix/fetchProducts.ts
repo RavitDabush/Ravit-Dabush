@@ -24,6 +24,6 @@ export async function fetchTomixTheaterProducts(): Promise<TomixStoreProduct[]> 
 	const products = (await response.json()) as TomixStoreProduct[];
 
 	return products.filter(product =>
-		product.categories?.some(category => category.id === TOMIX_THEATER_CATEGORY_ID || category.slug === 'theatre')
+		product.categories?.some(category => category.id === TOMIX_THEATER_CATEGORY_ID && category.slug === 'theatre')
 	);
 }
