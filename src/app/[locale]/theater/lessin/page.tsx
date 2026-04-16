@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { createPageMetadata } from '@/lib/metadata';
 import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import { collectLessinPerformances } from '@/lib/theater/collectLessinPerformances';
+import { refreshTheaterCache } from '@/lib/theater/actions';
 import LessinTheaterPage from '@/views/LessinTheaterPage';
 
 import '../style.scss';
@@ -33,5 +34,14 @@ export default async function LocaleLessinTheaterPage({ params }: Props) {
 		hasError = true;
 	}
 
-	return <LessinTheaterPage locale={locale} performances={performances} hasError={hasError} />;
+	const refreshCacheAction = refreshTheaterCache.bind(null, 'lessin', locale);
+
+	return (
+		<LessinTheaterPage
+			locale={locale}
+			performances={performances}
+			hasError={hasError}
+			refreshCacheAction={refreshCacheAction}
+		/>
+	);
 }

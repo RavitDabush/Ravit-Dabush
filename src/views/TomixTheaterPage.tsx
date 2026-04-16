@@ -1,6 +1,7 @@
 import { Alert } from '@/components/Alert';
 import PageLayout from '@/components/PageLayout';
 import PerformanceList from '@/components/theater/PerformanceList';
+import RefreshTheaterCacheForm from '@/components/theater/RefreshTheaterCacheForm';
 import { FancyTitle, Paragraph } from '@/components/Typography';
 import { Locale, useTranslations } from 'next-intl';
 import { TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
@@ -10,9 +11,10 @@ type Props = {
 	locale: Locale;
 	performances: TheaterNormalizedPerformance[];
 	hasError: boolean;
+	refreshCacheAction: () => Promise<void>;
 };
 
-export default function TomixTheaterPage({ locale, performances, hasError }: Props) {
+export default function TomixTheaterPage({ locale, performances, hasError, refreshCacheAction }: Props) {
 	const t = useTranslations('tomixPage');
 	const confidenceValues: Record<TheaterSourceConfidence, string> = {
 		high: t('confidence.high'),
@@ -26,6 +28,14 @@ export default function TomixTheaterPage({ locale, performances, hasError }: Pro
 			<section className="theater-page-intro">
 				<FancyTitle>{t('title')}</FancyTitle>
 				<Paragraph>{t('description')}</Paragraph>
+				<div className="theater-page-intro__actions">
+					<RefreshTheaterCacheForm
+						action={refreshCacheAction}
+						label={t('refreshCache.label')}
+						pendingLabel={t('refreshCache.pendingLabel')}
+						hint={t('refreshCache.hint')}
+					/>
+				</div>
 			</section>
 
 			{hasError ? (

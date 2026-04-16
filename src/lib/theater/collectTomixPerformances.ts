@@ -3,6 +3,7 @@ import 'server-only';
 import { unstable_cache } from 'next/cache';
 import { getNormalizedPreferredPerformances } from '@/lib/tomix/normalizePerformance';
 import { NormalizedPerformance } from '@/lib/tomix/types';
+import { getTheaterCacheTags } from './cache';
 import { TheaterCollectorResult } from './types';
 
 const TOMIX_COLLECTOR_REVALIDATE_SECONDS = 600;
@@ -18,7 +19,7 @@ const collectTomixPerformancesCached = unstable_cache(
 		};
 	},
 	['theater', 'tomix', 'prepared-performances'],
-	{ revalidate: TOMIX_COLLECTOR_REVALIDATE_SECONDS }
+	{ revalidate: TOMIX_COLLECTOR_REVALIDATE_SECONDS, tags: getTheaterCacheTags('tomix') }
 );
 
 export async function collectTomixPerformances(): Promise<TheaterCollectorResult<NormalizedPerformance>> {

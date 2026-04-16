@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import {
 	CameriPresentation,
 	CameriPresentationResponse,
@@ -24,14 +25,14 @@ function getJsonInit(extraHeaders?: HeadersInit): RequestInit {
 			...DEFAULT_HEADERS,
 			...extraHeaders
 		},
-		next: { revalidate: 180 }
+		next: { revalidate: 180, tags: getTheaterCacheTags('cameri') }
 	};
 }
 
 async function fetchOrderPage(presentationId: string): Promise<string> {
 	const response = await fetch(`${CAMERI_TICKETS_BASE_URL}/order/${presentationId}`, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 180 }
+		next: { revalidate: 180, tags: getTheaterCacheTags('cameri') }
 	});
 
 	if (!response.ok) {
@@ -65,7 +66,7 @@ async function fetchSeatplan(venueId: number, seatplanId: number): Promise<Camer
 				'content-type': 'application/json'
 			},
 			body: '{}',
-			next: { revalidate: 300 }
+			next: { revalidate: 300, tags: getTheaterCacheTags('cameri') }
 		}
 	);
 

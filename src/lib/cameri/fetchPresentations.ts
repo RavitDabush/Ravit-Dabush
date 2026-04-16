@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { CameriPresentationListResponse } from './types';
 
 const CAMERI_PRESENTATIONS_URL = 'https://tickets.cameri.co.il/api/presentations';
@@ -14,7 +15,7 @@ const BROWSER_HEADERS = {
 export async function fetchPresentations(): Promise<CameriPresentationListResponse> {
 	const response = await fetch(CAMERI_PRESENTATIONS_URL, {
 		headers: BROWSER_HEADERS,
-		next: { revalidate: 300 }
+		next: { revalidate: 300, tags: getTheaterCacheTags('cameri') }
 	});
 
 	if (!response.ok) {

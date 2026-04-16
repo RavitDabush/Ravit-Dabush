@@ -39,5 +39,10 @@
 	"error": {
 		"title": "Unable to load the Habima page",
 		"description": "The external Habima ticketing flow did not respond reliably enough to confirm preferred-row availability."
+	},
+	"refreshCache": {
+		"label": "Clear cache and update data",
+		"pendingLabel": "Updating data...",
+		"hint": "Clears this page cache and fetches fresh theater data."
 	}
 }

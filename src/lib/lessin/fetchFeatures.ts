@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { LessinFeature, LessinFeaturesResponse, LessinPresentationsResponse, LessinPresentationSummary } from './types';
 
 const PRESGLOBAL_BASE_URL = 'https://lessin.presglobal.store';
@@ -14,7 +15,7 @@ const DEFAULT_HEADERS = {
 function getJsonInit(revalidate: number): RequestInit {
 	return {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate }
+		next: { revalidate, tags: getTheaterCacheTags('lessin') }
 	};
 }
 

@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { HabimaScheduleJson } from './types';
 
 const HABIMA_SCHEDULE_URL = 'https://www.habima.co.il/presentations/';
@@ -28,7 +29,7 @@ function extractScheduleDataUrl(pageHtml: string): string {
 export async function fetchSchedule(): Promise<HabimaScheduleJson> {
 	const pageResponse = await fetch(HABIMA_SCHEDULE_URL, {
 		headers: BROWSER_HEADERS,
-		next: { revalidate: DEFAULT_REVALIDATE_SECONDS }
+		next: { revalidate: DEFAULT_REVALIDATE_SECONDS, tags: getTheaterCacheTags('habima') }
 	});
 
 	if (!pageResponse.ok) {
@@ -39,7 +40,7 @@ export async function fetchSchedule(): Promise<HabimaScheduleJson> {
 	const dataUrl = extractScheduleDataUrl(pageHtml);
 	const scheduleResponse = await fetch(dataUrl, {
 		headers: BROWSER_HEADERS,
-		next: { revalidate: DEFAULT_REVALIDATE_SECONDS }
+		next: { revalidate: DEFAULT_REVALIDATE_SECONDS, tags: getTheaterCacheTags('habima') }
 	});
 
 	if (!scheduleResponse.ok) {

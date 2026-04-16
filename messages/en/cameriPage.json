@@ -39,5 +39,10 @@
 	"error": {
 		"title": "Unable to load the Cameri page",
 		"description": "The Cameri ticketing flow did not respond reliably enough to confirm availability."
+	},
+	"refreshCache": {
+		"label": "Clear cache and update data",
+		"pendingLabel": "Updating data...",
+		"hint": "Clears this page cache and fetches fresh theater data."
 	}
 }

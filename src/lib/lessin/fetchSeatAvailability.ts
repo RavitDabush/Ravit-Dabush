@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import {
 	LessinScheduleEntry,
 	LessinPresentationResponse,
@@ -23,14 +24,14 @@ function getJsonInit(extraHeaders?: HeadersInit): RequestInit {
 			...DEFAULT_HEADERS,
 			...extraHeaders
 		},
-		next: { revalidate: 180 }
+		next: { revalidate: 180, tags: getTheaterCacheTags('lessin') }
 	};
 }
 
 async function fetchOrderPage(presentationId: string): Promise<string> {
 	const response = await fetch(`${PRESGLOBAL_BASE_URL}/order/${presentationId}`, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 180 }
+		next: { revalidate: 180, tags: getTheaterCacheTags('lessin') }
 	});
 
 	if (!response.ok) {
@@ -64,7 +65,7 @@ async function fetchSeatplan(venueId: number, seatplanId: number): Promise<Lessi
 				'content-type': 'application/json'
 			},
 			body: '{}',
-			next: { revalidate: 300 }
+			next: { revalidate: 300, tags: getTheaterCacheTags('lessin') }
 		}
 	);
 

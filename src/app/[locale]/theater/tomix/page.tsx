@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { createPageMetadata } from '@/lib/metadata';
 import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import { collectTomixPerformances } from '@/lib/theater/collectTomixPerformances';
+import { refreshTheaterCache } from '@/lib/theater/actions';
 import TomixTheaterPage from '@/views/TomixTheaterPage';
 
 import '../style.scss';
@@ -33,5 +34,14 @@ export default async function LocaleTomixTheaterPage({ params }: Props) {
 		hasError = true;
 	}
 
-	return <TomixTheaterPage locale={locale} performances={performances} hasError={hasError} />;
+	const refreshCacheAction = refreshTheaterCache.bind(null, 'tomix', locale);
+
+	return (
+		<TomixTheaterPage
+			locale={locale}
+			performances={performances}
+			hasError={hasError}
+			refreshCacheAction={refreshCacheAction}
+		/>
+	);
 }

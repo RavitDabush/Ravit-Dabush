@@ -42,7 +42,7 @@ describe('tomix fetchTomixTheaterProducts', () => {
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://www.to-mix.co.il/wp-json/wc/store/v1/products?category=903&per_page=100',
 			expect.objectContaining({
-				next: { revalidate: 600 }
+				next: { revalidate: 600, tags: ['theater', 'theater:tomix'] }
 			})
 		);
 	});

@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import {
 	HabimaPresentationResponse,
 	HabimaScheduleEntry,
@@ -24,14 +25,14 @@ function getJsonInit(extraHeaders?: HeadersInit): RequestInit {
 			...DEFAULT_HEADERS,
 			...extraHeaders
 		},
-		next: { revalidate: DEFAULT_REVALIDATE_SECONDS }
+		next: { revalidate: DEFAULT_REVALIDATE_SECONDS, tags: getTheaterCacheTags('habima') }
 	};
 }
 
 async function fetchOrderPage(presentationId: string): Promise<string> {
 	const response = await fetch(`${TICKETS_BASE_URL}/order/${presentationId}`, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: DEFAULT_REVALIDATE_SECONDS }
+		next: { revalidate: DEFAULT_REVALIDATE_SECONDS, tags: getTheaterCacheTags('habima') }
 	});
 
 	if (!response.ok) {
@@ -67,7 +68,7 @@ async function fetchSeatplan(venueId: number, seatplanId: number): Promise<Habim
 			'content-type': 'application/json'
 		},
 		body: '{}',
-		next: { revalidate: 300 }
+		next: { revalidate: 300, tags: getTheaterCacheTags('habima') }
 	});
 
 	if (!response.ok) {

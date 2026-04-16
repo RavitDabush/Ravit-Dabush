@@ -4,6 +4,23 @@
 	margin-bottom: 2rem;
 }
 
+.theater-page-intro__actions {
+	display: flex;
+	align-items: flex-start;
+}
+
+.theater-refresh-cache {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.theater-refresh-cache__hint {
+	margin: 0;
+	color: var(--color-text-muted);
+}
+
 .theater-performance-list {
 	display: grid;
 	gap: 2rem;

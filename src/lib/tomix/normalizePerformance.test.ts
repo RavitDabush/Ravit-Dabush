@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { normalizePerformance } from './normalizePerformance';
 import { parseTomixSeatAvailability } from './parseSeatAvailability';
 import type {
@@ -54,6 +54,10 @@ function mockParsedAvailability(overrides: Partial<ParsedTomixSeatAvailability> 
 
 beforeEach(() => {
 	parseTomixSeatAvailabilityMock.mockReset();
+});
+
+afterEach(() => {
+	vi.useRealTimers();
 });
 
 describe('tomix normalizePerformance', () => {
@@ -119,6 +123,9 @@ describe('tomix normalizePerformance', () => {
 	});
 
 	it('maps TOMIX lifecycle metadata into the final sale state', () => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date('2026-04-11T12:00:00+03:00'));
+
 		const notStarted = normalizePerformance(
 			createEntry({
 				ticketSaleStart: '2026-04-12 10:00:00',

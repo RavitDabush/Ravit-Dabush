@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { createPageMetadata } from '@/lib/metadata';
 import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import { collectCameriPerformances } from '@/lib/theater/collectCameriPerformances';
+import { refreshTheaterCache } from '@/lib/theater/actions';
 import CameriTheaterPage from '@/views/CameriTheaterPage';
 
 import '../style.scss';
@@ -33,5 +34,14 @@ export default async function LocaleCameriTheaterPage({ params }: Props) {
 		hasError = true;
 	}
 
-	return <CameriTheaterPage locale={locale} performances={performances} hasError={hasError} />;
+	const refreshCacheAction = refreshTheaterCache.bind(null, 'cameri', locale);
+
+	return (
+		<CameriTheaterPage
+			locale={locale}
+			performances={performances}
+			hasError={hasError}
+			refreshCacheAction={refreshCacheAction}
+		/>
+	);
 }

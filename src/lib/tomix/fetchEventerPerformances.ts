@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { TomixEventerDataResponse, TomixEventerSource, TomixStoreProduct } from './types';
 
 const EVENTER_HOST = 'www.eventer.co.il';
@@ -53,7 +54,7 @@ function buildGetDataUrl(iframeUrl: string): string {
 async function fetchProductEventbuzzHtml(product: TomixStoreProduct): Promise<string> {
 	const response = await fetch(appendEventbuzz(product.permalink), {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 600 }
+		next: { revalidate: 600, tags: getTheaterCacheTags('tomix') }
 	});
 
 	if (!response.ok) {
@@ -84,7 +85,7 @@ export async function fetchEventerData(source: TomixEventerSource): Promise<Tomi
 			...DEFAULT_HEADERS,
 			accept: 'application/json'
 		},
-		next: { revalidate: 300 }
+		next: { revalidate: 300, tags: getTheaterCacheTags('tomix') }
 	});
 
 	if (!response.ok) {

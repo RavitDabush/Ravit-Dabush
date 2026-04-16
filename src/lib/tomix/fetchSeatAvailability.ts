@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { TomixEventerSeat, TomixSeatAvailabilityFetchResult } from './types';
 
 const EVENTER_SEATS_BASE_URL = 'https://www.eventer.co.il/arenas';
@@ -16,7 +17,7 @@ export async function fetchTomixSeatAvailability(eventId: string): Promise<Tomix
 	try {
 		const response = await fetch(`${EVENTER_SEATS_BASE_URL}/${eventId}/seats.js`, {
 			headers: DEFAULT_HEADERS,
-			next: { revalidate: 180 }
+			next: { revalidate: 180, tags: getTheaterCacheTags('tomix') }
 		});
 
 		if (!response.ok) {

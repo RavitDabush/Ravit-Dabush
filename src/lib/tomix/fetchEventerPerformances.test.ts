@@ -42,7 +42,7 @@ describe('tomix resolveEventerSource', () => {
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://www.to-mix.co.il/product/tomix-show/?eventbuzz=true',
 			expect.objectContaining({
-				next: { revalidate: 600 }
+				next: { revalidate: 600, tags: ['theater', 'theater:tomix'] }
 			})
 		);
 	});

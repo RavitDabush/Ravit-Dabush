@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { TomixStoreProduct } from './types';
 
 const TOMIX_THEATER_CATEGORY_ID = 903;
@@ -14,7 +15,7 @@ const DEFAULT_HEADERS = {
 export async function fetchTomixTheaterProducts(): Promise<TomixStoreProduct[]> {
 	const response = await fetch(TOMIX_PRODUCTS_URL, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 600 }
+		next: { revalidate: 600, tags: getTheaterCacheTags('tomix') }
 	});
 
 	if (!response.ok) {

@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { getTheaterCacheTags } from '@/lib/theater/cache';
+
 const LESSIN_SCHEDULE_URL = 'https://www.lessin.co.il/%D7%94%D7%A6%D7%92%D7%95%D7%AA/';
 
 const BROWSER_HEADERS = {
@@ -11,7 +13,7 @@ const BROWSER_HEADERS = {
 export async function fetchSchedule(): Promise<string> {
 	const response = await fetch(LESSIN_SCHEDULE_URL, {
 		headers: BROWSER_HEADERS,
-		next: { revalidate: 300 }
+		next: { revalidate: 300, tags: getTheaterCacheTags('lessin') }
 	});
 
 	if (!response.ok) {
