@@ -9,6 +9,7 @@
 		"lint": "eslint src && tsc && prettier src --check",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit",
+		"check": "npm run lint && npm run test && npm run build",
 		"check:updates": "node check-updates.mjs",
 		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,scss,css,json,md,html}\"",
 		"open:browser": "node -e \"import('open').then(open => open.default('http://localhost:3000'))\"",
