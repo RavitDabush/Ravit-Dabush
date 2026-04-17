@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import Image from 'next/image';
 import { List } from '@phosphor-icons/react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Link, usePathname } from '@/i18n/navigation';
+import { usePathname } from '@/i18n/navigation';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import HeaderDrawer from './HeaderDrawer';
+import HeaderLogo from './HeaderLogo';
 import HeaderNav from './HeaderNav';
 import useHeaderDrawer from './hooks/useHeaderDrawer';
 import type { HeaderNavItem } from './types';
@@ -48,17 +48,14 @@ export default function Header() {
 		<>
 			<header className="site-header">
 				<div className="site-header-inner">
-					<Link href="/" className="site-header-logo" aria-label={t('homeAriaLabel')}>
-						<Image
-							src={logoSrc}
-							alt={logoAlt}
-							width={512}
-							height={120}
-							preload
-							unoptimized
-							className="site-header-logo-image"
-						/>
-					</Link>
+					<HeaderLogo
+						logoSrc={logoSrc}
+						logoAlt={logoAlt}
+						homeAriaLabel={t('homeAriaLabel')}
+						linkClassName="site-header-logo"
+						imageClassName="site-header-logo-image"
+						isAboveFold
+					/>
 
 					<button
 						ref={menuToggleButtonRef}

@@ -1,11 +1,10 @@
 'use client';
 
 import type { RefObject } from 'react';
-import Image from 'next/image';
 import { X } from '@phosphor-icons/react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import HeaderLogo from './HeaderLogo';
 import HeaderNav from './HeaderNav';
 import type { HeaderNavItem } from './types';
 
@@ -49,9 +48,14 @@ export default function HeaderDrawer({
 				tabIndex={-1}
 			>
 				<div className="site-header-drawer-header">
-					<Link href="/" className="site-header-drawer-logo" onClick={onClose} aria-label={t('homeAriaLabel')}>
-						<Image src={logoSrc} alt={logoAlt} width={512} height={120} className="site-header-drawer-logo-image" />
-					</Link>
+					<HeaderLogo
+						logoSrc={logoSrc}
+						logoAlt={logoAlt}
+						homeAriaLabel={t('homeAriaLabel')}
+						linkClassName="site-header-drawer-logo"
+						imageClassName="site-header-drawer-logo-image"
+						onClick={onClose}
+					/>
 
 					<button
 						ref={closeButtonRef}
