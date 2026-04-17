@@ -12,6 +12,10 @@ vi.mock('./parseSeatAvailability', () => ({
 	parseTomixSeatAvailability: vi.fn()
 }));
 
+vi.mock('next/cache', () => ({
+	unstable_cache: (callback: unknown) => callback
+}));
+
 const parseTomixSeatAvailabilityMock = vi.mocked(parseTomixSeatAvailability);
 
 function createEntry(overrides: Partial<TomixScheduleEntry> = {}): TomixScheduleEntry {

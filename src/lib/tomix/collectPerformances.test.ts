@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchEventerData, resolveEventerSource } from './fetchEventerPerformances';
 import { fetchTomixTheaterProducts } from './fetchProducts';
-import { fetchTomixSeatAvailability } from './fetchSeatAvailability';
+import { fetchTomixSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseTomixSeatAvailability } from './parseSeatAvailability';
 import type {
 	ParsedTomixSeatAvailability,
@@ -22,7 +22,7 @@ vi.mock('./fetchEventerPerformances', () => ({
 }));
 
 vi.mock('./fetchSeatAvailability', () => ({
-	fetchTomixSeatAvailability: vi.fn()
+	fetchTomixSeatAvailabilityBatch: vi.fn()
 }));
 
 vi.mock('./parseSeatAvailability', () => ({
@@ -34,7 +34,7 @@ import { getNormalizedPreferredPerformances } from './normalizePerformance';
 const fetchTomixTheaterProductsMock = vi.mocked(fetchTomixTheaterProducts);
 const resolveEventerSourceMock = vi.mocked(resolveEventerSource);
 const fetchEventerDataMock = vi.mocked(fetchEventerData);
-const fetchTomixSeatAvailabilityMock = vi.mocked(fetchTomixSeatAvailability);
+const fetchTomixSeatAvailabilityBatchMock = vi.mocked(fetchTomixSeatAvailabilityBatch);
 const parseTomixSeatAvailabilityMock = vi.mocked(parseTomixSeatAvailability);
 
 function createProduct(id: number): TomixStoreProduct {
@@ -101,13 +101,13 @@ beforeEach(() => {
 	fetchTomixTheaterProductsMock.mockReset();
 	resolveEventerSourceMock.mockReset();
 	fetchEventerDataMock.mockReset();
-	fetchTomixSeatAvailabilityMock.mockReset();
+	fetchTomixSeatAvailabilityBatchMock.mockReset();
 	parseTomixSeatAvailabilityMock.mockReset();
 
 	resolveEventerSourceMock.mockImplementation(async product => createSource(product));
 	fetchEventerDataMock.mockResolvedValue(createEventData([]));
-	fetchTomixSeatAvailabilityMock.mockImplementation(async eventId =>
-		createSeatResult(eventId, [{ _id: `seat-${eventId}` } as TomixEventerSeat])
+	fetchTomixSeatAvailabilityBatchMock.mockImplementation(async entries =>
+		entries.map(entry => createSeatResult(entry.eventId, [{ _id: `seat-${entry.eventId}` } as TomixEventerSeat]))
 	);
 	parseTomixSeatAvailabilityMock.mockImplementation(seats =>
 		seats.length > 0 ? AVAILABLE_PARSE_RESULT : UNAVAILABLE_PARSE_RESULT
@@ -136,19 +136,19 @@ describe('tomix collectPerformances', () => {
 		});
 		expect(fetchTomixTheaterProductsMock).toHaveBeenCalledTimes(1);
 		expect(resolveEventerSourceMock).toHaveBeenCalledWith(product);
-		expect(fetchTomixSeatAvailabilityMock).toHaveBeenCalledWith('event-1');
+		expect(fetchTomixSeatAvailabilityBatchMock).toHaveBeenCalledWith(
+			[expect.objectContaining({ eventId: 'event-1' })],
+			8
+		);
 	});
 
-	it('excludes a performance when seat fetching throws and keeps other valid performances', async () => {
+	it('excludes a performance when seat fetching fails closed and keeps other valid performances', async () => {
 		fetchTomixTheaterProductsMock.mockResolvedValue([createProduct(1)]);
 		fetchEventerDataMock.mockResolvedValue(createEventData(['event-1', 'event-2']));
-		fetchTomixSeatAvailabilityMock.mockImplementation(async eventId => {
-			if (eventId === 'event-1') {
-				throw new Error('Seat fetch failed');
-			}
-
-			return createSeatResult(eventId, [{ _id: `seat-${eventId}` } as TomixEventerSeat]);
-		});
+		fetchTomixSeatAvailabilityBatchMock.mockResolvedValue([
+			createSeatResult('event-1', []),
+			createSeatResult('event-2', [{ _id: 'seat-event-2' } as TomixEventerSeat])
+		]);
 
 		const result = await getNormalizedPreferredPerformances();
 
@@ -158,7 +158,7 @@ describe('tomix collectPerformances', () => {
 	it('excludes a performance when the seat payload is empty or unusable', async () => {
 		fetchTomixTheaterProductsMock.mockResolvedValue([createProduct(1)]);
 		fetchEventerDataMock.mockResolvedValue(createEventData(['event-1']));
-		fetchTomixSeatAvailabilityMock.mockResolvedValue(createSeatResult('event-1', []));
+		fetchTomixSeatAvailabilityBatchMock.mockResolvedValue([createSeatResult('event-1', [])]);
 
 		const result = await getNormalizedPreferredPerformances();
 
@@ -199,8 +199,13 @@ describe('tomix collectPerformances', () => {
 
 			return createEventData(['event-1', 'event-3']);
 		});
-		fetchTomixSeatAvailabilityMock.mockImplementation(async eventId =>
-			createSeatResult(eventId, eventId === 'event-1' ? [] : ([{ _id: `seat-${eventId}` }] as TomixEventerSeat[]))
+		fetchTomixSeatAvailabilityBatchMock.mockImplementation(async entries =>
+			entries.map(entry =>
+				createSeatResult(
+					entry.eventId,
+					entry.eventId === 'event-1' ? [] : ([{ _id: `seat-${entry.eventId}` }] as TomixEventerSeat[])
+				)
+			)
 		);
 
 		const result = await getNormalizedPreferredPerformances();
@@ -215,6 +220,6 @@ describe('tomix collectPerformances', () => {
 
 		expect(result).toEqual([]);
 		expect(resolveEventerSourceMock).not.toHaveBeenCalled();
-		expect(fetchTomixSeatAvailabilityMock).not.toHaveBeenCalled();
+		expect(fetchTomixSeatAvailabilityBatchMock).toHaveBeenCalledWith([], 8);
 	});
 });

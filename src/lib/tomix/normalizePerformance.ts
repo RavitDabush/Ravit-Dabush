@@ -2,19 +2,45 @@ import 'server-only';
 
 import { fetchEventerData, resolveEventerSource } from './fetchEventerPerformances';
 import { fetchTomixTheaterProducts } from './fetchProducts';
-import { fetchTomixSeatAvailability } from './fetchSeatAvailability';
+import { fetchTomixSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseTomixSeatAvailability } from './parseSeatAvailability';
+import { getDurationMs } from '@/lib/theater/observability';
 import { resolveSaleLifecycle } from '@/lib/theater/resolveSaleLifecycle';
 import {
 	NormalizedPerformance,
 	TomixEventerEvent,
 	TomixEventerSource,
 	TomixScheduleEntry,
-	TomixSeatAvailabilityFetchResult
+	TomixSeatAvailabilityFetchResult,
+	TomixStoreProduct
 } from './types';
 
 const TOMIX_EVENT_DISCOVERY_CONCURRENCY = 3;
 const TOMIX_SEAT_FETCH_CONCURRENCY = 8;
+
+type TomixCollectionResult = {
+	products: Awaited<ReturnType<typeof fetchTomixTheaterProducts>>;
+	entries: TomixScheduleEntry[];
+	productsDurationMs: number;
+	performancesDurationMs: number;
+	discoveryDurationMs: number;
+	sourceResolvedCount: number;
+	sourceSkippedCount: number;
+	sourceFailedCount: number;
+	eventDataFailedCount: number;
+	rawPerformancesDiscoveredCount: number;
+	relevantPerformancesCount: number;
+	irrelevantPerformancesCount: number;
+	duplicatePerformanceCount: number;
+};
+
+type ProductDiscoveryResult = {
+	entries: TomixScheduleEntry[];
+	sourceResolved: boolean;
+	sourceFailed: boolean;
+	eventDataFailed: boolean;
+	rawPerformancesDiscoveredCount: number;
+};
 
 async function mapWithConcurrency<T, R>(items: T[], limit: number, mapper: (item: T) => Promise<R>): Promise<R[]> {
 	const results: R[] = new Array(items.length);
@@ -95,6 +121,16 @@ function mapEventToEntry(source: TomixEventerSource, event: TomixEventerEvent): 
 	};
 }
 
+function countDuplicatePerformanceIds(entries: TomixScheduleEntry[]): number {
+	const counts = new Map<string, number>();
+
+	for (const entry of entries) {
+		counts.set(entry.eventId, (counts.get(entry.eventId) ?? 0) + 1);
+	}
+
+	return Array.from(counts.values()).filter(count => count > 1).length;
+}
+
 export function normalizePerformance(
 	entry: TomixScheduleEntry,
 	result: TomixSeatAvailabilityFetchResult | undefined
@@ -126,50 +162,147 @@ export function normalizePerformance(
 	};
 }
 
-async function collectEntries(): Promise<TomixScheduleEntry[]> {
+async function collectEntries(): Promise<TomixCollectionResult> {
+	const productsStartedAt = Date.now();
 	const products = await fetchTomixTheaterProducts();
+	const productsDurationMs = getDurationMs(productsStartedAt);
+	const discoveryStartedAt = Date.now();
 
-	const entryGroups = await mapWithConcurrency(products, TOMIX_EVENT_DISCOVERY_CONCURRENCY, async product => {
-		try {
-			const source = await resolveEventerSource(product);
+	const productDiscoveryResults = await mapWithConcurrency<TomixStoreProduct, ProductDiscoveryResult>(
+		products,
+		TOMIX_EVENT_DISCOVERY_CONCURRENCY,
+		async product => {
+			let source: TomixEventerSource | null = null;
 
-			if (!source) {
-				return [];
-			}
+			try {
+				source = await resolveEventerSource(product);
 
-			const eventerData = await fetchEventerData(source);
-			const entries: TomixScheduleEntry[] = [];
-
-			for (const event of eventerData.events ?? []) {
-				const entry = mapEventToEntry(source, event);
-
-				if (entry) {
-					entries.push(entry);
+				if (!source) {
+					return {
+						entries: [],
+						sourceResolved: false,
+						sourceFailed: false,
+						eventDataFailed: false,
+						rawPerformancesDiscoveredCount: 0
+					};
 				}
+			} catch {
+				return {
+					entries: [],
+					sourceResolved: false,
+					sourceFailed: true,
+					eventDataFailed: false,
+					rawPerformancesDiscoveredCount: 0
+				};
 			}
 
-			return entries;
-		} catch {
-			return [];
+			try {
+				const eventerData = await fetchEventerData(source);
+				const entries: TomixScheduleEntry[] = [];
+				const rawPerformancesDiscoveredCount = eventerData.events?.length ?? 0;
+
+				for (const event of eventerData.events ?? []) {
+					const entry = mapEventToEntry(source, event);
+
+					if (entry) {
+						entries.push(entry);
+					}
+				}
+
+				return {
+					entries,
+					sourceResolved: true,
+					sourceFailed: false,
+					eventDataFailed: false,
+					rawPerformancesDiscoveredCount
+				};
+			} catch {
+				return {
+					entries: [],
+					sourceResolved: true,
+					sourceFailed: false,
+					eventDataFailed: true,
+					rawPerformancesDiscoveredCount: 0
+				};
+			}
 		}
+	);
+	const entries = productDiscoveryResults.flatMap(result => result.entries);
+	const discoveryDurationMs = getDurationMs(discoveryStartedAt);
+	const sourceResolvedCount = productDiscoveryResults.filter(result => result.sourceResolved).length;
+	const sourceFailedCount = productDiscoveryResults.filter(result => result.sourceFailed).length;
+	const eventDataFailedCount = productDiscoveryResults.filter(result => result.eventDataFailed).length;
+	const rawPerformancesDiscoveredCount = productDiscoveryResults.reduce(
+		(sum, result) => sum + result.rawPerformancesDiscoveredCount,
+		0
+	);
+	const relevantPerformancesCount = entries.length;
+	const irrelevantPerformancesCount = rawPerformancesDiscoveredCount - relevantPerformancesCount;
+	const duplicatePerformanceCount = countDuplicatePerformanceIds(entries);
+	const sourceSkippedCount = products.length - sourceResolvedCount - sourceFailedCount;
+
+	console.info('[tomix-discovery]', {
+		productsCount: products.length,
+		sourceResolvedCount,
+		sourceSkippedCount,
+		sourceFailedCount,
+		eventDataFailedCount,
+		rawPerformancesDiscoveredCount,
+		relevantPerformancesCount,
+		irrelevantPerformancesCount,
+		duplicatePerformanceCount
+	});
+	console.info('[tomix-performances-batch]', {
+		productsCount: products.length,
+		rawPerformancesDiscoveredCount,
+		relevantPerformancesCount,
+		durationMs: discoveryDurationMs,
+		concurrencyLimit: TOMIX_EVENT_DISCOVERY_CONCURRENCY
 	});
 
-	return entryGroups.flat();
+	return {
+		products,
+		entries,
+		productsDurationMs,
+		performancesDurationMs: discoveryDurationMs,
+		discoveryDurationMs,
+		sourceResolvedCount,
+		sourceSkippedCount,
+		sourceFailedCount,
+		eventDataFailedCount,
+		rawPerformancesDiscoveredCount,
+		relevantPerformancesCount,
+		irrelevantPerformancesCount,
+		duplicatePerformanceCount
+	};
 }
 
 export async function getNormalizedPreferredPerformances(): Promise<NormalizedPerformance[]> {
-	const entries = await collectEntries();
-	const performances = await mapWithConcurrency(entries, TOMIX_SEAT_FETCH_CONCURRENCY, async entry => {
-		try {
-			const availability = await fetchTomixSeatAvailability(entry.eventId);
-
-			return normalizePerformance(entry, availability);
-		} catch {
-			return normalizePerformance(entry, undefined);
-		}
-	});
-
-	return performances
+	const startedAt = Date.now();
+	const collection = await collectEntries();
+	const availabilityStartedAt = Date.now();
+	const availabilityResults = await fetchTomixSeatAvailabilityBatch(collection.entries, TOMIX_SEAT_FETCH_CONCURRENCY);
+	const availabilityDurationMs = getDurationMs(availabilityStartedAt);
+	const seatFilteringStartedAt = Date.now();
+	const performances = collection.entries.map((entry, index) => normalizePerformance(entry, availabilityResults[index]));
+	const finalPerformances = performances
 		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
+	const seatFilteringDurationMs = getDurationMs(seatFilteringStartedAt);
+
+	console.info('[tomix-normalization]', {
+		durationMs: getDurationMs(startedAt),
+		productsDurationMs: collection.productsDurationMs,
+		performancesDurationMs: collection.performancesDurationMs,
+		discoveryDurationMs: collection.discoveryDurationMs,
+		availabilityDurationMs,
+		seatFilteringDurationMs,
+		productsCount: collection.products.length,
+		rawPerformancesDiscoveredCount: collection.rawPerformancesDiscoveredCount,
+		relevantPerformancesCount: collection.relevantPerformancesCount,
+		availabilityCheckedCount: performances.length,
+		finalPerformancesCount: finalPerformances.length
+	});
+
+	return finalPerformances;
 }

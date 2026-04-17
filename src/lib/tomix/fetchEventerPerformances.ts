@@ -1,16 +1,60 @@
 import 'server-only';
 
-import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { unstable_cache } from 'next/cache';
 import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import { TomixEventerDataResponse, TomixEventerSource, TomixStoreProduct } from './types';
 
 const EVENTER_HOST = 'www.eventer.co.il';
+const TOMIX_PRODUCT_EVENTBUZZ_REVALIDATE_SECONDS = 600;
+const TOMIX_EVENTER_DATA_REVALIDATE_SECONDS = 300;
+const TOMIX_DISCOVERY_CACHE_TAG = 'theater:tomix:discovery';
+const TOMIX_EVENTER_DATA_CACHE_TAG = 'theater:tomix:eventer-data';
+const TOMIX_PRODUCT_EVENTBUZZ_CACHE_TAGS = [TOMIX_DISCOVERY_CACHE_TAG];
+const TOMIX_EVENTER_DATA_CACHE_TAGS = [TOMIX_DISCOVERY_CACHE_TAG, TOMIX_EVENTER_DATA_CACHE_TAG];
 
 const DEFAULT_HEADERS = {
 	accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,application/json;q=0.8,*/*;q=0.7',
 	'user-agent':
 		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36'
 };
+
+type RuntimeCacheEntry<T> = {
+	value: Promise<T>;
+	expiresAtMs: number;
+};
+
+const runtimeProductEventbuzzHtmlCache = new Map<string, RuntimeCacheEntry<string>>();
+const runtimeEventerDataCache = new Map<string, RuntimeCacheEntry<TomixEventerDataResponse>>();
+
+function getRuntimeCachedValue<T>(
+	cache: Map<string, RuntimeCacheEntry<T>>,
+	key: string,
+	revalidateSeconds: number,
+	loader: () => Promise<T>
+): Promise<T> {
+	const now = Date.now();
+	const cacheEntry = cache.get(key);
+
+	if (cacheEntry && cacheEntry.expiresAtMs > now) {
+		return cacheEntry.value;
+	}
+
+	if (cacheEntry) {
+		cache.delete(key);
+	}
+
+	const value = loader().catch(error => {
+		cache.delete(key);
+		throw error;
+	});
+
+	cache.set(key, {
+		value,
+		expiresAtMs: now + revalidateSeconds * 1000
+	});
+
+	return value;
+}
 
 function appendEventbuzz(permalink: string): string {
 	const url = new URL(permalink);
@@ -52,11 +96,14 @@ function buildGetDataUrl(iframeUrl: string): string {
 	return url.toString();
 }
 
-async function fetchProductEventbuzzHtml(product: TomixStoreProduct): Promise<string> {
+async function fetchProductEventbuzzHtmlByUrl(eventbuzzUrl: string): Promise<string> {
 	const startedAt = Date.now();
-	const response = await fetch(appendEventbuzz(product.permalink), {
+	const response = await fetch(eventbuzzUrl, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 600, tags: getTheaterCacheTags('tomix') }
+		next: {
+			revalidate: TOMIX_PRODUCT_EVENTBUZZ_REVALIDATE_SECONDS,
+			tags: TOMIX_PRODUCT_EVENTBUZZ_CACHE_TAGS
+		}
 	});
 	logTheaterFetch({
 		source: 'tomix.productEventbuzzHtml',
@@ -65,14 +112,26 @@ async function fetchProductEventbuzzHtml(product: TomixStoreProduct): Promise<st
 	});
 
 	if (!response.ok) {
-		throw new Error(`Failed to fetch TOMIX product page ${product.id}: ${response.status}`);
+		throw new Error(`Failed to fetch TOMIX product page ${eventbuzzUrl}: ${response.status}`);
 	}
 
 	return response.text();
 }
 
+const fetchCachedProductEventbuzzHtmlByUrl = unstable_cache(
+	fetchProductEventbuzzHtmlByUrl,
+	['theater', 'tomix', 'product-eventbuzz-html', 'v1'],
+	{ revalidate: TOMIX_PRODUCT_EVENTBUZZ_REVALIDATE_SECONDS, tags: TOMIX_PRODUCT_EVENTBUZZ_CACHE_TAGS }
+);
+
 export async function resolveEventerSource(product: TomixStoreProduct): Promise<TomixEventerSource | null> {
-	const html = await fetchProductEventbuzzHtml(product);
+	const eventbuzzUrl = appendEventbuzz(product.permalink);
+	const html = await getRuntimeCachedValue(
+		runtimeProductEventbuzzHtmlCache,
+		eventbuzzUrl,
+		TOMIX_PRODUCT_EVENTBUZZ_REVALIDATE_SECONDS,
+		() => fetchCachedProductEventbuzzHtmlByUrl(eventbuzzUrl)
+	);
 	const iframeUrl = extractEventerIframeUrl(html);
 
 	if (!iframeUrl) {
@@ -86,20 +145,34 @@ export async function resolveEventerSource(product: TomixStoreProduct): Promise<
 	};
 }
 
-export async function fetchEventerData(source: TomixEventerSource): Promise<TomixEventerDataResponse> {
+async function fetchEventerDataByUrl(getDataUrl: string): Promise<TomixEventerDataResponse> {
 	const startedAt = Date.now();
-	const response = await fetch(source.getDataUrl, {
+	const response = await fetch(getDataUrl, {
 		headers: {
 			...DEFAULT_HEADERS,
 			accept: 'application/json'
 		},
-		next: { revalidate: 300, tags: getTheaterCacheTags('tomix') }
+		next: {
+			revalidate: TOMIX_EVENTER_DATA_REVALIDATE_SECONDS,
+			tags: TOMIX_EVENTER_DATA_CACHE_TAGS
+		}
 	});
 	logTheaterFetch({ source: 'tomix.eventerData', durationMs: getDurationMs(startedAt), status: response.status });
 
 	if (!response.ok) {
-		throw new Error(`Failed to fetch Eventer data for TOMIX product ${source.product.id}: ${response.status}`);
+		throw new Error(`Failed to fetch Eventer data for TOMIX source ${getDataUrl}: ${response.status}`);
 	}
 
 	return response.json();
+}
+
+const fetchCachedEventerDataByUrl = unstable_cache(fetchEventerDataByUrl, ['theater', 'tomix', 'eventer-data', 'v1'], {
+	revalidate: TOMIX_EVENTER_DATA_REVALIDATE_SECONDS,
+	tags: TOMIX_EVENTER_DATA_CACHE_TAGS
+});
+
+export async function fetchEventerData(source: TomixEventerSource): Promise<TomixEventerDataResponse> {
+	return getRuntimeCachedValue(runtimeEventerDataCache, source.getDataUrl, TOMIX_EVENTER_DATA_REVALIDATE_SECONDS, () =>
+		fetchCachedEventerDataByUrl(source.getDataUrl)
+	);
 }

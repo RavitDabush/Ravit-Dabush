@@ -19,15 +19,23 @@ export async function fetchTomixTheaterProducts(): Promise<TomixStoreProduct[]> 
 		headers: DEFAULT_HEADERS,
 		next: { revalidate: 600, tags: getTheaterCacheTags('tomix') }
 	});
-	logTheaterFetch({ source: 'tomix.products', durationMs: getDurationMs(startedAt), status: response.status });
+	const fetchDurationMs = getDurationMs(startedAt);
+
+	logTheaterFetch({ source: 'tomix.products', durationMs: fetchDurationMs, status: response.status });
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch TOMIX theater products: ${response.status}`);
 	}
 
 	const products = (await response.json()) as TomixStoreProduct[];
-
-	return products.filter(product =>
+	const theaterProducts = products.filter(product =>
 		product.categories?.some(category => category.id === TOMIX_THEATER_CATEGORY_ID && category.slug === 'theatre')
 	);
+
+	console.info('[tomix-products-batch]', {
+		productsCount: theaterProducts.length,
+		durationMs: getDurationMs(startedAt)
+	});
+
+	return theaterProducts;
 }
