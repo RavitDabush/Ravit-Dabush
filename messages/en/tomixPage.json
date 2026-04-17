@@ -5,6 +5,7 @@
 	},
 	"title": "TOMIX Theater",
 	"description": "Only TOMIX theater-category performances with confirmed Eventer seats in rows 1-7 are shown here.",
+	"lastUpdated": "Last updated",
 	"filter": {
 		"label": "Filter by production",
 		"allOption": "All productions"

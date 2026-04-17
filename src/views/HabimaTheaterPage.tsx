@@ -1,5 +1,6 @@
 import { Alert } from '@/components/Alert';
 import PageLayout from '@/components/PageLayout';
+import LastUpdated from '@/components/theater/LastUpdated';
 import PerformanceList from '@/components/theater/PerformanceList';
 import RefreshTheaterCacheForm from '@/components/theater/RefreshTheaterCacheForm';
 import { FancyTitle, Paragraph } from '@/components/Typography';
@@ -10,11 +11,12 @@ import { groupPerformancesByDate } from '@/lib/theater/groupPerformancesByDate';
 type Props = {
 	locale: Locale;
 	performances: TheaterNormalizedPerformance[];
+	collectedAt?: string;
 	hasError: boolean;
 	refreshCacheAction: () => Promise<void>;
 };
 
-export default function HabimaTheaterPage({ locale, performances, hasError, refreshCacheAction }: Props) {
+export default function HabimaTheaterPage({ locale, performances, collectedAt, hasError, refreshCacheAction }: Props) {
 	const t = useTranslations('habimaPage');
 	const confidenceValues: Record<TheaterSourceConfidence, string> = {
 		high: t('confidence.high'),
@@ -35,6 +37,7 @@ export default function HabimaTheaterPage({ locale, performances, hasError, refr
 						pendingLabel={t('refreshCache.pendingLabel')}
 						hint={t('refreshCache.hint')}
 					/>
+					<LastUpdated collectedAt={collectedAt} label={t('lastUpdated')} />
 				</div>
 			</section>
 

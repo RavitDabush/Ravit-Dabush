@@ -462,13 +462,16 @@
 
 	.site-header-nav-submenu {
 		position: absolute;
-		top: calc(100% + 0.45rem);
-		inset-inline-start: 0;
+		top: 100%;
+		padding-top: 0.45rem;
+		inset-inline-start: auto;
+		inset-inline-end: 0;
 		z-index: calc(var(--z-sticky) + 2);
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
 		min-width: 12rem;
+		max-width: calc(100vw - 2rem);
 		margin: 0;
 		padding: 0.5rem;
 		list-style: none;

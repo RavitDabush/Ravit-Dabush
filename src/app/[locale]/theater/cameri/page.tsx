@@ -25,11 +25,13 @@ export default async function LocaleCameriTheaterPage({ params }: Props) {
 	setRequestLocale(locale);
 
 	let performances: TheaterNormalizedPerformance[] = [];
+	let collectedAt: string | undefined;
 	let hasError = false;
 
 	try {
 		const preparedData = await collectCameriPerformances();
 		performances = preparedData.performances;
+		collectedAt = preparedData.collectedAt;
 	} catch {
 		hasError = true;
 	}
@@ -40,6 +42,7 @@ export default async function LocaleCameriTheaterPage({ params }: Props) {
 		<CameriTheaterPage
 			locale={locale}
 			performances={performances}
+			collectedAt={collectedAt}
 			hasError={hasError}
 			refreshCacheAction={refreshCacheAction}
 		/>

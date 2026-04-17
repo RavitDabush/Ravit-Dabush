@@ -5,6 +5,7 @@
 	},
 	"title": "Habima Performances",
 	"description": "Only Habima performances with confirmed seat availability in rows 1-7 are shown here.",
+	"lastUpdated": "Last updated",
 	"filter": {
 		"label": "Filter by play",
 		"allOption": "All plays"

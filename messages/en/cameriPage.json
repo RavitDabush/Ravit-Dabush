@@ -5,6 +5,7 @@
 	},
 	"title": "Cameri Performances",
 	"description": "Only Cameri performances with confirmed ticket availability are shown here. When the ticketing flow exposes rows or sections, they are shown explicitly. Otherwise the page falls back to confirmed general availability.",
+	"lastUpdated": "Last updated",
 	"filter": {
 		"label": "Filter by play",
 		"allOption": "All plays"
