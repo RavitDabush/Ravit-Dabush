@@ -11,6 +11,9 @@ import {
 } from './types';
 
 const PRESGLOBAL_BASE_URL = 'https://lessin.presglobal.store';
+const DEFAULT_LESSIN_AVAILABILITY_CONCURRENCY_LIMIT = 3;
+const LESSIN_AVAILABILITY_CACHE_REVALIDATE_SECONDS = 300;
+const SLOW_ITEM_LOG_LIMIT = 5;
 
 const DEFAULT_HEADERS = {
 	accept: 'application/json, text/plain, */*',
@@ -111,6 +114,108 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, mapper: (item
 	return results;
 }
 
+type AvailabilityItemTiming = {
+	presentationId: string;
+	durationMs: number;
+	errorsCount: number;
+	cacheHit: boolean;
+};
+
+type CachedAvailabilityResult = {
+	result: LessinSeatAvailabilityFetchResult;
+	cacheStoredAtMs: number;
+};
+
+type RuntimeAvailabilityCacheEntry = {
+	value: CachedAvailabilityResult;
+	expiresAtMs: number;
+};
+
+const runtimeAvailabilityCache = new Map<string, RuntimeAvailabilityCacheEntry>();
+
+function getDuplicatePresentationIds(entries: LessinScheduleEntry[]): string[] {
+	const counts = new Map<string, number>();
+
+	for (const entry of entries) {
+		counts.set(entry.id, (counts.get(entry.id) ?? 0) + 1);
+	}
+
+	return Array.from(counts.entries())
+		.filter(([, count]) => count > 1)
+		.map(([presentationId]) => presentationId);
+}
+
+function getAverageDurationMs(itemTimings: AvailabilityItemTiming[]): number {
+	if (itemTimings.length === 0) {
+		return 0;
+	}
+
+	const totalDurationMs = itemTimings.reduce((sum, timing) => sum + timing.durationMs, 0);
+
+	return Math.round(totalDurationMs / itemTimings.length);
+}
+
+function getMaxItemTiming(itemTimings: AvailabilityItemTiming[]): AvailabilityItemTiming | null {
+	return itemTimings.reduce<AvailabilityItemTiming | null>((maxTiming, timing) => {
+		if (!maxTiming || timing.durationMs > maxTiming.durationMs) {
+			return timing;
+		}
+
+		return maxTiming;
+	}, null);
+}
+
+function logDetailedAvailabilityItems(itemTimings: AvailabilityItemTiming[]): void {
+	if (process.env.NODE_ENV !== 'development') {
+		return;
+	}
+
+	const maxItemTiming = getMaxItemTiming(itemTimings);
+	const failedItemTimings = itemTimings.filter(timing => timing.errorsCount > 0).slice(0, SLOW_ITEM_LOG_LIMIT);
+
+	if (maxItemTiming) {
+		console.info('[lessin-availability-item]', {
+			reason: 'max_duration',
+			...maxItemTiming
+		});
+	}
+
+	for (const timing of failedItemTimings) {
+		console.info('[lessin-availability-item]', {
+			reason: 'failed',
+			...timing
+		});
+	}
+}
+
+async function getCachedSeatAvailability(
+	presentationId: string,
+	seatplanCache: Map<string, Promise<LessinSeatplanResponse>>
+): Promise<CachedAvailabilityResult> {
+	const now = Date.now();
+	const runtimeCacheEntry = runtimeAvailabilityCache.get(presentationId);
+
+	if (runtimeCacheEntry && runtimeCacheEntry.expiresAtMs > now) {
+		return runtimeCacheEntry.value;
+	}
+
+	if (runtimeCacheEntry) {
+		runtimeAvailabilityCache.delete(presentationId);
+	}
+
+	const value: CachedAvailabilityResult = {
+		result: await fetchSeatAvailability(presentationId, seatplanCache),
+		cacheStoredAtMs: Date.now()
+	};
+
+	runtimeAvailabilityCache.set(presentationId, {
+		value,
+		expiresAtMs: now + LESSIN_AVAILABILITY_CACHE_REVALIDATE_SECONDS * 1000
+	});
+
+	return value;
+}
+
 export async function fetchSeatAvailability(
 	presentationId: string,
 	seatplanCache: Map<string, Promise<LessinSeatplanResponse>>
@@ -181,15 +286,65 @@ export async function fetchSeatAvailability(
 
 export async function fetchSeatAvailabilityBatch(
 	entries: LessinScheduleEntry[],
-	concurrencyLimit: number = 3
+	concurrencyLimit: number = DEFAULT_LESSIN_AVAILABILITY_CONCURRENCY_LIMIT
 ): Promise<LessinSeatAvailabilityFetchResult[]> {
 	const startedAt = Date.now();
 	const seatplanCache = new Map<string, Promise<LessinSeatplanResponse>>();
+	const itemTimings: AvailabilityItemTiming[] = [];
+	const duplicatePresentationIds = getDuplicatePresentationIds(entries);
 
-	const results = await mapWithConcurrency(entries, concurrencyLimit, entry =>
-		fetchSeatAvailability(entry.id, seatplanCache)
-	);
-	logTheaterFetch({ source: 'lessin.seatAvailabilityBatch', durationMs: getDurationMs(startedAt) });
+	if (duplicatePresentationIds.length > 0) {
+		console.info('[lessin-availability-duplicates]', {
+			duplicateCount: duplicatePresentationIds.length,
+			presentationIds: duplicatePresentationIds
+		});
+	}
+
+	const results = await mapWithConcurrency(entries, concurrencyLimit, async entry => {
+		const itemStartedAt = Date.now();
+		const cachedResult = await getCachedSeatAvailability(entry.id, seatplanCache);
+		const cacheHit = cachedResult.cacheStoredAtMs < startedAt;
+
+		itemTimings.push({
+			presentationId: entry.id,
+			durationMs: getDurationMs(itemStartedAt),
+			errorsCount: cachedResult.result.errors.length,
+			cacheHit
+		});
+
+		return cachedResult.result;
+	});
+	const durationMs = getDurationMs(startedAt);
+	const failedCount = results.filter(result => result.errors.length > 0).length;
+	const skippedCount = results.filter(result => !result.seatplan || !result.seatStatus).length;
+	const cacheHitCount = itemTimings.filter(timing => timing.cacheHit).length;
+	const cacheMissCount = itemTimings.length - cacheHitCount;
+	const maxItemTiming = getMaxItemTiming(itemTimings);
+
+	logTheaterFetch({ source: 'lessin.seatAvailabilityBatch', durationMs });
+	console.info('[lessin-availability-cache]', {
+		requestedCount: entries.length,
+		cacheHitCount,
+		cacheMissCount,
+		durationMs,
+		concurrencyLimit,
+		revalidateSeconds: LESSIN_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
+		runtimeCacheSize: runtimeAvailabilityCache.size
+	});
+	console.info('[lessin-availability-summary]', {
+		concurrencyLimit,
+		requestedCount: entries.length,
+		succeededCount: results.length - failedCount,
+		failedCount,
+		skippedCount,
+		durationMs,
+		averageItemDurationMs: getAverageDurationMs(itemTimings),
+		maxItemDurationMs: maxItemTiming?.durationMs ?? 0,
+		duplicatePresentationCount: duplicatePresentationIds.length,
+		cacheHitCount,
+		cacheMissCount
+	});
+	logDetailedAvailabilityItems(itemTimings);
 
 	return results;
 }

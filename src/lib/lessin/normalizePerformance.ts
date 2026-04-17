@@ -4,6 +4,7 @@ import { fetchAllPresentations, fetchFeatures } from './fetchFeatures';
 import { fetchSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseTicketingDiscovery } from './parseDiscovery';
 import { parseSeatAvailability } from './parseSeatAvailability';
+import { getDurationMs } from '@/lib/theater/observability';
 import { resolveSaleLifecycle } from '@/lib/theater/resolveSaleLifecycle';
 import {
 	LessinScheduleEntry,
@@ -96,13 +97,22 @@ export function normalizePerformance(
 }
 
 export async function getNormalizedPreferredPerformances(): Promise<NormalizedPerformance[]> {
+	const startedAt = Date.now();
+	const featuresStartedAt = Date.now();
 	const features = await fetchFeatures();
+	const featuresDurationMs = getDurationMs(featuresStartedAt);
+	const presentationsStartedAt = Date.now();
 	const presentations = await fetchAllPresentations(features);
+	const presentationsDurationMs = getDurationMs(presentationsStartedAt);
+	const discoveryStartedAt = Date.now();
 	const discoveryEntries = parseTicketingDiscovery(features, presentations);
+	const discoveryDurationMs = getDurationMs(discoveryStartedAt);
+	const availabilityStartedAt = Date.now();
 	const availabilityResults = await fetchSeatAvailabilityBatch(discoveryEntries);
+	const availabilityDurationMs = getDurationMs(availabilityStartedAt);
 	const resultMap = new Map(availabilityResults.map(result => [result.presentationId, result]));
 
-	return discoveryEntries
+	const performances = discoveryEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
 		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => {
@@ -111,6 +121,20 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 
 			return leftDateTime.localeCompare(rightDateTime);
 		});
+
+	console.info('[lessin-normalization]', {
+		durationMs: getDurationMs(startedAt),
+		featuresDurationMs,
+		presentationsDurationMs,
+		discoveryDurationMs,
+		availabilityDurationMs,
+		featuresCount: features.length,
+		presentationsCount: presentations.length,
+		discoveryCount: discoveryEntries.length,
+		performancesCount: performances.length
+	});
+
+	return performances;
 }
 
 export async function getNormalizedSaleLifecyclePerformances(): Promise<NormalizedPerformance[]> {

@@ -2,6 +2,11 @@ import 'server-only';
 
 import { LessinFeature, LessinPresentationSummary, LessinScheduleEntry } from './types';
 
+type DiscoveryStats = {
+	duplicatePresentationCount: number;
+	skippedCount: number;
+};
+
 function normalizeTime(dateTime: string): string {
 	const match = dateTime.match(/(\d{2}):(\d{2})/);
 
@@ -50,14 +55,23 @@ export function parseTicketingDiscovery(
 ): LessinScheduleEntry[] {
 	const featureNameMap = new Map(features.map(feature => [feature.id, feature.name]));
 	const dedupedEntries = new Map<string, LessinScheduleEntry>();
+	const stats: DiscoveryStats = {
+		duplicatePresentationCount: 0,
+		skippedCount: 0
+	};
 
 	for (const presentation of presentations) {
 		if (!isFuturePresentation(presentation, now)) {
+			stats.skippedCount += 1;
 			continue;
 		}
 
 		const id = String(presentation.id);
 		const showName = presentation.featureName || featureNameMap.get(presentation.featureId) || '';
+
+		if (dedupedEntries.has(id)) {
+			stats.duplicatePresentationCount += 1;
+		}
 
 		dedupedEntries.set(id, {
 			id,
@@ -75,6 +89,14 @@ export function parseTicketingDiscovery(
 			ticketSaleStop: presentation.ticketSaleStop ?? null
 		});
 	}
+
+	console.info('[lessin-discovery]', {
+		featuresCount: features.length,
+		presentationsCount: presentations.length,
+		discoverableCount: dedupedEntries.size,
+		skippedCount: stats.skippedCount,
+		duplicatePresentationCount: stats.duplicatePresentationCount
+	});
 
 	return Array.from(dedupedEntries.values());
 }

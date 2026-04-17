@@ -5,6 +5,7 @@ import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import { LessinFeature, LessinFeaturesResponse, LessinPresentationsResponse, LessinPresentationSummary } from './types';
 
 const PRESGLOBAL_BASE_URL = 'https://lessin.presglobal.store';
+const DEFAULT_LESSIN_PRESENTATIONS_CONCURRENCY_LIMIT = 4;
 
 const DEFAULT_HEADERS = {
 	accept: 'application/json, text/plain, */*',
@@ -70,11 +71,20 @@ export async function fetchPresentations(featureId: number): Promise<LessinPrese
 
 export async function fetchAllPresentations(
 	features: LessinFeature[],
-	concurrencyLimit: number = 4
+	concurrencyLimit: number = DEFAULT_LESSIN_PRESENTATIONS_CONCURRENCY_LIMIT
 ): Promise<LessinPresentationSummary[]> {
 	const startedAt = Date.now();
 	const batches = await mapWithConcurrency(features, concurrencyLimit, async feature => fetchPresentations(feature.id));
-	logTheaterFetch({ source: 'lessin.presentationsBatch', durationMs: getDurationMs(startedAt) });
+	const durationMs = getDurationMs(startedAt);
+	const presentations = batches.flat();
 
-	return batches.flat();
+	logTheaterFetch({ source: 'lessin.presentationsBatch', durationMs });
+	console.info('[lessin-presentations-batch]', {
+		featuresCount: features.length,
+		presentationsCount: presentations.length,
+		durationMs,
+		concurrencyLimit
+	});
+
+	return presentations;
 }
