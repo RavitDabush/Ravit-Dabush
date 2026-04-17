@@ -4,6 +4,7 @@ import { fetchSchedule } from './fetchSchedule';
 import { fetchPresentationMetadata, fetchSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseSchedule } from './parseSchedule';
 import { parseSeatAvailability } from './parseSeatAvailability';
+import { getDurationMs } from '@/lib/theater/observability';
 import { resolveSaleLifecycle } from '@/lib/theater/resolveSaleLifecycle';
 import {
 	HabimaScheduleEntry,
@@ -83,15 +84,36 @@ export function normalizePerformance(
 }
 
 export async function getNormalizedPreferredPerformances(): Promise<NormalizedPerformance[]> {
+	const startedAt = Date.now();
+	const scheduleStartedAt = Date.now();
 	const schedule = await fetchSchedule();
+	const scheduleDurationMs = getDurationMs(scheduleStartedAt);
+	const discoveryStartedAt = Date.now();
 	const scheduleEntries = parseSchedule(schedule);
+	const discoveryDurationMs = getDurationMs(discoveryStartedAt);
+	const availabilityStartedAt = Date.now();
 	const availabilityResults = await fetchSeatAvailabilityBatch(scheduleEntries);
+	const availabilityDurationMs = getDurationMs(availabilityStartedAt);
 	const resultMap = new Map(availabilityResults.map(result => [result.presentationId, result]));
 
-	return scheduleEntries
+	const performances = scheduleEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
 		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
+
+	console.info('[habima-normalization]', {
+		durationMs: getDurationMs(startedAt),
+		scheduleDurationMs,
+		discoveryDurationMs,
+		availabilityDurationMs,
+		scheduleCount: Object.values(schedule.presentations.he ?? {}).reduce((count, presentations) => {
+			return count + presentations.length;
+		}, 0),
+		discoveryCount: scheduleEntries.length,
+		performancesCount: performances.length
+	});
+
+	return performances;
 }
 
 async function normalizeLifecycleEntry(entry: HabimaScheduleEntry): Promise<NormalizedPerformance> {

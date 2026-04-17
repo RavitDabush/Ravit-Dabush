@@ -28,6 +28,7 @@ function extractScheduleDataUrl(pageHtml: string): string {
 }
 
 export async function fetchSchedule(): Promise<HabimaScheduleJson> {
+	const startedAt = Date.now();
 	const pageStartedAt = Date.now();
 	const pageResponse = await fetch(HABIMA_SCHEDULE_URL, {
 		headers: BROWSER_HEADERS,
@@ -60,5 +61,16 @@ export async function fetchSchedule(): Promise<HabimaScheduleJson> {
 		throw new Error(`Failed to fetch Habima schedule data: ${scheduleResponse.status}`);
 	}
 
-	return scheduleResponse.json();
+	const schedule = (await scheduleResponse.json()) as HabimaScheduleJson;
+	const itemsCount = Object.values(schedule.presentations.he ?? {}).reduce((count, presentations) => {
+		return count + presentations.length;
+	}, 0);
+
+	console.info('[habima-schedule-batch]', {
+		itemsCount,
+		durationMs: getDurationMs(startedAt),
+		concurrencyLimit: 1
+	});
+
+	return schedule;
 }

@@ -81,4 +81,36 @@ describe('habima parseSchedule', () => {
 
 		expect(result[0].showName).toBe('missingTitle');
 	});
+
+	it('filters Habima 4 venue entries before availability fetching', () => {
+		const habima4Venue = '\u05d0\u05d5\u05dc\u05dd \u05d4\u05d1\u05d9\u05de\u05d4 4';
+		const schedule: HabimaScheduleJson = {
+			presentations: {
+				he: {
+					included: [{ id: 701, time: timestampSeconds('2026-04-12T20:30:00Z'), venue_id: 10 }],
+					excluded: [{ id: 702, time: timestampSeconds('2026-04-12T21:30:00Z'), venue_id: 371 }]
+				}
+			},
+			venues: {
+				he: {
+					'10': 'Main Venue',
+					'371': habima4Venue
+				}
+			},
+			shows: {
+				he: {
+					included: { ID: 1, title: 'Included Show' },
+					excluded: { ID: 2, title: 'Excluded Show' }
+				}
+			}
+		};
+
+		const result = parseSchedule(schedule);
+
+		expect(result).toHaveLength(1);
+		expect(result[0]).toMatchObject({
+			id: '701',
+			venue: 'Main Venue'
+		});
+	});
 });
