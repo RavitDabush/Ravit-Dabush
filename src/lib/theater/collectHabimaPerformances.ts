@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { getNormalizedPreferredPerformances } from '@/lib/habima/normalizePerformance';
 import { NormalizedPerformance } from '@/lib/habima/types';
 import { getTheaterCacheTags } from './cache';
+import { getDurationMs, logTheaterCollector } from './observability';
 import { TheaterCollectorResult } from './types';
 
 const HABIMA_COLLECTOR_REVALIDATE_SECONDS = 600;
@@ -23,5 +24,10 @@ const collectHabimaPerformancesCached = unstable_cache(
 );
 
 export async function collectHabimaPerformances(): Promise<TheaterCollectorResult<NormalizedPerformance>> {
-	return collectHabimaPerformancesCached();
+	const startedAt = Date.now();
+	const result = await collectHabimaPerformancesCached();
+
+	logTheaterCollector(result, getDurationMs(startedAt));
+
+	return result;
 }

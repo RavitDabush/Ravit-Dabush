@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import { TomixEventerDataResponse, TomixEventerSource, TomixStoreProduct } from './types';
 
 const EVENTER_HOST = 'www.eventer.co.il';
@@ -52,9 +53,15 @@ function buildGetDataUrl(iframeUrl: string): string {
 }
 
 async function fetchProductEventbuzzHtml(product: TomixStoreProduct): Promise<string> {
+	const startedAt = Date.now();
 	const response = await fetch(appendEventbuzz(product.permalink), {
 		headers: DEFAULT_HEADERS,
 		next: { revalidate: 600, tags: getTheaterCacheTags('tomix') }
+	});
+	logTheaterFetch({
+		source: 'tomix.productEventbuzzHtml',
+		durationMs: getDurationMs(startedAt),
+		status: response.status
 	});
 
 	if (!response.ok) {
@@ -80,6 +87,7 @@ export async function resolveEventerSource(product: TomixStoreProduct): Promise<
 }
 
 export async function fetchEventerData(source: TomixEventerSource): Promise<TomixEventerDataResponse> {
+	const startedAt = Date.now();
 	const response = await fetch(source.getDataUrl, {
 		headers: {
 			...DEFAULT_HEADERS,
@@ -87,6 +95,7 @@ export async function fetchEventerData(source: TomixEventerSource): Promise<Tomi
 		},
 		next: { revalidate: 300, tags: getTheaterCacheTags('tomix') }
 	});
+	logTheaterFetch({ source: 'tomix.eventerData', durationMs: getDurationMs(startedAt), status: response.status });
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch Eventer data for TOMIX product ${source.product.id}: ${response.status}`);

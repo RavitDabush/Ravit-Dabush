@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { getNormalizedAvailablePerformances } from '@/lib/cameri/normalizePerformance';
 import { NormalizedPerformance } from '@/lib/cameri/types';
 import { getTheaterCacheTags } from './cache';
+import { getDurationMs, logTheaterCollector } from './observability';
 import { TheaterCollectorResult } from './types';
 
 const CAMERI_COLLECTOR_REVALIDATE_SECONDS = 300;
@@ -23,5 +24,10 @@ const collectCameriPerformancesCached = unstable_cache(
 );
 
 export async function collectCameriPerformances(): Promise<TheaterCollectorResult<NormalizedPerformance>> {
-	return collectCameriPerformancesCached();
+	const startedAt = Date.now();
+	const result = await collectCameriPerformancesCached();
+
+	logTheaterCollector(result, getDurationMs(startedAt));
+
+	return result;
 }

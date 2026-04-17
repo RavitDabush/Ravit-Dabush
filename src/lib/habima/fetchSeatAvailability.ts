@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import {
 	HabimaPresentationResponse,
 	HabimaScheduleEntry,
@@ -224,7 +225,13 @@ export async function fetchSeatAvailabilityBatch(
 	entries: HabimaScheduleEntry[],
 	concurrencyLimit: number = 3
 ): Promise<HabimaSeatAvailabilityFetchResult[]> {
+	const startedAt = Date.now();
 	const seatplanCache = new Map<string, Promise<HabimaSeatplanResponse>>();
 
-	return mapWithConcurrency(entries, concurrencyLimit, entry => fetchSeatAvailability(entry.id, seatplanCache));
+	const results = await mapWithConcurrency(entries, concurrencyLimit, entry =>
+		fetchSeatAvailability(entry.id, seatplanCache)
+	);
+	logTheaterFetch({ source: 'habima.seatAvailabilityBatch', durationMs: getDurationMs(startedAt) });
+
+	return results;
 }

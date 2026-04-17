@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import { TomixEventerSeat, TomixSeatAvailabilityFetchResult } from './types';
 
 const EVENTER_SEATS_BASE_URL = 'https://www.eventer.co.il/arenas';
@@ -13,12 +14,14 @@ const DEFAULT_HEADERS = {
 
 export async function fetchTomixSeatAvailability(eventId: string): Promise<TomixSeatAvailabilityFetchResult> {
 	const errors: string[] = [];
+	const startedAt = Date.now();
 
 	try {
 		const response = await fetch(`${EVENTER_SEATS_BASE_URL}/${eventId}/seats.js`, {
 			headers: DEFAULT_HEADERS,
 			next: { revalidate: 180, tags: getTheaterCacheTags('tomix') }
 		});
+		logTheaterFetch({ source: 'tomix.eventerSeats', durationMs: getDurationMs(startedAt), status: response.status });
 
 		if (!response.ok) {
 			return {
@@ -36,6 +39,7 @@ export async function fetchTomixSeatAvailability(eventId: string): Promise<Tomix
 			errors
 		};
 	} catch (error) {
+		logTheaterFetch({ source: 'tomix.eventerSeats', durationMs: getDurationMs(startedAt), status: 'error' });
 		errors.push(error instanceof Error ? error.message : 'Unknown TOMIX seat availability error');
 
 		return {

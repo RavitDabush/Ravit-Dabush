@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import { TomixStoreProduct } from './types';
 
 const TOMIX_THEATER_CATEGORY_ID = 903;
@@ -13,10 +14,12 @@ const DEFAULT_HEADERS = {
 };
 
 export async function fetchTomixTheaterProducts(): Promise<TomixStoreProduct[]> {
+	const startedAt = Date.now();
 	const response = await fetch(TOMIX_PRODUCTS_URL, {
 		headers: DEFAULT_HEADERS,
 		next: { revalidate: 600, tags: getTheaterCacheTags('tomix') }
 	});
+	logTheaterFetch({ source: 'tomix.products', durationMs: getDurationMs(startedAt), status: response.status });
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch TOMIX theater products: ${response.status}`);

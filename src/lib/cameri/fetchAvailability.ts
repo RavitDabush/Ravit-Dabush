@@ -1,6 +1,7 @@
 import 'server-only';
 
-import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { unstable_cache } from 'next/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import {
 	CameriPresentation,
 	CameriPresentationResponse,
@@ -11,6 +12,12 @@ import {
 } from './types';
 
 const CAMERI_TICKETS_BASE_URL = 'https://tickets.cameri.co.il';
+const DEFAULT_CAMERI_AVAILABILITY_CONCURRENCY_LIMIT = 4;
+const CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS = 300;
+const CAMERI_AVAILABILITY_CACHE_TAG = 'theater:cameri:availability';
+const CAMERI_AVAILABILITY_CACHE_TAGS = [CAMERI_AVAILABILITY_CACHE_TAG];
+const SLOW_ITEM_LOG_LIMIT = 5;
+const SKIPPED_SOURCE_STATUSES = new Set(['soldout', 'general_admission', 'presentation_available']);
 
 const DEFAULT_HEADERS = {
 	accept: 'application/json, text/plain, */*',
@@ -25,14 +32,20 @@ function getJsonInit(extraHeaders?: HeadersInit): RequestInit {
 			...DEFAULT_HEADERS,
 			...extraHeaders
 		},
-		next: { revalidate: 180, tags: getTheaterCacheTags('cameri') }
+		next: {
+			revalidate: CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
+			tags: CAMERI_AVAILABILITY_CACHE_TAGS
+		}
 	};
 }
 
 async function fetchOrderPage(presentationId: string): Promise<string> {
 	const response = await fetch(`${CAMERI_TICKETS_BASE_URL}/order/${presentationId}`, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 180, tags: getTheaterCacheTags('cameri') }
+		next: {
+			revalidate: CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
+			tags: CAMERI_AVAILABILITY_CACHE_TAGS
+		}
 	});
 
 	if (!response.ok) {
@@ -66,7 +79,10 @@ async function fetchSeatplan(venueId: number, seatplanId: number): Promise<Camer
 				'content-type': 'application/json'
 			},
 			body: '{}',
-			next: { revalidate: 300, tags: getTheaterCacheTags('cameri') }
+			next: {
+				revalidate: CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
+				tags: CAMERI_AVAILABILITY_CACHE_TAGS
+			}
 		}
 	);
 
@@ -115,20 +131,102 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, mapper: (item
 	return results;
 }
 
-export async function fetchAvailability(
-	entry: CameriScheduleEntry,
+type AvailabilityItemTiming = {
+	presentationId: string;
+	durationMs: number;
+	sourceStatus: string;
+	errorsCount: number;
+	cacheHit: boolean;
+};
+
+type CachedAvailabilityResult = {
+	result: CameriSeatAvailabilityFetchResult;
+	cacheStoredAtMs: number;
+};
+
+type RuntimeAvailabilityCacheEntry = {
+	value: CachedAvailabilityResult;
+	expiresAtMs: number;
+};
+
+const runtimeAvailabilityCache = new Map<string, RuntimeAvailabilityCacheEntry>();
+
+function getDuplicatePresentationIds(entries: CameriScheduleEntry[]): string[] {
+	const counts = new Map<string, number>();
+
+	for (const entry of entries) {
+		counts.set(entry.id, (counts.get(entry.id) ?? 0) + 1);
+	}
+
+	return Array.from(counts.entries())
+		.filter(([, count]) => count > 1)
+		.map(([presentationId]) => presentationId);
+}
+
+function getStatusCounts(results: CameriSeatAvailabilityFetchResult[]): Record<string, number> {
+	return results.reduce<Record<string, number>>((counts, result) => {
+		counts[result.sourceStatus] = (counts[result.sourceStatus] ?? 0) + 1;
+		return counts;
+	}, {});
+}
+
+function getAverageDurationMs(itemTimings: AvailabilityItemTiming[]): number {
+	if (itemTimings.length === 0) {
+		return 0;
+	}
+
+	const totalDurationMs = itemTimings.reduce((sum, timing) => sum + timing.durationMs, 0);
+
+	return Math.round(totalDurationMs / itemTimings.length);
+}
+
+function getMaxItemTiming(itemTimings: AvailabilityItemTiming[]): AvailabilityItemTiming | null {
+	return itemTimings.reduce<AvailabilityItemTiming | null>((maxTiming, timing) => {
+		if (!maxTiming || timing.durationMs > maxTiming.durationMs) {
+			return timing;
+		}
+
+		return maxTiming;
+	}, null);
+}
+
+function logDetailedAvailabilityItems(itemTimings: AvailabilityItemTiming[]): void {
+	if (process.env.NODE_ENV !== 'development') {
+		return;
+	}
+
+	const maxItemTiming = getMaxItemTiming(itemTimings);
+	const failedItemTimings = itemTimings.filter(timing => timing.errorsCount > 0).slice(0, SLOW_ITEM_LOG_LIMIT);
+
+	if (maxItemTiming) {
+		console.info('[cameri-availability-item]', {
+			reason: 'max_duration',
+			...maxItemTiming
+		});
+	}
+
+	for (const timing of failedItemTimings) {
+		console.info('[cameri-availability-item]', {
+			reason: 'failed',
+			...timing
+		});
+	}
+}
+
+async function fetchAvailabilityByPresentationId(
+	presentationId: string,
 	seatplanCache: Map<string, Promise<CameriSeatplanResponse>>
 ): Promise<CameriSeatAvailabilityFetchResult> {
 	const errors: string[] = [];
 
 	try {
-		const presentationResponse = await fetchPresentation(entry.id);
+		const presentationResponse = await fetchPresentation(presentationId);
 		const apiErrorStatus = getApiErrorStatus(presentationResponse);
 		const presentation = getPresentationFromResponse(presentationResponse);
 
 		if (apiErrorStatus) {
 			return {
-				presentationId: entry.id,
+				presentationId,
 				uuid: null,
 				presentation: null,
 				seatplan: null,
@@ -140,7 +238,7 @@ export async function fetchAvailability(
 
 		if (!presentation) {
 			return {
-				presentationId: entry.id,
+				presentationId,
 				uuid: null,
 				presentation: null,
 				seatplan: null,
@@ -152,7 +250,7 @@ export async function fetchAvailability(
 
 		if (presentation.soldout) {
 			return {
-				presentationId: entry.id,
+				presentationId,
 				uuid: null,
 				presentation,
 				seatplan: null,
@@ -164,7 +262,7 @@ export async function fetchAvailability(
 
 		if (!presentation.isReserved || !presentation.seatplanId) {
 			return {
-				presentationId: entry.id,
+				presentationId,
 				uuid: null,
 				presentation,
 				seatplan: null,
@@ -174,12 +272,12 @@ export async function fetchAvailability(
 			};
 		}
 
-		const orderHtml = await fetchOrderPage(entry.id);
+		const orderHtml = await fetchOrderPage(presentationId);
 		const uuid = extractUuid(orderHtml);
 
 		if (!uuid) {
 			return {
-				presentationId: entry.id,
+				presentationId,
 				uuid: null,
 				presentation,
 				seatplan: null,
@@ -198,7 +296,7 @@ export async function fetchAvailability(
 		const [seatplan, seatStatus] = await Promise.all([seatplanPromise, fetchSeatStatus(presentation, uuid)]);
 
 		return {
-			presentationId: entry.id,
+			presentationId,
 			uuid,
 			presentation,
 			seatplan,
@@ -210,7 +308,7 @@ export async function fetchAvailability(
 		errors.push(error instanceof Error ? error.message : 'Unknown Cameri availability error');
 
 		return {
-			presentationId: entry.id,
+			presentationId,
 			uuid: null,
 			presentation: null,
 			seatplan: null,
@@ -221,11 +319,114 @@ export async function fetchAvailability(
 	}
 }
 
+const fetchCachedAvailabilityByPresentationId = unstable_cache(
+	async (presentationId: string): Promise<CachedAvailabilityResult> => ({
+		result: await fetchAvailabilityByPresentationId(presentationId, new Map<string, Promise<CameriSeatplanResponse>>()),
+		cacheStoredAtMs: Date.now()
+	}),
+	['theater', 'cameri', 'availability-result', 'v1'],
+	{ revalidate: CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS, tags: CAMERI_AVAILABILITY_CACHE_TAGS }
+);
+
+async function getCachedAvailabilityByPresentationId(presentationId: string): Promise<CachedAvailabilityResult> {
+	const now = Date.now();
+	const runtimeCacheEntry = runtimeAvailabilityCache.get(presentationId);
+
+	if (runtimeCacheEntry && runtimeCacheEntry.expiresAtMs > now) {
+		return runtimeCacheEntry.value;
+	}
+
+	if (runtimeCacheEntry) {
+		runtimeAvailabilityCache.delete(presentationId);
+	}
+
+	const value = await fetchCachedAvailabilityByPresentationId(presentationId);
+
+	runtimeAvailabilityCache.set(presentationId, {
+		value,
+		expiresAtMs: now + CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS * 1000
+	});
+
+	return value;
+}
+
+export async function fetchAvailability(
+	entry: CameriScheduleEntry,
+	seatplanCache: Map<string, Promise<CameriSeatplanResponse>>
+): Promise<CameriSeatAvailabilityFetchResult> {
+	return fetchAvailabilityByPresentationId(entry.id, seatplanCache);
+}
+
 export async function fetchAvailabilityBatch(
 	entries: CameriScheduleEntry[],
-	concurrencyLimit: number = 3
+	concurrencyLimit: number = DEFAULT_CAMERI_AVAILABILITY_CONCURRENCY_LIMIT
 ): Promise<CameriSeatAvailabilityFetchResult[]> {
-	const seatplanCache = new Map<string, Promise<CameriSeatplanResponse>>();
+	const startedAt = Date.now();
+	const itemTimings: AvailabilityItemTiming[] = [];
+	const duplicatePresentationIds = getDuplicatePresentationIds(entries);
 
-	return mapWithConcurrency(entries, concurrencyLimit, entry => fetchAvailability(entry, seatplanCache));
+	if (duplicatePresentationIds.length > 0) {
+		console.info('[cameri-availability-duplicates]', {
+			duplicateCount: duplicatePresentationIds.length,
+			presentationIds: duplicatePresentationIds
+		});
+	}
+
+	const results = await mapWithConcurrency(entries, concurrencyLimit, async entry => {
+		const itemStartedAt = Date.now();
+		const cachedResult = await getCachedAvailabilityByPresentationId(entry.id);
+		const cacheHit = cachedResult.cacheStoredAtMs < startedAt;
+
+		itemTimings.push({
+			presentationId: entry.id,
+			durationMs: getDurationMs(itemStartedAt),
+			sourceStatus: cachedResult.result.sourceStatus,
+			errorsCount: cachedResult.result.errors.length,
+			cacheHit
+		});
+
+		return cachedResult.result;
+	});
+	const durationMs = getDurationMs(startedAt);
+	const failedCount = results.filter(result => result.errors.length > 0).length;
+	const skippedCount = results.filter(result => SKIPPED_SOURCE_STATUSES.has(result.sourceStatus)).length;
+	const cacheHitCount = itemTimings.filter(timing => timing.cacheHit).length;
+	const cacheMissCount = itemTimings.length - cacheHitCount;
+	const maxItemTiming = getMaxItemTiming(itemTimings);
+
+	logTheaterFetch({ source: 'cameri.availabilityBatch', durationMs });
+	console.info('[cameri-availability-cache]', {
+		requestedCount: entries.length,
+		cacheHitCount,
+		cacheMissCount,
+		durationMs,
+		concurrencyLimit,
+		revalidateSeconds: CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
+		runtimeCacheSize: runtimeAvailabilityCache.size
+	});
+	console.info('[cameri-availability-summary]', {
+		concurrencyLimit,
+		requestedCount: entries.length,
+		durationMs,
+		averageItemDurationMs: getAverageDurationMs(itemTimings),
+		maxItemDurationMs: maxItemTiming?.durationMs ?? 0,
+		failedCount,
+		cacheHitCount,
+		cacheMissCount
+	});
+	console.info('[cameri-availability-batch]', {
+		requestedCount: entries.length,
+		succeededCount: results.length - failedCount,
+		failedCount,
+		skippedCount,
+		durationMs,
+		averageItemDurationMs: getAverageDurationMs(itemTimings),
+		maxItemDurationMs: maxItemTiming?.durationMs ?? 0,
+		duplicatePresentationCount: duplicatePresentationIds.length,
+		concurrencyLimit,
+		statusCounts: getStatusCounts(results)
+	});
+	logDetailedAvailabilityItems(itemTimings);
+
+	return results;
 }

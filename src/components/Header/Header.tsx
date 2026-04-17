@@ -49,7 +49,15 @@ export default function Header() {
 			<header className="site-header">
 				<div className="site-header-inner">
 					<Link href="/" className="site-header-logo" aria-label={t('homeAriaLabel')}>
-						<Image src={logoSrc} alt={logoAlt} width={512} height={120} priority className="site-header-logo-image" />
+						<Image
+							src={logoSrc}
+							alt={logoAlt}
+							width={512}
+							height={120}
+							preload
+							unoptimized
+							className="site-header-logo-image"
+						/>
 					</Link>
 
 					<button

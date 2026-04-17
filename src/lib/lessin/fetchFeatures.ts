@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import { LessinFeature, LessinFeaturesResponse, LessinPresentationsResponse, LessinPresentationSummary } from './types';
 
 const PRESGLOBAL_BASE_URL = 'https://lessin.presglobal.store';
@@ -36,7 +37,9 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, mapper: (item
 }
 
 export async function fetchFeatures(): Promise<LessinFeature[]> {
+	const startedAt = Date.now();
 	const response = await fetch(`${PRESGLOBAL_BASE_URL}/api/features/`, getJsonInit(300));
+	logTheaterFetch({ source: 'lessin.features', durationMs: getDurationMs(startedAt), status: response.status });
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch Lessin features: ${response.status}`);
@@ -48,7 +51,13 @@ export async function fetchFeatures(): Promise<LessinFeature[]> {
 }
 
 export async function fetchPresentations(featureId: number): Promise<LessinPresentationSummary[]> {
+	const startedAt = Date.now();
 	const response = await fetch(`${PRESGLOBAL_BASE_URL}/api/presentations/?featureIds=${featureId}`, getJsonInit(300));
+	logTheaterFetch({
+		source: 'lessin.presentations',
+		durationMs: getDurationMs(startedAt),
+		status: response.status
+	});
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch Lessin presentations for feature ${featureId}: ${response.status}`);
@@ -63,7 +72,9 @@ export async function fetchAllPresentations(
 	features: LessinFeature[],
 	concurrencyLimit: number = 4
 ): Promise<LessinPresentationSummary[]> {
+	const startedAt = Date.now();
 	const batches = await mapWithConcurrency(features, concurrencyLimit, async feature => fetchPresentations(feature.id));
+	logTheaterFetch({ source: 'lessin.presentationsBatch', durationMs: getDurationMs(startedAt) });
 
 	return batches.flat();
 }

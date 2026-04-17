@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { getNormalizedPreferredPerformances } from '@/lib/lessin/normalizePerformance';
 import { NormalizedPerformance } from '@/lib/lessin/types';
 import { getTheaterCacheTags } from './cache';
+import { getDurationMs, logTheaterCollector } from './observability';
 import { TheaterCollectorResult } from './types';
 
 const LESSIN_COLLECTOR_REVALIDATE_SECONDS = 300;
@@ -23,5 +24,10 @@ const collectLessinPerformancesCached = unstable_cache(
 );
 
 export async function collectLessinPerformances(): Promise<TheaterCollectorResult<NormalizedPerformance>> {
-	return collectLessinPerformancesCached();
+	const startedAt = Date.now();
+	const result = await collectLessinPerformancesCached();
+
+	logTheaterCollector(result, getDurationMs(startedAt));
+
+	return result;
 }

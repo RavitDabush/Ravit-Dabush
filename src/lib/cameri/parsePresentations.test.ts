@@ -63,4 +63,20 @@ describe('cameri parsePresentations', () => {
 			sourceStatus: 'ticketing_presentations'
 		});
 	});
+
+	it('filters excluded venues before availability fetching', () => {
+		const presentations = [
+			createPresentation({ id: 1, venueName: 'Main Venue' }),
+			createPresentation({ id: 2, venueName: 'קפה תאטרון' }),
+			createPresentation({ id: 3, venueName: '  קאמרי 4  ' })
+		];
+
+		const result = parsePresentations({ presentations }, NOW);
+
+		expect(result).toHaveLength(1);
+		expect(result[0]).toMatchObject({
+			id: '1',
+			venue: 'Main Venue'
+		});
+	});
 });

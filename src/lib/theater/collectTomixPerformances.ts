@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 import { getNormalizedPreferredPerformances } from '@/lib/tomix/normalizePerformance';
 import { NormalizedPerformance } from '@/lib/tomix/types';
 import { getTheaterCacheTags } from './cache';
+import { getDurationMs, logTheaterCollector } from './observability';
 import { TheaterCollectorResult } from './types';
 
 const TOMIX_COLLECTOR_REVALIDATE_SECONDS = 600;
@@ -23,5 +24,10 @@ const collectTomixPerformancesCached = unstable_cache(
 );
 
 export async function collectTomixPerformances(): Promise<TheaterCollectorResult<NormalizedPerformance>> {
-	return collectTomixPerformancesCached();
+	const startedAt = Date.now();
+	const result = await collectTomixPerformancesCached();
+
+	logTheaterCollector(result, getDurationMs(startedAt));
+
+	return result;
 }

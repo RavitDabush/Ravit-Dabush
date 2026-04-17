@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { getTheaterCacheTags } from '@/lib/theater/cache';
+import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import {
 	LessinScheduleEntry,
 	LessinPresentationResponse,
@@ -182,7 +183,13 @@ export async function fetchSeatAvailabilityBatch(
 	entries: LessinScheduleEntry[],
 	concurrencyLimit: number = 3
 ): Promise<LessinSeatAvailabilityFetchResult[]> {
+	const startedAt = Date.now();
 	const seatplanCache = new Map<string, Promise<LessinSeatplanResponse>>();
 
-	return mapWithConcurrency(entries, concurrencyLimit, entry => fetchSeatAvailability(entry.id, seatplanCache));
+	const results = await mapWithConcurrency(entries, concurrencyLimit, entry =>
+		fetchSeatAvailability(entry.id, seatplanCache)
+	);
+	logTheaterFetch({ source: 'lessin.seatAvailabilityBatch', durationMs: getDurationMs(startedAt) });
+
+	return results;
 }
