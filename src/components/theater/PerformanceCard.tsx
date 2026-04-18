@@ -1,6 +1,7 @@
 import Card from '@/components/Card/Card';
 import { Heading4, LinkButton, ParagraphSmall, SmallText } from '@/components/Typography';
 import { TheaterAvailabilityType, TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
+import { formatPerformanceDate } from './formatPerformanceDate';
 
 type PerformanceCardLabels = {
 	date?: string;
@@ -50,7 +51,7 @@ export default function PerformanceCard({ performance, labels, theaterName, hide
 				<div className="theater-performance-card__details">
 					{labels.date ? (
 						<ParagraphSmall>
-							<strong>{labels.date}:</strong> {performance.date}
+							<strong>{labels.date}:</strong> {formatPerformanceDate(performance.date)}
 						</ParagraphSmall>
 					) : null}
 

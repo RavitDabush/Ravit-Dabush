@@ -6,6 +6,7 @@ import type {
 	TheaterNormalizedPerformance,
 	TheaterPerformanceGroup
 } from '@/lib/theater/types';
+import { formatPerformanceDate } from './formatPerformanceDate';
 import type { TheaterTableColumn, TheaterTableConfig } from './theaterTableConfig';
 
 type TheaterTableLabels = {
@@ -49,7 +50,7 @@ function formatPurchaseAriaLabel(
 ): string {
 	return template
 		.replace('{showName}', performance.showName)
-		.replace('{date}', performance.date)
+		.replace('{date}', formatPerformanceDate(performance.date))
 		.replace('{time}', performance.time)
 		.replace('{location}', locationText);
 }
@@ -101,7 +102,7 @@ function renderColumnValue<TPerformance extends TheaterNormalizedPerformance>(
 ): string {
 	switch (column) {
 		case 'date':
-			return performance.date;
+			return formatPerformanceDate(performance.date);
 		case 'time':
 			return performance.time;
 		case 'show':
@@ -132,7 +133,6 @@ export default function TheaterPerformancesTable<TPerformance extends TheaterNor
 	return (
 		<div className="theater-table-scroll" tabIndex={0}>
 			<table className="theater-performances-table">
-				<caption>{labels.caption}</caption>
 				<thead>
 					<tr>
 						{config.columns.map(column => (
@@ -152,11 +152,7 @@ export default function TheaterPerformancesTable<TPerformance extends TheaterNor
 							return (
 								<tr key={`${group.date}-${getRowKey(performance)}`}>
 									{config.columns.map(column =>
-										column === 'show' ? (
-											<th key={column} scope="row">
-												{performance.showName}
-											</th>
-										) : column === 'action' ? (
+										column === 'action' ? (
 											<td key={column}>
 												{performance.purchaseUrl ? (
 													<LinkButton
