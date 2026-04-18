@@ -94,6 +94,37 @@ describe('hebrewTheater normalizePerformance', () => {
 		});
 	});
 
+	it('uses cached parsed seat availability without requiring raw chairmap HTML', () => {
+		const entry = createEntry();
+		const seatResult = createSeatResult({
+			html: undefined,
+			parsedAvailability: {
+				availableInPreferredRows: true,
+				matchedSections: ['\u05d0\u05d6\u05d5\u05e8 \u05d7\u05d3\u05e9'],
+				matchedRows: ['3'],
+				matchedRowDisplayLabels: ['3'],
+				availableSeatCount: 2,
+				sourceStatus: 'smarticket-chairmap:data-row:data-status | venue-sections:main-hall-only',
+				sourceConfidence: 'medium'
+			}
+		});
+
+		const result = normalizePerformance(entry, seatResult);
+
+		expect(parseSeatAvailabilityMock).not.toHaveBeenCalled();
+		expect(result).toMatchObject({
+			hasPreferredAvailability: true,
+			availabilityType: 'row',
+			matchedSections: ['\u05d0\u05d6\u05d5\u05e8 \u05d7\u05d3\u05e9'],
+			matchedRows: ['3'],
+			matchedRowDisplayLabels: ['3'],
+			availableSeatCount: 2,
+			sourceConfidence: 'medium',
+			sourceStatus:
+				'smarticket:api/shows | smarticket-chairmap:ok | smarticket-chairmap:data-row:data-status | venue-sections:main-hall-only'
+		});
+	});
+
 	it('fails closed when the seat result is missing', () => {
 		const result = normalizePerformance(createEntry(), undefined);
 

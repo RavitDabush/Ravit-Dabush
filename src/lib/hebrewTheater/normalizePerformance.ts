@@ -10,7 +10,8 @@ export function normalizePerformance(
 	entry: HebrewTheaterScheduleEntry,
 	result: HebrewTheaterSeatAvailabilityFetchResult | undefined
 ): NormalizedPerformance {
-	const parsedAvailability = result?.html ? parseHebrewTheaterSeatAvailability(result.html) : null;
+	const parsedAvailability =
+		result?.parsedAvailability ?? (result?.html ? parseHebrewTheaterSeatAvailability(result.html) : null);
 	const saleLifecycle = resolveSaleLifecycle(entry, {
 		soldout: entry.ticketsAvailable === false || entry.leftTicketsCount === 0,
 		ticketSaleStart: entry.ticketSaleStart,

@@ -60,7 +60,8 @@ export type HebrewTheaterScheduleEntry = {
 
 export type HebrewTheaterSeatAvailabilityFetchResult = {
 	eventId: string;
-	html: string;
+	html?: string;
+	parsedAvailability?: ParsedHebrewTheaterSeatAvailability;
 	sourceStatus: string;
 	errors: string[];
 };

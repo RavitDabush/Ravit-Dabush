@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { unstable_cache } from 'next/cache';
+import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
 import {
 	HebrewTheaterEvent,
@@ -7,11 +9,15 @@ import {
 	HebrewTheaterSeatAvailabilityFetchResult,
 	HebrewTheaterShow
 } from './types';
+import { parseHebrewTheaterSeatAvailability } from './parseSeatAvailability';
 
 const SMARTICKET_BASE_URL = 'https://thehebrewtheater.smarticket.co.il';
 const HEBREW_THEATER_SHOWS_URL = `${SMARTICKET_BASE_URL}/api/shows/?visible=1`;
 const HEBREW_THEATER_CHAIRMAP_URL = `${SMARTICKET_BASE_URL}/api/chairmap`;
-const HEBREW_THEATER_SEAT_FETCH_CONCURRENCY = 6;
+const HEBREW_THEATER_SEAT_FETCH_CONCURRENCY = 3;
+const HEBREW_THEATER_DISCOVERY_REVALIDATE_SECONDS = 600;
+const HEBREW_THEATER_CHAIRMAP_REVALIDATE_SECONDS = 300;
+const HEBREW_THEATER_CACHE_TAGS = getTheaterCacheTags('hebrew-theater');
 
 const DEFAULT_HEADERS = {
 	accept: 'application/json,text/html,*/*;q=0.8',
@@ -31,6 +37,18 @@ export type HebrewTheaterCollectionResult = {
 	discoveryDurationMs: number;
 	availabilityDurationMs: number;
 };
+
+type CachedChairmapResult = {
+	result: HebrewTheaterSeatAvailabilityFetchResult;
+	cacheStoredAtMs: number;
+};
+
+type RuntimeChairmapCacheEntry = {
+	value: CachedChairmapResult;
+	expiresAtMs: number;
+};
+
+const runtimeChairmapCache = new Map<string, RuntimeChairmapCacheEntry>();
 
 async function mapWithConcurrency<T, R>(items: T[], limit: number, mapper: (item: T) => Promise<R>): Promise<R[]> {
 	const results: R[] = new Array(items.length);
@@ -113,7 +131,7 @@ async function fetchHebrewTheaterShows(): Promise<HebrewTheaterShow[]> {
 	const startedAt = Date.now();
 	const response = await fetch(HEBREW_THEATER_SHOWS_URL, {
 		headers: DEFAULT_HEADERS,
-		next: { revalidate: 600, tags: ['theater', 'theater:hebrew-theater'] }
+		next: { revalidate: HEBREW_THEATER_DISCOVERY_REVALIDATE_SECONDS, tags: HEBREW_THEATER_CACHE_TAGS }
 	});
 
 	logTheaterFetch({ source: 'hebrewTheater.shows', durationMs: getDurationMs(startedAt), status: response.status });
@@ -125,11 +143,11 @@ async function fetchHebrewTheaterShows(): Promise<HebrewTheaterShow[]> {
 	return response.json();
 }
 
-async function fetchHebrewTheaterSeatAvailability(
-	entry: HebrewTheaterScheduleEntry
+async function fetchHebrewTheaterSeatAvailabilityByEventId(
+	eventId: string
 ): Promise<HebrewTheaterSeatAvailabilityFetchResult> {
 	const url = new URL(HEBREW_THEATER_CHAIRMAP_URL);
-	url.searchParams.set('show_theater', entry.eventId);
+	url.searchParams.set('show_theater', eventId);
 	const startedAt = Date.now();
 
 	try {
@@ -138,7 +156,7 @@ async function fetchHebrewTheaterSeatAvailability(
 				...DEFAULT_HEADERS,
 				accept: 'text/html,*/*;q=0.8'
 			},
-			next: { revalidate: 300, tags: ['theater', 'theater:hebrew-theater'] }
+			cache: 'no-store'
 		});
 
 		logTheaterFetch({
@@ -149,16 +167,15 @@ async function fetchHebrewTheaterSeatAvailability(
 
 		if (!response.ok) {
 			return {
-				eventId: entry.eventId,
-				html: '',
+				eventId,
 				sourceStatus: `smarticket-chairmap:${response.status}`,
-				errors: [`Failed to fetch Hebrew Theater chairmap ${entry.eventId}: ${response.status}`]
+				errors: [`Failed to fetch Hebrew Theater chairmap ${eventId}: ${response.status}`]
 			};
 		}
 
 		return {
-			eventId: entry.eventId,
-			html: await response.text(),
+			eventId,
+			parsedAvailability: parseHebrewTheaterSeatAvailability(await response.text()),
 			sourceStatus: 'smarticket-chairmap:ok',
 			errors: []
 		};
@@ -166,12 +183,50 @@ async function fetchHebrewTheaterSeatAvailability(
 		logTheaterFetch({ source: 'hebrewTheater.chairmap', durationMs: getDurationMs(startedAt), status: 'error' });
 
 		return {
-			eventId: entry.eventId,
-			html: '',
+			eventId,
 			sourceStatus: 'smarticket-chairmap:error',
 			errors: [error instanceof Error ? error.message : 'Unknown Hebrew Theater chairmap error']
 		};
 	}
+}
+
+const fetchCachedHebrewTheaterSeatAvailabilityByEventId = unstable_cache(
+	async (eventId: string): Promise<CachedChairmapResult> => ({
+		result: await fetchHebrewTheaterSeatAvailabilityByEventId(eventId),
+		cacheStoredAtMs: Date.now()
+	}),
+	['theater', 'hebrew-theater', 'chairmap-result', 'v1'],
+	{ revalidate: HEBREW_THEATER_CHAIRMAP_REVALIDATE_SECONDS, tags: HEBREW_THEATER_CACHE_TAGS }
+);
+
+async function getCachedHebrewTheaterSeatAvailability(
+	eventId: string
+): Promise<HebrewTheaterSeatAvailabilityFetchResult> {
+	const now = Date.now();
+	const runtimeCacheEntry = runtimeChairmapCache.get(eventId);
+
+	if (runtimeCacheEntry && runtimeCacheEntry.expiresAtMs > now) {
+		return runtimeCacheEntry.value.result;
+	}
+
+	if (runtimeCacheEntry) {
+		runtimeChairmapCache.delete(eventId);
+	}
+
+	const value = await fetchCachedHebrewTheaterSeatAvailabilityByEventId(eventId);
+
+	runtimeChairmapCache.set(eventId, {
+		value,
+		expiresAtMs: now + HEBREW_THEATER_CHAIRMAP_REVALIDATE_SECONDS * 1000
+	});
+
+	return value.result;
+}
+
+async function fetchHebrewTheaterSeatAvailability(
+	entry: HebrewTheaterScheduleEntry
+): Promise<HebrewTheaterSeatAvailabilityFetchResult> {
+	return getCachedHebrewTheaterSeatAvailability(entry.eventId);
 }
 
 export async function collectHebrewTheaterRawPerformances(): Promise<HebrewTheaterCollectionResult> {
