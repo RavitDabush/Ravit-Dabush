@@ -1,7 +1,5 @@
 import 'server-only';
 
-import { writeFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { unstable_cache } from 'next/cache';
 import { getTheaterCacheTags } from '@/lib/theater/cache';
 import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
@@ -180,46 +178,6 @@ type SkippedAvailabilitySample = {
 	sourceStatus: string;
 };
 
-type SkippedAvailabilityDumpItem = {
-	presentationId: string;
-	showName: string;
-	sourceStatus: string;
-	skipReason: string;
-	rawPresentation: {
-		id?: number;
-		featureName?: string;
-		businessDate?: string;
-		dateTime?: string;
-		venueName?: string;
-		venueId?: number;
-		venueTypeId?: number;
-		locationName?: string;
-		seatplanId?: number | null;
-		soldout?: number;
-		isReserved?: number;
-		isGA?: number;
-		ticketSaleStart?: string | null;
-		ticketSaleStop?: string | null;
-		newBookingUrl?: string | null;
-	} | null;
-	rawAvailabilitySignals: {
-		uuidFound: boolean;
-		hasPresentation: boolean;
-		hasSeatplan: boolean;
-		hasSeatStatus: boolean;
-		errors: string[];
-	};
-	seatplanSummary: {
-		seatplanId?: number | null;
-		sectionCount: number;
-	};
-	notes: {
-		purchaseUrl?: string;
-		scheduleVenue?: string;
-		scheduleShowKey?: string;
-	};
-};
-
 const runtimeAvailabilityCache = new Map<string, RuntimeAvailabilityCacheEntry>();
 
 function getDuplicatePresentationIds(entries: HabimaScheduleEntry[]): string[] {
@@ -331,92 +289,6 @@ function logSkippedAvailabilitySummary(
 		skippedCount,
 		skippedByStatus,
 		sampleSkipped
-	});
-}
-
-function getSkippedAvailabilityDumpItems(
-	entries: HabimaScheduleEntry[],
-	results: HabimaSeatAvailabilityFetchResult[]
-): SkippedAvailabilityDumpItem[] {
-	const entryMap = new Map(entries.map(entry => [entry.id, entry]));
-
-	return results
-		.filter(result => Boolean(result.sourceStatus && SKIPPED_SOURCE_STATUSES.has(result.sourceStatus)))
-		.map(result => {
-			const entry = entryMap.get(result.presentationId);
-			const presentation = result.presentation;
-
-			return {
-				presentationId: result.presentationId,
-				showName: presentation?.featureName || entry?.showName || '',
-				sourceStatus: result.sourceStatus ?? 'unknown',
-				skipReason: result.sourceStatus ?? 'unknown',
-				rawPresentation: presentation
-					? {
-							id: presentation.id,
-							featureName: presentation.featureName,
-							businessDate: presentation.businessDate,
-							dateTime: presentation.dateTime,
-							venueName: presentation.venueName,
-							venueId: presentation.venueId,
-							venueTypeId: presentation.venueTypeId,
-							locationName: presentation.locationName,
-							seatplanId: presentation.seatplanId,
-							soldout: presentation.soldout,
-							isReserved: presentation.isReserved,
-							isGA: presentation.isGA,
-							ticketSaleStart: presentation.ticketSaleStart,
-							ticketSaleStop: presentation.ticketSaleStop,
-							newBookingUrl: presentation.newBookingUrl
-						}
-					: null,
-				rawAvailabilitySignals: {
-					uuidFound: Boolean(result.uuid),
-					hasPresentation: Boolean(result.presentation),
-					hasSeatplan: Boolean(result.seatplan),
-					hasSeatStatus: Boolean(result.seatStatus),
-					errors: result.errors
-				},
-				seatplanSummary: {
-					seatplanId: presentation?.seatplanId,
-					sectionCount: result.seatplan ? Object.keys(result.seatplan.S ?? {}).length : 0
-				},
-				notes: {
-					purchaseUrl: entry?.purchaseUrl,
-					scheduleVenue: entry?.venue,
-					scheduleShowKey: entry?.sourceShowKey
-				}
-			};
-		});
-}
-
-function writeSkippedAvailabilityDebugDump(
-	entries: HabimaScheduleEntry[],
-	results: HabimaSeatAvailabilityFetchResult[]
-): void {
-	if (process.env.NODE_ENV !== 'development') {
-		return;
-	}
-
-	const dumpItems = getSkippedAvailabilityDumpItems(entries, results);
-
-	if (dumpItems.length === 0) {
-		return;
-	}
-
-	const serialized = JSON.stringify(dumpItems, null, 2);
-	let outputPath = '/tmp/habima-skipped-performances.json';
-
-	try {
-		writeFileSync(outputPath, serialized);
-	} catch {
-		outputPath = join(process.cwd(), 'habima-skipped-performances.json');
-		writeFileSync(outputPath, serialized);
-	}
-
-	console.info('[habima-skipped-dump]', {
-		skippedCount: dumpItems.length,
-		outputPath
 	});
 }
 
@@ -640,7 +512,6 @@ export async function fetchSeatAvailabilityBatch(
 		cacheMissCount
 	});
 	logSkippedAvailabilitySummary(entries, results);
-	writeSkippedAvailabilityDebugDump(entries, results);
 	logAvailabilityFailures(itemTimings);
 	logDetailedAvailabilityItems(itemTimings);
 
