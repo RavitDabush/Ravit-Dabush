@@ -10,7 +10,8 @@ const theaterPathById: Record<TheaterId, string> = {
 	habima: '/theater/habima',
 	lessin: '/theater/lessin',
 	cameri: '/theater/cameri',
-	tomix: '/theater/tomix'
+	tomix: '/theater/tomix',
+	'hebrew-theater': '/theater/hebrew-theater'
 };
 
 function getLocalizedPath(path: string, locale: Locale): string {

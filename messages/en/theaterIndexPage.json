@@ -30,6 +30,11 @@
 			"title": "TOMIX Theater",
 			"description": "TOMIX theater productions with confirmed Eventer seats in rows 1-7.",
 			"cta": "Open TOMIX"
+		},
+		"hebrewTheater": {
+			"title": "Hebrew Theater",
+			"description": "Hebrew Theater performances with confirmed Smarticket seats in rows 1-7.",
+			"cta": "Open Hebrew Theater"
 		}
 	}
 }

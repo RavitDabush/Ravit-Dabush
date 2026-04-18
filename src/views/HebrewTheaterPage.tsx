@@ -1,62 +1,33 @@
 import { Alert } from '@/components/Alert';
 import PageLayout from '@/components/PageLayout';
+import LastUpdated from '@/components/theater/LastUpdated';
+import RefreshTheaterCacheForm from '@/components/theater/RefreshTheaterCacheForm';
 import TheaterPerformancesView from '@/components/theater/TheaterPerformancesView';
-import { comingSoonTheaterTableConfig } from '@/components/theater/theaterTableConfig';
+import { regularTheaterTableConfig } from '@/components/theater/theaterTableConfig';
 import type { TheaterViewMode } from '@/components/theater/theaterViewMode';
 import { FancyTitle, Paragraph } from '@/components/Typography';
 import { Locale, useTranslations } from 'next-intl';
-import type { ComingSoonPerformance } from '@/lib/theater/collectComingSoonPerformances';
-import type { SaleState, TheaterId, TheaterSourceConfidence } from '@/lib/theater/types';
+import { SaleState, TheaterNormalizedPerformance, TheaterSourceConfidence } from '@/lib/theater/types';
+import { groupPerformancesByDate } from '@/lib/theater/groupPerformancesByDate';
 
 type Props = {
 	locale: Locale;
-	performances: ComingSoonPerformance[];
+	performances: TheaterNormalizedPerformance[];
+	collectedAt?: string;
 	hasError: boolean;
 	viewMode: TheaterViewMode;
+	refreshCacheAction: () => Promise<void>;
 };
 
-type ComingSoonGroup = {
-	date: string;
-	label: string;
-	performances: ComingSoonPerformance[];
-};
-
-function getSaleStartDate(performance: ComingSoonPerformance): string {
-	return performance.saleLifecycle.ticketSaleStart?.slice(0, 10) || 'unknown';
-}
-
-function formatDateLabel(date: string, locale: Locale): string {
-	if (date === 'unknown') {
-		return date;
-	}
-
-	return new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-US', {
-		weekday: 'long',
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric'
-	}).format(new Date(`${date}T00:00:00`));
-}
-
-function groupBySaleStart(performances: ComingSoonPerformance[], locale: Locale): ComingSoonGroup[] {
-	const grouped = new Map<string, ComingSoonPerformance[]>();
-
-	for (const performance of performances) {
-		const date = getSaleStartDate(performance);
-		const currentGroup = grouped.get(date) ?? [];
-		currentGroup.push(performance);
-		grouped.set(date, currentGroup);
-	}
-
-	return Array.from(grouped.entries()).map(([date, items]) => ({
-		date,
-		label: formatDateLabel(date, locale),
-		performances: items
-	}));
-}
-
-export default function ComingSoonTheaterPage({ locale, performances, hasError, viewMode }: Props) {
-	const t = useTranslations('comingSoonPage');
+export default function HebrewTheaterPage({
+	locale,
+	performances,
+	collectedAt,
+	hasError,
+	viewMode,
+	refreshCacheAction
+}: Props) {
+	const t = useTranslations('hebrewTheaterPage');
 	const theaterViewT = useTranslations('theaterView');
 	const confidenceValues: Record<TheaterSourceConfidence, string> = {
 		high: t('confidence.high'),
@@ -70,20 +41,22 @@ export default function ComingSoonTheaterPage({ locale, performances, hasError, 
 		ended: theaterViewT('table.saleState.ended'),
 		unknown: theaterViewT('table.saleState.unknown')
 	};
-	const theaterNames: Record<TheaterId, string> = {
-		lessin: t('theaters.lessin'),
-		habima: t('theaters.habima'),
-		cameri: t('theaters.cameri'),
-		tomix: t('theaters.tomix'),
-		'hebrew-theater': t('theaters.hebrew-theater')
-	};
-	const groups = groupBySaleStart(performances, locale);
+	const groupedPerformances = groupPerformancesByDate(performances, locale);
 
 	return (
 		<PageLayout>
 			<section className="theater-page-intro">
 				<FancyTitle>{t('title')}</FancyTitle>
 				<Paragraph>{t('description')}</Paragraph>
+				<div className="theater-page-intro__actions">
+					<RefreshTheaterCacheForm
+						action={refreshCacheAction}
+						label={t('refreshCache.label')}
+						pendingLabel={t('refreshCache.pendingLabel')}
+						hint={t('refreshCache.hint')}
+					/>
+					<LastUpdated collectedAt={collectedAt} label={t('lastUpdated')} />
+				</div>
 			</section>
 
 			{hasError ? (
@@ -92,27 +65,34 @@ export default function ComingSoonTheaterPage({ locale, performances, hasError, 
 				</Alert>
 			) : (
 				<TheaterPerformancesView
-					groups={groups}
+					performances={performances}
+					groups={groupedPerformances}
 					currentViewMode={viewMode}
 					emptyState={{
 						title: t('empty.title'),
 						description: t('empty.description')
 					}}
-					theaterNames={theaterNames}
-					hideAvailabilityDetails
+					filter={{
+						label: t('filter.label'),
+						allOption: t('filter.allOption')
+					}}
 					cardLabels={{
-						date: t('labels.performanceDate'),
 						time: t('labels.time'),
 						venue: t('labels.venue'),
-						theater: t('labels.theater'),
-						saleStart: t('labels.saleStart'),
 						sections: t('labels.sections'),
 						rows: t('labels.rows'),
+						availability: t('labels.availability'),
 						seats: t('labels.seats'),
 						confidence: t('labels.confidence'),
 						status: t('labels.status'),
 						notAvailable: t('labels.notAvailable'),
 						purchase: t('labels.purchase'),
+						availabilityValues: {
+							row: t('availability.row'),
+							section: t('availability.section'),
+							general: t('availability.general'),
+							unknown: t('availability.unknown')
+						},
 						confidenceValues
 					}}
 					tableLabels={{
@@ -131,6 +111,12 @@ export default function ComingSoonTheaterPage({ locale, performances, hasError, 
 						notAvailable: t('labels.notAvailable'),
 						unavailableFallback: theaterViewT('table.unavailableFallback'),
 						purchase: t('labels.purchase'),
+						availabilityValues: {
+							row: t('availability.row'),
+							section: t('availability.section'),
+							general: t('availability.general'),
+							unknown: t('availability.unknown')
+						},
 						saleStateValues,
 						purchaseAriaLabel: theaterViewT('table.purchaseAriaLabel', {
 							showName: '{showName}',
@@ -139,7 +125,7 @@ export default function ComingSoonTheaterPage({ locale, performances, hasError, 
 							location: '{location}'
 						})
 					}}
-					tableConfig={comingSoonTheaterTableConfig}
+					tableConfig={regularTheaterTableConfig}
 				/>
 			)}
 		</PageLayout>

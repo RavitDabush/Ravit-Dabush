@@ -1,0 +1,49 @@
+{
+	"meta": {
+		"title": "Hebrew Theater",
+		"description": "Hebrew Theater performances with confirmed Smarticket seats in rows 1-7."
+	},
+	"title": "Hebrew Theater",
+	"description": "Only Hebrew Theater performances with confirmed Smarticket seats in rows 1-7 are shown here.",
+	"lastUpdated": "Last updated",
+	"filter": {
+		"label": "Filter by production",
+		"allOption": "All productions"
+	},
+	"labels": {
+		"time": "Time",
+		"venue": "Venue",
+		"sections": "Sections",
+		"rows": "Available rows",
+		"availability": "Availability type",
+		"seats": "Available seats",
+		"confidence": "Confidence",
+		"status": "Source status",
+		"notAvailable": "Not available",
+		"purchase": "Purchase tickets"
+	},
+	"availability": {
+		"row": "Row-level",
+		"section": "Section-level",
+		"general": "General availability",
+		"unknown": "Unknown"
+	},
+	"confidence": {
+		"high": "High",
+		"medium": "Medium",
+		"low": "Low"
+	},
+	"empty": {
+		"title": "No matching Hebrew Theater performances right now",
+		"description": "There are currently no Hebrew Theater performances with confirmed Smarticket seats in rows 1-7."
+	},
+	"error": {
+		"title": "Unable to load Hebrew Theater",
+		"description": "The Hebrew Theater or Smarticket sources did not respond reliably enough to confirm preferred-row availability."
+	},
+	"refreshCache": {
+		"label": "Clear cache and update data",
+		"pendingLabel": "Updating data...",
+		"hint": "Clears this page cache and fetches fresh theater data."
+	}
+}

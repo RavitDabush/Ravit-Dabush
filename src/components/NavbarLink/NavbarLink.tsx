@@ -17,6 +17,7 @@ type NavbarLinkProps = {
 		| '/theater/habima'
 		| '/theater/cameri'
 		| '/theater/tomix'
+		| '/theater/hebrew-theater'
 		| '/theater/lessin'
 		| '/theater/coming-soon';
 	children: ReactNode;

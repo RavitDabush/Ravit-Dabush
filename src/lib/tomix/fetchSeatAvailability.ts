@@ -203,7 +203,7 @@ export async function fetchTomixSeatAvailabilityBatch(
 	const results = await mapWithConcurrency(entries, concurrencyLimit, async entry => {
 		const itemStartedAt = Date.now();
 		const cachedResult = await getCachedTomixSeatAvailability(entry.eventId);
-		const cacheHit = cachedResult.cacheStoredAtMs < startedAt;
+		const cacheHit = cachedResult.cacheStoredAtMs <= startedAt;
 
 		itemTimings.push({
 			eventId: entry.eventId,

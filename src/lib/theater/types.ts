@@ -1,4 +1,4 @@
-export type TheaterId = 'habima' | 'lessin' | 'cameri' | 'tomix';
+export type TheaterId = 'habima' | 'lessin' | 'cameri' | 'tomix' | 'hebrew-theater';
 
 export type TheaterSourceConfidence = 'high' | 'medium' | 'low';
 

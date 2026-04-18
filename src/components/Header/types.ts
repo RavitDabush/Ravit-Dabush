@@ -9,6 +9,7 @@ export type HeaderNavHref =
 	| '/theater/habima'
 	| '/theater/cameri'
 	| '/theater/tomix'
+	| '/theater/hebrew-theater'
 	| '/theater/lessin';
 
 export type HeaderNavKey =
@@ -21,6 +22,7 @@ export type HeaderNavKey =
 	| 'habima'
 	| 'cameri'
 	| 'tomix'
+	| 'hebrew-theater'
 	| 'lessin'
 	| 'coming-soon';
 

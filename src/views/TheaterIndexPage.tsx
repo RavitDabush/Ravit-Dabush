@@ -53,6 +53,14 @@ export default function TheaterIndexPage() {
 						{t('links.tomix.cta')}
 					</LinkButton>
 				</Card>
+
+				<Card className="theater-hub-card">
+					<FancyTitle>{t('links.hebrewTheater.title')}</FancyTitle>
+					<Paragraph>{t('links.hebrewTheater.description')}</Paragraph>
+					<LinkButton href="/theater/hebrew-theater" buttonType="outline">
+						{t('links.hebrewTheater.cta')}
+					</LinkButton>
+				</Card>
 			</div>
 		</PageLayout>
 	);

@@ -25,7 +25,8 @@ const navItems: HeaderNavItem[] = [
 			{ href: '/theater/lessin', key: 'lessin' },
 			{ href: '/theater/habima', key: 'habima' },
 			{ href: '/theater/cameri', key: 'cameri' },
-			{ href: '/theater/tomix', key: 'tomix' }
+			{ href: '/theater/tomix', key: 'tomix' },
+			{ href: '/theater/hebrew-theater', key: 'hebrew-theater' }
 		]
 	}
 ];
