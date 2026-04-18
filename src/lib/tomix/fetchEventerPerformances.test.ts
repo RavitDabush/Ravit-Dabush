@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchEventerData, resolveEventerSource } from './fetchEventerPerformances';
+import { fetchEventerData, fetchEventerEventDetailsByLinkName, resolveEventerSource } from './fetchEventerPerformances';
 import type { TomixStoreProduct } from './types';
 
 vi.mock('next/cache', () => ({
@@ -19,6 +19,14 @@ function createTextResponse(body: string, ok = true, status = 200): Response {
 		ok,
 		status,
 		text: async () => body
+	} as Response;
+}
+
+function createJsonResponse(body: unknown, ok = true, status = 200): Response {
+	return {
+		ok,
+		status,
+		json: async () => body
 	} as Response;
 }
 
@@ -98,6 +106,32 @@ describe('tomix resolveEventerSource', () => {
 
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://www.eventer.co.il/user/tomix/getData?tag=data&hideExcludedEvents=true',
+			expect.objectContaining({
+				next: {
+					revalidate: 300,
+					tags: ['theater:tomix:discovery', 'theater:tomix:eventer-data']
+				}
+			})
+		);
+	});
+
+	it('fetches Eventer event details by link name with arena metadata', async () => {
+		const event = {
+			_id: 'event-1',
+			arena: {
+				svg: {
+					sections: [{ sectionId: 2, lines: [{ lineNumber: 1, lineName: '\u05e9\u05d5\u05e8\u05d4 \u05d0' }] }]
+				}
+			}
+		};
+		const fetchMock = vi.fn().mockResolvedValue(createJsonResponse({ event }));
+		vi.stubGlobal('fetch', fetchMock);
+
+		const result = await fetchEventerEventDetailsByLinkName('p707f');
+
+		expect(result).toEqual(event);
+		expect(fetchMock).toHaveBeenCalledWith(
+			'https://www.eventer.co.il/events/explainNames/p707f.js?group=a',
 			expect.objectContaining({
 				next: {
 					revalidate: 300,

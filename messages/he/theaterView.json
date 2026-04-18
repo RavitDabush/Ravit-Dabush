@@ -1,0 +1,32 @@
+{
+	"toggle": {
+		"ariaLabel": "בחירת תצוגת הצגות",
+		"cards": "כרטיסים",
+		"table": "טבלה",
+		"cardsAriaLabel": "מעבר לתצוגת כרטיסים",
+		"tableAriaLabel": "מעבר לתצוגת טבלה"
+	},
+	"table": {
+		"caption": "הצגות בתצוגת טבלה",
+		"unavailableFallback": "—",
+		"headers": {
+			"date": "תאריך",
+			"time": "שעה",
+			"show": "שם ההצגה",
+			"theater": "תיאטרון",
+			"venue": "אולם",
+			"availableAreas": "אזורים זמינים",
+			"availableSeats": "מושבים זמינים",
+			"saleState": "מצב מכירה",
+			"action": "פעולה"
+		},
+		"purchaseAriaLabel": "פתיחת עמוד כרטיסים עבור {showName} בתאריך {date} בשעה {time}, {location}",
+		"saleState": {
+			"not_started": "טרם נפתחה",
+			"on_sale": "במכירה",
+			"sold_out": "אזל",
+			"ended": "הסתיימה",
+			"unknown": "לא ידוע"
+		}
+	}
+}

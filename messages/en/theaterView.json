@@ -1,0 +1,32 @@
+{
+	"toggle": {
+		"ariaLabel": "Choose theater performance view",
+		"cards": "Cards",
+		"table": "Table",
+		"cardsAriaLabel": "Switch to cards view",
+		"tableAriaLabel": "Switch to table view"
+	},
+	"table": {
+		"caption": "Theater performances in table view",
+		"unavailableFallback": "—",
+		"headers": {
+			"date": "Date",
+			"time": "Time",
+			"show": "Show name",
+			"theater": "Theater",
+			"venue": "Venue",
+			"availableAreas": "Available areas",
+			"availableSeats": "Available seats",
+			"saleState": "Sale state",
+			"action": "Action"
+		},
+		"purchaseAriaLabel": "Open ticket page for {showName} on {date} at {time}, {location}",
+		"saleState": {
+			"not_started": "Not started",
+			"on_sale": "On sale",
+			"sold_out": "Sold out",
+			"ended": "Ended",
+			"unknown": "Unknown"
+		}
+	}
+}

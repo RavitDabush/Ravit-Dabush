@@ -22,6 +22,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
 			aboutPage: (await import(`../../messages/${locale}/aboutPage.json`)).default,
 			journeyPage: (await import(`../../messages/${locale}/journeyPage.json`)).default,
 			theaterPage: (await import(`../../messages/${locale}/theaterPage.json`)).default,
+			theaterView: (await import(`../../messages/${locale}/theaterView.json`)).default,
 			theaterIndexPage: (await import(`../../messages/${locale}/theaterIndexPage.json`)).default,
 			comingSoonPage: (await import(`../../messages/${locale}/comingSoonPage.json`)).default,
 			habimaPage: (await import(`../../messages/${locale}/habimaPage.json`)).default,

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { fetchEventerData, resolveEventerSource } from './fetchEventerPerformances';
+import { fetchEventerData, fetchEventerEventDetailsByLinkName, resolveEventerSource } from './fetchEventerPerformances';
 import { fetchTomixTheaterProducts } from './fetchProducts';
 import { fetchTomixSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseTomixSeatAvailability } from './parseSeatAvailability';
@@ -18,7 +18,8 @@ vi.mock('./fetchProducts', () => ({
 
 vi.mock('./fetchEventerPerformances', () => ({
 	resolveEventerSource: vi.fn(),
-	fetchEventerData: vi.fn()
+	fetchEventerData: vi.fn(),
+	fetchEventerEventDetailsByLinkName: vi.fn()
 }));
 
 vi.mock('./fetchSeatAvailability', () => ({
@@ -34,6 +35,7 @@ import { getNormalizedPreferredPerformances } from './normalizePerformance';
 const fetchTomixTheaterProductsMock = vi.mocked(fetchTomixTheaterProducts);
 const resolveEventerSourceMock = vi.mocked(resolveEventerSource);
 const fetchEventerDataMock = vi.mocked(fetchEventerData);
+const fetchEventerEventDetailsByLinkNameMock = vi.mocked(fetchEventerEventDetailsByLinkName);
 const fetchTomixSeatAvailabilityBatchMock = vi.mocked(fetchTomixSeatAvailabilityBatch);
 const parseTomixSeatAvailabilityMock = vi.mocked(parseTomixSeatAvailability);
 
@@ -101,11 +103,13 @@ beforeEach(() => {
 	fetchTomixTheaterProductsMock.mockReset();
 	resolveEventerSourceMock.mockReset();
 	fetchEventerDataMock.mockReset();
+	fetchEventerEventDetailsByLinkNameMock.mockReset();
 	fetchTomixSeatAvailabilityBatchMock.mockReset();
 	parseTomixSeatAvailabilityMock.mockReset();
 
 	resolveEventerSourceMock.mockImplementation(async product => createSource(product));
 	fetchEventerDataMock.mockResolvedValue(createEventData([]));
+	fetchEventerEventDetailsByLinkNameMock.mockResolvedValue(null);
 	fetchTomixSeatAvailabilityBatchMock.mockImplementation(async entries =>
 		entries.map(entry => createSeatResult(entry.eventId, [{ _id: `seat-${entry.eventId}` } as TomixEventerSeat]))
 	);
@@ -140,6 +144,38 @@ describe('tomix collectPerformances', () => {
 			[expect.objectContaining({ eventId: 'event-1' })],
 			8
 		);
+	});
+
+	it('enriches missing Eventer arena metadata before parsing seat availability', async () => {
+		const product = createProduct(1);
+		const arena = {
+			svg: {
+				sections: [{ sectionId: 2, lines: [{ lineNumber: 1, lineName: '\u05e9\u05d5\u05e8\u05d4 \u05d0' }] }]
+			}
+		};
+		fetchTomixTheaterProductsMock.mockResolvedValue([product]);
+		fetchEventerDataMock.mockResolvedValue(createEventData(['event-1']));
+		fetchEventerEventDetailsByLinkNameMock.mockResolvedValue({
+			_id: 'event-1',
+			arena
+		});
+		parseTomixSeatAvailabilityMock.mockReturnValue({
+			...AVAILABLE_PARSE_RESULT,
+			matchedRows: ['1'],
+			matchedRowDisplayLabels: ['\u05d0']
+		});
+
+		const result = await getNormalizedPreferredPerformances();
+
+		expect(fetchEventerEventDetailsByLinkNameMock).toHaveBeenCalledWith('event-event-1');
+		expect(parseTomixSeatAvailabilityMock).toHaveBeenCalledWith(
+			[{ _id: 'seat-event-1' }],
+			'TOMIX Venue',
+			['ticket-event-1'],
+			arena
+		);
+		expect(result[0].matchedRows).toEqual(['1']);
+		expect(result[0].matchedRowDisplayLabels).toEqual(['\u05d0']);
 	});
 
 	it('excludes a performance when seat fetching fails closed and keeps other valid performances', async () => {

@@ -72,7 +72,12 @@ describe('tomix normalizePerformance', () => {
 
 		const result = normalizePerformance(entry, seatResult);
 
-		expect(parseTomixSeatAvailabilityMock).toHaveBeenCalledWith(seatResult.seats, entry.venue, entry.ticketTypeIds);
+		expect(parseTomixSeatAvailabilityMock).toHaveBeenCalledWith(
+			seatResult.seats,
+			entry.venue,
+			entry.ticketTypeIds,
+			undefined
+		);
 		expect(result).toMatchObject({
 			id: 'tomix-event-1',
 			showName: 'TOMIX Show',
@@ -84,6 +89,7 @@ describe('tomix normalizePerformance', () => {
 			availabilityType: 'row',
 			matchedSections: ['1'],
 			matchedRows: ['1', '3'],
+			matchedRowDisplayLabels: undefined,
 			availableSeatCount: 12,
 			sourceConfidence: 'medium',
 			sourceStatus: 'eventer:getData | eventer-seats:ok | eventer-place:section_row_seat | venue-sections:TOMIX Venue:1'
@@ -164,5 +170,31 @@ describe('tomix normalizePerformance', () => {
 		expect(ended.saleLifecycle.saleState).toBe('ended');
 		expect(onSale.saleLifecycle.saleState).toBe('on_sale');
 		expect(soldOut.saleLifecycle.saleState).toBe('sold_out');
+	});
+
+	it('passes Eventer arena metadata into seat parsing and preserves display labels', () => {
+		const arena = {
+			svg: {
+				sections: [{ sectionId: 2, lines: [{ lineNumber: 1, lineName: '\u05e9\u05d5\u05e8\u05d4 \u05d0' }] }]
+			}
+		};
+		const entry = createEntry({ arena });
+		const seatResult = createSeatResult();
+		mockParsedAvailability({
+			matchedRows: ['1'],
+			matchedRowDisplayLabels: ['\u05d0'],
+			availableSeatCount: 4
+		});
+
+		const result = normalizePerformance(entry, seatResult);
+
+		expect(parseTomixSeatAvailabilityMock).toHaveBeenCalledWith(
+			seatResult.seats,
+			entry.venue,
+			entry.ticketTypeIds,
+			arena
+		);
+		expect(result.matchedRows).toEqual(['1']);
+		expect(result.matchedRowDisplayLabels).toEqual(['\u05d0']);
 	});
 });

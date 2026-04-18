@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { fetchEventerData, resolveEventerSource } from './fetchEventerPerformances';
+import { fetchEventerData, fetchEventerEventDetailsByLinkName, resolveEventerSource } from './fetchEventerPerformances';
 import { fetchTomixTheaterProducts } from './fetchProducts';
 import { fetchTomixSeatAvailabilityBatch } from './fetchSeatAvailability';
 import { parseTomixSeatAvailability } from './parseSeatAvailability';
@@ -117,8 +117,30 @@ function mapEventToEntry(source: TomixEventerSource, event: TomixEventerEvent): 
 		ticketTypeIds: getTicketTypeIds(event),
 		sourceStatus: 'eventer:getData',
 		ticketSaleStop: getTicketSaleStop(event),
-		soldOut: event.soldOut
+		soldOut: event.soldOut,
+		arena: event.arena
 	};
+}
+
+async function enrichEventWithArenaMetadata(event: TomixEventerEvent): Promise<TomixEventerEvent> {
+	if (event.arena || !event.linkName) {
+		return event;
+	}
+
+	try {
+		const detailedEvent = await fetchEventerEventDetailsByLinkName(event.linkName);
+
+		if (detailedEvent?._id === event._id && detailedEvent.arena) {
+			return {
+				...event,
+				arena: detailedEvent.arena
+			};
+		}
+	} catch {
+		return event;
+	}
+
+	return event;
 }
 
 function countDuplicatePerformanceIds(entries: TomixScheduleEntry[]): number {
@@ -135,7 +157,9 @@ export function normalizePerformance(
 	entry: TomixScheduleEntry,
 	result: TomixSeatAvailabilityFetchResult | undefined
 ): NormalizedPerformance {
-	const parsedAvailability = result ? parseTomixSeatAvailability(result.seats, entry.venue, entry.ticketTypeIds) : null;
+	const parsedAvailability = result
+		? parseTomixSeatAvailability(result.seats, entry.venue, entry.ticketTypeIds, entry.arena)
+		: null;
 	const saleLifecycle = resolveSaleLifecycle(entry, {
 		soldout: entry.soldOut,
 		ticketSaleStart: entry.ticketSaleStart,
@@ -153,6 +177,7 @@ export function normalizePerformance(
 		availabilityType: parsedAvailability?.availableInPreferredRows ? 'row' : 'unknown',
 		matchedSections: parsedAvailability?.matchedSections ?? [],
 		matchedRows: parsedAvailability?.matchedRows ?? [],
+		matchedRowDisplayLabels: parsedAvailability?.matchedRowDisplayLabels,
 		availableSeatCount: parsedAvailability?.availableSeatCount,
 		sourceStatus: [entry.sourceStatus, result?.sourceStatus, parsedAvailability?.sourceStatus, ...(result?.errors ?? [])]
 			.filter(Boolean)
@@ -202,7 +227,7 @@ async function collectEntries(): Promise<TomixCollectionResult> {
 				const rawPerformancesDiscoveredCount = eventerData.events?.length ?? 0;
 
 				for (const event of eventerData.events ?? []) {
-					const entry = mapEventToEntry(source, event);
+					const entry = mapEventToEntry(source, await enrichEventWithArenaMetadata(event));
 
 					if (entry) {
 						entries.push(entry);

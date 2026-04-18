@@ -6,6 +6,7 @@ import { TheaterNormalizedPerformance } from '@/lib/theater/types';
 import { collectLessinPerformances } from '@/lib/theater/collectLessinPerformances';
 import { refreshTheaterCache } from '@/lib/theater/actions';
 import LessinTheaterPage from '@/views/LessinTheaterPage';
+import { parseTheaterViewMode } from '@/components/theater/theaterViewMode';
 
 import '../style.scss';
 
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic';
 
 type Props = {
 	params: Promise<{ locale: Locale }>;
+	searchParams?: Promise<{ view?: string | string[] }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -20,8 +22,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	return createPageMetadata(locale, 'theaterPage');
 }
 
-export default async function LocaleLessinTheaterPage({ params }: Props) {
+export default async function LocaleLessinTheaterPage({ params, searchParams }: Props) {
 	const { locale } = await params;
+	const resolvedSearchParams = await searchParams;
 	setRequestLocale(locale);
 
 	let performances: TheaterNormalizedPerformance[] = [];
@@ -44,6 +47,7 @@ export default async function LocaleLessinTheaterPage({ params }: Props) {
 			performances={performances}
 			collectedAt={collectedAt}
 			hasError={hasError}
+			viewMode={parseTheaterViewMode(resolvedSearchParams?.view)}
 			refreshCacheAction={refreshCacheAction}
 		/>
 	);

@@ -33,6 +33,23 @@ export type TomixEventerTicketType = {
 	areas?: unknown[];
 };
 
+export type TomixEventerArenaLine = {
+	lineNumber?: number | string;
+	lineName?: string;
+};
+
+export type TomixEventerArenaSection = {
+	sectionId?: number | string;
+	sectionName?: string;
+	lines?: TomixEventerArenaLine[];
+};
+
+export type TomixEventerArena = {
+	svg?: {
+		sections?: TomixEventerArenaSection[];
+	};
+};
+
 export type TomixEventerEvent = {
 	_id: string;
 	status?: number;
@@ -46,6 +63,7 @@ export type TomixEventerEvent = {
 	ticketTypes?: TomixEventerTicketType[];
 	soldOut?: boolean;
 	linkName?: string;
+	arena?: TomixEventerArena;
 	startString?: string;
 	dateString?: string;
 	timeString?: string;
@@ -89,6 +107,7 @@ export type TomixScheduleEntry = {
 	ticketSaleStart?: string;
 	ticketSaleStop?: string;
 	soldOut?: boolean;
+	arena?: TomixEventerArena;
 };
 
 export type TomixSeatAvailabilityFetchResult = {
@@ -102,6 +121,7 @@ export type ParsedTomixSeatAvailability = {
 	availableInPreferredRows: boolean;
 	matchedSections: string[];
 	matchedRows: string[];
+	matchedRowDisplayLabels?: string[];
 	availableSeatCount: number;
 	sourceStatus: string;
 	sourceConfidence: SourceConfidence;

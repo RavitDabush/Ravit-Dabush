@@ -23,6 +23,7 @@ export type TheaterNormalizedPerformance = {
 	availabilityType: TheaterAvailabilityType;
 	matchedSections: string[];
 	matchedRows: string[];
+	matchedRowDisplayLabels?: string[];
 	availableSeatCount?: number;
 	sourceStatus?: string;
 	sourceConfidence: TheaterSourceConfidence;

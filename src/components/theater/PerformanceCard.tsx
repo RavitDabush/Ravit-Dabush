@@ -28,7 +28,9 @@ type Props = {
 };
 
 export default function PerformanceCard({ performance, labels, theaterName, hideAvailabilityDetails = false }: Props) {
-	const matchedRows = performance.matchedRows;
+	const matchedRows = performance.matchedRowDisplayLabels?.length
+		? performance.matchedRowDisplayLabels
+		: performance.matchedRows;
 	const matchedSections = performance.matchedSections;
 	const availabilityValue = performance.availabilityType
 		? (labels.availabilityValues?.[performance.availabilityType] ?? performance.availabilityType)

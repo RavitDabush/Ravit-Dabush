@@ -19,7 +19,7 @@ const collectTomixPerformancesCached = unstable_cache(
 			performances
 		};
 	},
-	['theater', 'tomix', 'prepared-performances'],
+	['theater', 'tomix', 'prepared-performances', 'v3'],
 	{ revalidate: TOMIX_COLLECTOR_REVALIDATE_SECONDS, tags: getTheaterCacheTags('tomix') }
 );
 

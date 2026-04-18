@@ -1,0 +1,129 @@
+.theater-performances-view {
+	display: grid;
+	gap: 1.5rem;
+}
+
+.theater-view-controls {
+	display: grid;
+	gap: 1rem;
+	align-items: end;
+}
+
+.theater-view-toggle {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-self: start;
+	gap: 0.35rem;
+	padding: 0.25rem;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background: var(--color-card-bg);
+}
+
+.theater-view-toggle-button {
+	min-block-size: 2.5rem;
+	padding: 0.45rem 0.9rem;
+	border: 1px solid transparent;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--color-text-default);
+	font: inherit;
+	line-height: 1.2;
+	cursor: pointer;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		color 0.2s ease;
+}
+
+.theater-view-toggle-button:hover {
+	background: var(--color-bg-hover-light);
+}
+
+.theater-view-toggle-button[aria-pressed='true'] {
+	border-color: var(--color-btn-outline);
+	background: var(--color-btn-outline);
+	color: var(--color-white);
+}
+
+.theater-view-toggle-button:focus-visible {
+	outline: 3px solid var(--color-focus-outline);
+	outline-offset: 2px;
+}
+
+.theater-card-grid {
+	display: grid;
+	gap: 1rem;
+}
+
+.theater-table-scroll {
+	overflow-x: auto;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background: var(--color-card-bg);
+}
+
+.theater-table-scroll:focus-visible {
+	outline: 3px solid var(--color-focus-outline);
+	outline-offset: 3px;
+}
+
+.theater-performances-table {
+	inline-size: 100%;
+	min-inline-size: 56rem;
+	border-collapse: collapse;
+	background: var(--color-card-bg);
+}
+
+.theater-performances-table caption {
+	padding: 1rem;
+	color: var(--color-text-muted);
+	text-align: start;
+}
+
+.theater-performances-table th,
+.theater-performances-table td {
+	padding: 0.85rem 1rem;
+	border-block-start: 1px solid var(--color-border-row);
+	text-align: start;
+	vertical-align: top;
+}
+
+.theater-performances-table thead th {
+	border-block-start: 0;
+	background: var(--color-header-bg);
+	color: var(--color-white);
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.theater-performances-table tbody tr:nth-child(even) {
+	background: var(--color-row-even);
+}
+
+.theater-performances-table tbody tr:hover {
+	background: var(--color-hover-bg);
+}
+
+.theater-performances-table tbody th {
+	color: var(--color-text-heading);
+	font-weight: 700;
+}
+
+.theater-table-action {
+	white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+	.theater-view-controls {
+		grid-template-columns: minmax(14rem, 24rem) auto;
+		justify-content: space-between;
+	}
+}
+
+@media (min-width: 768px) {
+	.theater-card-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

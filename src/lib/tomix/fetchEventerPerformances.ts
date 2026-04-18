@@ -2,7 +2,7 @@ import 'server-only';
 
 import { unstable_cache } from 'next/cache';
 import { getDurationMs, logTheaterFetch } from '@/lib/theater/observability';
-import { TomixEventerDataResponse, TomixEventerSource, TomixStoreProduct } from './types';
+import { TomixEventerDataResponse, TomixEventerEvent, TomixEventerSource, TomixStoreProduct } from './types';
 
 const EVENTER_HOST = 'www.eventer.co.il';
 const TOMIX_PRODUCT_EVENTBUZZ_REVALIDATE_SECONDS = 600;
@@ -175,4 +175,48 @@ export async function fetchEventerData(source: TomixEventerSource): Promise<Tomi
 	return getRuntimeCachedValue(runtimeEventerDataCache, source.getDataUrl, TOMIX_EVENTER_DATA_REVALIDATE_SECONDS, () =>
 		fetchCachedEventerDataByUrl(source.getDataUrl)
 	);
+}
+
+type TomixEventerExplainNamesResponse = {
+	event?: TomixEventerEvent;
+};
+
+async function fetchEventerEventDetailsByLinkNameRaw(linkName: string): Promise<TomixEventerEvent | null> {
+	const startedAt = Date.now();
+	const response = await fetch(`https://${EVENTER_HOST}/events/explainNames/${linkName}.js?group=a`, {
+		headers: {
+			...DEFAULT_HEADERS,
+			accept: 'application/json'
+		},
+		next: {
+			revalidate: TOMIX_EVENTER_DATA_REVALIDATE_SECONDS,
+			tags: TOMIX_EVENTER_DATA_CACHE_TAGS
+		}
+	});
+	logTheaterFetch({
+		source: 'tomix.eventerEventDetails',
+		durationMs: getDurationMs(startedAt),
+		status: response.status
+	});
+
+	if (!response.ok) {
+		return null;
+	}
+
+	const data = (await response.json()) as TomixEventerExplainNamesResponse;
+
+	return data.event ?? null;
+}
+
+const fetchCachedEventerEventDetailsByLinkName = unstable_cache(
+	fetchEventerEventDetailsByLinkNameRaw,
+	['theater', 'tomix', 'eventer-event-details', 'v1'],
+	{
+		revalidate: TOMIX_EVENTER_DATA_REVALIDATE_SECONDS,
+		tags: TOMIX_EVENTER_DATA_CACHE_TAGS
+	}
+);
+
+export async function fetchEventerEventDetailsByLinkName(linkName: string): Promise<TomixEventerEvent | null> {
+	return fetchCachedEventerEventDetailsByLinkName(linkName);
 }
