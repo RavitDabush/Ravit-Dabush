@@ -34,6 +34,7 @@ export type HebrewTheaterCollectionResult = {
 	availabilityResults: HebrewTheaterSeatAvailabilityFetchResult[];
 	showsCount: number;
 	eventsCount: number;
+	availabilityFailedCount: number;
 	discoveryDurationMs: number;
 	availabilityDurationMs: number;
 };
@@ -243,10 +244,15 @@ export async function collectHebrewTheaterRawPerformances(): Promise<HebrewTheat
 			fetchHebrewTheaterSeatAvailability
 		);
 		const availabilityDurationMs = getDurationMs(availabilityStartedAt);
+		const availabilityFailedCount = availabilityResults.filter(result => result.errors.length > 0).length;
 
 		console.info('[hebrew-theater-discovery]', {
 			showsCount: shows.length,
 			eventsCount: entries.length,
+			rawPerformancesDiscoveredCount: entries.length,
+			relevantPerformancesCount: entries.length,
+			availabilityCheckedCount: availabilityResults.length,
+			availabilityFailedCount,
 			discoveryDurationMs,
 			availabilityDurationMs
 		});
@@ -256,13 +262,22 @@ export async function collectHebrewTheaterRawPerformances(): Promise<HebrewTheat
 			availabilityResults,
 			showsCount: shows.length,
 			eventsCount: entries.length,
+			availabilityFailedCount,
 			discoveryDurationMs,
 			availabilityDurationMs
 		};
 	} catch (error) {
+		const discoveryDurationMs = getDurationMs(discoveryStartedAt);
+
 		console.info('[hebrew-theater-discovery]', {
 			showsCount: 0,
 			eventsCount: 0,
+			rawPerformancesDiscoveredCount: 0,
+			relevantPerformancesCount: 0,
+			availabilityCheckedCount: 0,
+			availabilityFailedCount: 0,
+			discoveryDurationMs,
+			availabilityDurationMs: 0,
 			error: error instanceof Error ? error.message : 'Unknown Hebrew Theater discovery error'
 		});
 
@@ -271,7 +286,8 @@ export async function collectHebrewTheaterRawPerformances(): Promise<HebrewTheat
 			availabilityResults: [],
 			showsCount: 0,
 			eventsCount: 0,
-			discoveryDurationMs: getDurationMs(discoveryStartedAt),
+			availabilityFailedCount: 0,
+			discoveryDurationMs,
 			availabilityDurationMs: 0
 		};
 	}

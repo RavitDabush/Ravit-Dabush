@@ -1,29 +1,29 @@
 // Colors
-$color-primary: #ce6f72;
-$color-primary-hover: #b95e61;
-$color-primary-light: #e6b2b3;
-$color-primary-light-hover: #d69c9e;
+$color-primary: #673e7a;
+$color-primary-hover: #553267;
+$color-primary-light: #d7c2e6;
+$color-primary-light-hover: #cbb0de;
 $color-default: #3c2c3f;
 
 // Backgrounds
 $color-bg-main: #f9f6f4;
-$color-bg-secondary: #ead9d2;
+$color-bg-secondary: #e3d6df;
 $color-bg-muted: #f5f0ed;
 $color-bg-hover-light: rgba(0, 0, 0, 0.03);
 $color-bg-pressed: rgba(0, 0, 0, 0.06);
 
 // Text Colors
 $color-text-default: $color-default;
-$color-text-heading: #2b1d2c;
-$color-text-subheading: #74696f;
-$color-text-muted: #8a7d84;
+$color-text-heading: #24182b;
+$color-text-subheading: #6d6270;
+$color-text-muted: #857a88;
 $color-text-muted-secondary: #958c91;
 $color-text-primary: $color-primary;
 $color-text-primary-light: $color-primary-light;
 
 // Links
-$color-link: #7b6b8e;
-$color-link-hover: #6a5b7a;
+$color-link: #5f4b8b;
+$color-link-hover: #4e3c73;
 
 // Buttons
 $color-btn-primary: $color-primary;
@@ -81,7 +81,7 @@ $color-code-selector-class: #d17ab7;
 // Inputs
 $color-input-bg: #ffffff;
 $color-input-border: #e4dad6;
-$color-input-border-focus: #a88db7;
+$color-input-border-focus: #b9a3cf;
 $color-input-placeholder: #a89da2;
 
 // States
@@ -96,12 +96,12 @@ $color-section-bg: #f2ebe8;
 $color-header-bg: $color-primary;
 $color-hover-bg: #f0ebe7;
 $color-selected-bg: rgba(230, 178, 179, 0.4);
-$color-focus-outline: #c3a0c7;
+$color-focus-outline: #b9a3cf;
 $color-row-even: #f5f0ec;
 $color-border-row: #e4dad6;
 
 // Other
-$color-focus: #a88db7; /* soft purple, for input focus */
+$color-focus: #8b6bb0; /* soft purple, for input focus */
 $color-skeleton: #ededed; /* neutral gray placeholder */
 $color-overlay: rgba(0, 0, 0, 0.4); /* modal / backdrop layer */
 

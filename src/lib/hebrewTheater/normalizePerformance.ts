@@ -54,7 +54,12 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 		availabilityDurationMs: collection.availabilityDurationMs,
 		showsCount: collection.showsCount,
 		eventsCount: collection.eventsCount,
-		performancesCount: performances.length
+		rawPerformancesDiscoveredCount: collection.eventsCount,
+		relevantPerformancesCount: collection.entries.length,
+		availabilityCheckedCount: collection.availabilityResults.length,
+		availabilityFailedCount: collection.availabilityFailedCount,
+		performancesCount: performances.length,
+		finalPerformancesCount: performances.length
 	});
 
 	return performances;

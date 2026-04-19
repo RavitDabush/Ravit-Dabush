@@ -131,7 +131,12 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 		featuresCount: features.length,
 		presentationsCount: presentations.length,
 		discoveryCount: discoveryEntries.length,
-		performancesCount: performances.length
+		rawPerformancesDiscoveredCount: presentations.length,
+		relevantPerformancesCount: discoveryEntries.length,
+		availabilityCheckedCount: availabilityResults.length,
+		availabilityFailedCount: availabilityResults.filter(result => result.errors.length > 0).length,
+		performancesCount: performances.length,
+		finalPerformancesCount: performances.length
 	});
 
 	return performances;

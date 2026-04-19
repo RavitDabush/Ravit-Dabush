@@ -11,6 +11,11 @@ type FilteredVenueStats = {
 	sampleTitlesByVenue: Record<string, string[]>;
 };
 
+type DiscoveryStats = {
+	skippedCount: number;
+	duplicatePresentationCount: number;
+};
+
 function parseDateTime(value: string | null | undefined): Date | null {
 	if (!value) {
 		return null;
@@ -121,21 +126,38 @@ export function parsePresentations(
 ): CameriScheduleEntry[] {
 	const seenIds = new Set<string>();
 	const filteredVenueStats = createFilteredVenueStats();
-	const discoverablePresentations = (response.presentations ?? []).filter(presentation => {
+	const presentations = response.presentations ?? [];
+	const stats: DiscoveryStats = {
+		skippedCount: 0,
+		duplicatePresentationCount: 0
+	};
+	const discoverablePresentations = presentations.filter(presentation => {
 		if (isExcludedVenue(presentation.venueName)) {
 			trackFilteredVenue(filteredVenueStats, presentation);
+			stats.skippedCount += 1;
 			return false;
 		}
 
-		return isDiscoverablePresentation(presentation, now);
+		if (!isDiscoverablePresentation(presentation, now)) {
+			stats.skippedCount += 1;
+			return false;
+		}
+
+		return true;
 	});
 
 	logFilteredVenueStats(filteredVenueStats);
 
-	return discoverablePresentations
+	const entries = discoverablePresentations
 		.map(normalizePresentation)
 		.filter(entry => {
 			if (!entry.time || seenIds.has(entry.id)) {
+				stats.skippedCount += 1;
+
+				if (seenIds.has(entry.id)) {
+					stats.duplicatePresentationCount += 1;
+				}
+
 				return false;
 			}
 
@@ -143,4 +165,15 @@ export function parsePresentations(
 			return true;
 		})
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
+
+	console.info('[cameri-discovery]', {
+		presentationsCount: presentations.length,
+		rawPerformancesDiscoveredCount: presentations.length,
+		discoverableCount: entries.length,
+		relevantPerformancesCount: entries.length,
+		skippedCount: stats.skippedCount,
+		duplicatePresentationCount: stats.duplicatePresentationCount
+	});
+
+	return entries;
 }

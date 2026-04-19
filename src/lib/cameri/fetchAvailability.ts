@@ -399,6 +399,7 @@ export async function fetchAvailabilityBatch(
 		requestedCount: entries.length,
 		cacheHitCount,
 		cacheMissCount,
+		failureCount: failedCount,
 		durationMs,
 		concurrencyLimit,
 		revalidateSeconds: CAMERI_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
@@ -407,10 +408,13 @@ export async function fetchAvailabilityBatch(
 	console.info('[cameri-availability-summary]', {
 		concurrencyLimit,
 		requestedCount: entries.length,
+		succeededCount: results.length - failedCount,
+		failedCount,
+		skippedCount,
 		durationMs,
 		averageItemDurationMs: getAverageDurationMs(itemTimings),
 		maxItemDurationMs: maxItemTiming?.durationMs ?? 0,
-		failedCount,
+		duplicatePresentationCount: duplicatePresentationIds.length,
 		cacheHitCount,
 		cacheMissCount
 	});

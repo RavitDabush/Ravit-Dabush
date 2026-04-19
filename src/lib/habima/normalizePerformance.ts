@@ -34,6 +34,15 @@ function resolveHabimaLifecycle(entry: HabimaScheduleEntry, presentation: Habima
 	});
 }
 
+function getSeatingMatchTypeCounts(performances: NormalizedPerformance[]) {
+	const rowBasedMatchCount = performances.filter(performance => performance.availabilityType === 'row').length;
+
+	return {
+		rowBasedMatchCount,
+		nonRowBasedMatchCount: performances.length - rowBasedMatchCount
+	};
+}
+
 export function normalizePerformance(
 	entry: HabimaScheduleEntry,
 	result: HabimaSeatAvailabilityFetchResult | undefined
@@ -88,6 +97,9 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 	const scheduleStartedAt = Date.now();
 	const schedule = await fetchSchedule();
 	const scheduleDurationMs = getDurationMs(scheduleStartedAt);
+	const scheduleCount = Object.values(schedule.presentations.he ?? {}).reduce((count, presentations) => {
+		return count + presentations.length;
+	}, 0);
 	const discoveryStartedAt = Date.now();
 	const scheduleEntries = parseSchedule(schedule);
 	const discoveryDurationMs = getDurationMs(discoveryStartedAt);
@@ -106,12 +118,16 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 		scheduleDurationMs,
 		discoveryDurationMs,
 		availabilityDurationMs,
-		scheduleCount: Object.values(schedule.presentations.he ?? {}).reduce((count, presentations) => {
-			return count + presentations.length;
-		}, 0),
+		scheduleCount,
 		discoveryCount: scheduleEntries.length,
-		performancesCount: performances.length
+		rawPerformancesDiscoveredCount: scheduleCount,
+		relevantPerformancesCount: scheduleEntries.length,
+		availabilityCheckedCount: availabilityResults.length,
+		availabilityFailedCount: availabilityResults.filter(result => result.errors.length > 0).length,
+		performancesCount: performances.length,
+		finalPerformancesCount: performances.length
 	});
+	console.info('[habima-seating-match-types]', getSeatingMatchTypeCounts(performances));
 
 	return performances;
 }

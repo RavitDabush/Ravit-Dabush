@@ -4,6 +4,7 @@ import { fetchAvailabilityBatch } from './fetchAvailability';
 import { fetchPresentations } from './fetchPresentations';
 import { parseSeatAvailability } from './parseSeatAvailability';
 import { parsePresentations } from './parsePresentations';
+import { getDurationMs } from '@/lib/theater/observability';
 import { resolveSaleLifecycle } from '@/lib/theater/resolveSaleLifecycle';
 import {
 	CameriScheduleEntry,
@@ -22,6 +23,15 @@ function getFallbackConfidence(result: CameriSeatAvailabilityFetchResult | undef
 	}
 
 	return 'low';
+}
+
+function getSeatingMatchTypeCounts(performances: NormalizedPerformance[]) {
+	const rowBasedMatchCount = performances.filter(performance => performance.availabilityType === 'row').length;
+
+	return {
+		rowBasedMatchCount,
+		nonRowBasedMatchCount: performances.length - rowBasedMatchCount
+	};
 }
 
 export function normalizePerformance(
@@ -91,15 +101,39 @@ export function normalizePerformance(
 }
 
 export async function getNormalizedAvailablePerformances(): Promise<NormalizedPerformance[]> {
+	const startedAt = Date.now();
+	const presentationsStartedAt = Date.now();
 	const presentationsResponse = await fetchPresentations();
+	const presentationsDurationMs = getDurationMs(presentationsStartedAt);
+	const discoveryStartedAt = Date.now();
 	const presentationEntries = parsePresentations(presentationsResponse);
+	const discoveryDurationMs = getDurationMs(discoveryStartedAt);
+	const availabilityStartedAt = Date.now();
 	const availabilityResults = await fetchAvailabilityBatch(presentationEntries);
+	const availabilityDurationMs = getDurationMs(availabilityStartedAt);
 	const resultMap = new Map(availabilityResults.map(result => [result.presentationId, result]));
 
-	return presentationEntries
+	const performances = presentationEntries
 		.map(entry => normalizePerformance(entry, resultMap.get(entry.id)))
 		.filter(performance => performance.hasPreferredAvailability)
 		.sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
+
+	console.info('[cameri-normalization]', {
+		durationMs: getDurationMs(startedAt),
+		presentationsDurationMs,
+		discoveryDurationMs,
+		availabilityDurationMs,
+		presentationsCount: presentationsResponse.presentations?.length ?? 0,
+		rawPerformancesDiscoveredCount: presentationsResponse.presentations?.length ?? 0,
+		relevantPerformancesCount: presentationEntries.length,
+		availabilityCheckedCount: availabilityResults.length,
+		availabilityFailedCount: availabilityResults.filter(result => result.errors.length > 0).length,
+		performancesCount: performances.length,
+		finalPerformancesCount: performances.length
+	});
+	console.info('[cameri-seating-match-types]', getSeatingMatchTypeCounts(performances));
+
+	return performances;
 }
 
 export async function getNormalizedSaleLifecyclePerformances(): Promise<NormalizedPerformance[]> {

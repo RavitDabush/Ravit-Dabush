@@ -275,7 +275,8 @@ async function collectEntries(): Promise<TomixCollectionResult> {
 		rawPerformancesDiscoveredCount,
 		relevantPerformancesCount,
 		irrelevantPerformancesCount,
-		duplicatePerformanceCount
+		duplicatePerformanceCount,
+		discoveryDurationMs
 	});
 	console.info('[tomix-performances-batch]', {
 		productsCount: products.length,
@@ -326,6 +327,7 @@ export async function getNormalizedPreferredPerformances(): Promise<NormalizedPe
 		rawPerformancesDiscoveredCount: collection.rawPerformancesDiscoveredCount,
 		relevantPerformancesCount: collection.relevantPerformancesCount,
 		availabilityCheckedCount: performances.length,
+		availabilityFailedCount: availabilityResults.filter(result => result.errors.length > 0).length,
 		finalPerformancesCount: finalPerformances.length
 	});
 

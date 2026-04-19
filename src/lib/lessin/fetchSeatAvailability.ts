@@ -326,6 +326,7 @@ export async function fetchSeatAvailabilityBatch(
 		requestedCount: entries.length,
 		cacheHitCount,
 		cacheMissCount,
+		failureCount: failedCount,
 		durationMs,
 		concurrencyLimit,
 		revalidateSeconds: LESSIN_AVAILABILITY_CACHE_REVALIDATE_SECONDS,
