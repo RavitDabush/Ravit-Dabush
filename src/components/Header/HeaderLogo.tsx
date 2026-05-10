@@ -22,8 +22,6 @@ export default function HeaderLogo({
 	isAboveFold = false,
 	onClick
 }: HeaderLogoProps) {
-	const lcpImageProps = isAboveFold ? { loading: 'eager' as const, fetchPriority: 'high' as const } : {};
-
 	return (
 		<Link href="/" className={linkClassName} onClick={onClick} aria-label={homeAriaLabel}>
 			<Image
@@ -31,7 +29,8 @@ export default function HeaderLogo({
 				alt={logoAlt}
 				width={512}
 				height={120}
-				{...lcpImageProps}
+				loading="eager"
+				fetchPriority={isAboveFold ? 'high' : 'auto'}
 				unoptimized
 				className={imageClassName}
 			/>
