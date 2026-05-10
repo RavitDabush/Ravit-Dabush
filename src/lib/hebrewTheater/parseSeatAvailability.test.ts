@@ -113,6 +113,21 @@ describe('hebrewTheater parseSeatAvailability', () => {
 		expect(result.availableSeatCount).toBe(1);
 	});
 
+	it('shows Hebrew-letter Smarticket rows that map to preferred front rows', () => {
+		const html = [
+			createSmarticketAnchorChair({ row: '\u05d1', chair: '1' }),
+			createSmarticketAnchorChair({ row: '\u05d1', chair: '2' }),
+			createSmarticketAnchorChair({ row: '\u05d7', chair: '3' })
+		].join('');
+
+		const result = parseHebrewTheaterSeatAvailability(html);
+
+		expect(result.availableInPreferredRows).toBe(true);
+		expect(result.matchedRows).toEqual(['\u05d1']);
+		expect(result.matchedRowDisplayLabels).toEqual(['\u05d1']);
+		expect(result.availableSeatCount).toBe(2);
+	});
+
 	it('does not require Smarticket section names to match TOMIX venue allowlists', () => {
 		const html = createSmarticketAnchorChair({ row: '4', section: '69', chair: '25' });
 

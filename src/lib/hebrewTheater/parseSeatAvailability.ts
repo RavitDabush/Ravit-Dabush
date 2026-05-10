@@ -2,6 +2,15 @@ import { ParsedHebrewTheaterSeatAvailability } from './types';
 
 const PREFERRED_ROW_MIN = 1;
 const PREFERRED_ROW_MAX = 7;
+const HEBREW_ROW_NUMBERS: Record<string, number> = {
+	'\u05d0': 1,
+	'\u05d1': 2,
+	'\u05d2': 3,
+	'\u05d3': 4,
+	'\u05d4': 5,
+	'\u05d5': 6,
+	'\u05d6': 7
+};
 const FORBIDDEN_SECTION_TERMS = [
 	'יציע',
 	'מרפסת',
@@ -67,9 +76,13 @@ function parsePreferredRowNumber(rowLabel: string | null | undefined): number | 
 		return null;
 	}
 
-	const rowMatch = normalized.match(/^(?:שורה\s*)?([1-9]\d*)$/u);
+	const rowMatch = normalized.match(/^(?:\u05e9\u05d5\u05e8\u05d4\s*)?([1-9]\d*|[\u05d0-\u05d6])$/u);
 
-	return rowMatch ? Number(rowMatch[1]) : null;
+	if (!rowMatch) {
+		return null;
+	}
+
+	return HEBREW_ROW_NUMBERS[rowMatch[1]] ?? Number(rowMatch[1]);
 }
 
 function isPreferredRow(rowNumber: number): boolean {
