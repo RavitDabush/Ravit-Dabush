@@ -4,21 +4,23 @@ import { CameriSeatStatusResponse, CameriSeatplanResponse, FlattenedSeat, Parsed
 
 const PREFERRED_ROWS = new Set(['1', '2', '3', '4', '5', '6', '7']);
 const GROUP_A_SECTION_LABELS = new Set(['אולם', 'אגף מרכז']);
-const GROUP_B_SECTION_LABELS = new Set(['קיטקאט קלאסי', "לאונג'", 'לאמיצים בלבד', "לאונג'.", 'קיטקאט בר', '3']);
-const EXCLUDED_SECTION_LABELS = new Set([
-	'עליה',
-	'יציע',
-	'תאים שמאל',
-	'תאים ימין',
-	'אגף שמאל',
-	'אגף ימין',
+const GROUP_B_SECTION_LABELS = new Set([
+	'קיטקאט קלאסי',
+	"לאונג'",
+	'לאמיצים בלבד',
+	'קיטקאט בר',
+	'שולחנות קיטקאט שמאל',
+	'שולחנות קיטקאט ימין',
 	'סלון',
-	'סלון.'
+	'3'
 ]);
+const EXCLUDED_SECTION_LABELS = new Set(['עליה', 'יציע', 'תאים שמאל', 'תאים ימין', 'אגף שמאל', 'אגף ימין']);
 
 function normalizeText(value: string | undefined): string {
 	return (value ?? '')
 		.replace(/[\u200e\u200f\u202a-\u202e]/g, '')
+		.replace(/\s+/g, ' ')
+		.replace(/^[.]+|[.]+$/g, '')
 		.trim()
 		.toLocaleLowerCase();
 }

@@ -70,6 +70,44 @@ describe('cameri parseSeatAvailability', () => {
 		expect(result.availableSeatCount).toBe(3);
 	});
 
+	it('counts Cameri 1 KitKat table sections with punctuation variants as preferred availability', () => {
+		const leftTables = createSeatplan('שולחנות קיטקאט שמאל.', {
+			'': ['1', '2']
+		});
+		const leftTableStatus = createSeatStatus(['1_1_', '1_2_']);
+
+		const rightTables = createSeatplan('.שולחנות קיטקאט ימין.', {
+			'1': ['1']
+		});
+		const rightTableStatus = createSeatStatus(['1_1_1']);
+
+		const leftResult = parseSeatAvailability(leftTables, leftTableStatus);
+		const rightResult = parseSeatAvailability(rightTables, rightTableStatus);
+
+		expect(leftResult.available).toBe(true);
+		expect(leftResult.availabilityType).toBe('section');
+		expect(leftResult.matchedSections).toEqual(['שולחנות קיטקאט שמאל.']);
+		expect(leftResult.availableSeatCount).toBe(2);
+		expect(rightResult.available).toBe(true);
+		expect(rightResult.availabilityType).toBe('section');
+		expect(rightResult.matchedSections).toEqual(['.שולחנות קיטקאט ימין.']);
+		expect(rightResult.availableSeatCount).toBe(1);
+	});
+
+	it('counts Salon sections as preferred Cabaret special sections', () => {
+		const seatplan = createSeatplan('סלון.', {
+			'': ['1', '2', '3']
+		});
+		const seatStatus = createSeatStatus(['1_1_', '1_2_', '1_3_']);
+
+		const result = parseSeatAvailability(seatplan, seatStatus);
+
+		expect(result.available).toBe(true);
+		expect(result.availabilityType).toBe('section');
+		expect(result.matchedSections).toEqual(['סלון.']);
+		expect(result.availableSeatCount).toBe(3);
+	});
+
 	it('fails closed when section labels are ambiguous', () => {
 		const seatplan = createSeatplan('', {
 			'1': ['1', '2']

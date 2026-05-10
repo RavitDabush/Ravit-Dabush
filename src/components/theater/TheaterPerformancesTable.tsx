@@ -74,21 +74,24 @@ function formatAvailableAreas(performance: TheaterNormalizedPerformance, unavail
 	const matchedRows = performance.matchedRowDisplayLabels?.length
 		? performance.matchedRowDisplayLabels
 		: performance.matchedRows;
+	const matchedSections = performance.matchedSections;
 
 	if (performance.availabilityType === 'row' && matchedRows.length > 0) {
-		return matchedRows.join(', ');
+		const areas = matchedSections.length > 1 ? [...matchedRows, ...matchedSections] : matchedRows;
+
+		return Array.from(new Set(areas)).join(', ');
 	}
 
-	if (performance.availabilityType === 'section' && performance.matchedSections.length > 0) {
-		return performance.matchedSections.join(', ');
+	if (performance.availabilityType === 'section' && matchedSections.length > 0) {
+		return matchedSections.join(', ');
 	}
 
 	if (matchedRows.length > 0) {
 		return matchedRows.join(', ');
 	}
 
-	if (performance.matchedSections.length > 0) {
-		return performance.matchedSections.join(', ');
+	if (matchedSections.length > 0) {
+		return matchedSections.join(', ');
 	}
 
 	return unavailableFallback;
