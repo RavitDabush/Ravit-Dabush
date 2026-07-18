@@ -1,13 +1,5 @@
 export type TheaterTableColumn =
-	| 'date'
-	| 'time'
-	| 'show'
-	| 'theater'
-	| 'venue'
-	| 'availableAreas'
-	| 'availableSeats'
-	| 'saleState'
-	| 'action';
+	'date' | 'time' | 'show' | 'theater' | 'venue' | 'availableAreas' | 'availableSeats' | 'saleState' | 'action';
 
 export type TheaterTableConfig = {
 	columns: TheaterTableColumn[];

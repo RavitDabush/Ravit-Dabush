@@ -6,7 +6,7 @@
 		"dev": "npm run generate:all && concurrently \"next dev --turbo\" \"npm run open:browser\"",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint src && tsc && prettier src --check",
+		"lint": "next typegen && eslint src && tsc --noEmit && prettier src --check",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit",
 		"check": "npm run lint && npm run test && npm run build",
