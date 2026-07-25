@@ -65,16 +65,30 @@ type Props<TPerformance extends TheaterNormalizedPerformance> = {
 	};
 };
 
-function groupPerformances<TPerformance extends TheaterNormalizedPerformance>(
+function getPerformanceFilterKey(performance: TheaterNormalizedPerformance): string {
+	const theaterId = 'theaterId' in performance ? performance.theaterId : '';
+
+	return [
+		theaterId,
+		performance.id,
+		performance.showName,
+		performance.date,
+		performance.time,
+		performance.venue ?? '',
+		performance.purchaseUrl ?? ''
+	].join('\u0000');
+}
+
+export function groupPerformances<TPerformance extends TheaterNormalizedPerformance>(
 	performances: TPerformance[],
 	groups: TheaterPerformanceGroup<TPerformance>[]
 ): TheaterPerformanceGroup<TPerformance>[] {
-	const allowedIds = new Set(performances.map(performance => performance.id));
+	const allowedPerformances = new Set(performances.map(getPerformanceFilterKey));
 
 	return groups
 		.map(group => ({
 			...group,
-			performances: group.performances.filter(performance => allowedIds.has(performance.id))
+			performances: group.performances.filter(performance => allowedPerformances.has(getPerformanceFilterKey(performance)))
 		}))
 		.filter(group => group.performances.length > 0);
 }

@@ -59,12 +59,12 @@ function createSource(product: TomixStoreProduct): TomixEventerSource {
 
 function createEventData(eventIds: string[]): TomixEventerDataResponse {
 	return {
-		events: eventIds.map(eventId => ({
+		events: eventIds.map((eventId, index) => ({
 			_id: eventId,
 			name: `Event ${eventId}`,
 			locationDescription: 'TOMIX Venue',
 			schedule: {
-				start: `2026-05-${eventId.slice(-1).padStart(2, '0')}T20:30:00`
+				start: `2026-05-${String(index + 1).padStart(2, '0')}T20:30:00`
 			},
 			ticketTypes: [{ _id: `ticket-${eventId}`, toDate: '2026-05-30T18:00:00' }],
 			linkName: `event-${eventId}`
@@ -144,6 +144,41 @@ describe('tomix collectPerformances', () => {
 			[expect.objectContaining({ eventId: 'event-1' })],
 			8
 		);
+	});
+
+	it('deduplicates Eventer performances discovered through multiple TOMIX products', async () => {
+		const eventIds = ['wjv7f', 'zjv7f', '6ymff'];
+		fetchTomixTheaterProductsMock.mockResolvedValue([createProduct(1), createProduct(2), createProduct(3)]);
+		fetchEventerDataMock.mockResolvedValue(createEventData(eventIds));
+
+		const result = await getNormalizedPreferredPerformances();
+
+		expect(result.map(performance => performance.id)).toEqual(eventIds.map(eventId => `tomix-${eventId}`));
+		expect(fetchTomixSeatAvailabilityBatchMock).toHaveBeenCalledTimes(1);
+		expect(fetchTomixSeatAvailabilityBatchMock.mock.calls[0][0].map(entry => entry.eventId)).toEqual(eventIds);
+	});
+
+	it('excludes stale internal Eventer records that reuse a current public link', async () => {
+		const product = createProduct(1);
+		const staleEventIds = ['stale-wjv7f-1', 'stale-wjv7f-2'];
+		const currentEventId = 'current-wjv7f';
+		const events = createEventData([...staleEventIds, currentEventId]).events ?? [];
+
+		for (const event of events) {
+			event.linkName = 'wjv7f';
+		}
+
+		fetchTomixTheaterProductsMock.mockResolvedValue([product]);
+		fetchEventerDataMock.mockResolvedValue({ events });
+		fetchEventerEventDetailsByLinkNameMock.mockResolvedValue({
+			_id: currentEventId,
+			linkName: 'wjv7f'
+		});
+
+		const result = await getNormalizedPreferredPerformances();
+
+		expect(result.map(performance => performance.id)).toEqual([`tomix-${currentEventId}`]);
+		expect(fetchTomixSeatAvailabilityBatchMock.mock.calls[0][0].map(entry => entry.eventId)).toEqual([currentEventId]);
 	});
 
 	it('enriches missing Eventer arena metadata before parsing seat availability', async () => {

@@ -122,15 +122,19 @@ function mapEventToEntry(source: TomixEventerSource, event: TomixEventerEvent): 
 	};
 }
 
-async function enrichEventWithArenaMetadata(event: TomixEventerEvent): Promise<TomixEventerEvent> {
-	if (event.arena || !event.linkName) {
+async function enrichEventWithArenaMetadata(event: TomixEventerEvent): Promise<TomixEventerEvent | null> {
+	if (!event.linkName) {
 		return event;
 	}
 
 	try {
 		const detailedEvent = await fetchEventerEventDetailsByLinkName(event.linkName);
 
-		if (detailedEvent?._id === event._id && detailedEvent.arena) {
+		if (detailedEvent && detailedEvent._id !== event._id) {
+			return null;
+		}
+
+		if (detailedEvent?.arena) {
 			return {
 				...event,
 				arena: detailedEvent.arena
@@ -151,6 +155,26 @@ function countDuplicatePerformanceIds(entries: TomixScheduleEntry[]): number {
 	}
 
 	return Array.from(counts.values()).filter(count => count > 1).length;
+}
+
+function deduplicateScheduleEntries(entries: TomixScheduleEntry[]): TomixScheduleEntry[] {
+	const uniqueEntries = new Map<string, TomixScheduleEntry>();
+
+	for (const entry of entries) {
+		const existing = uniqueEntries.get(entry.eventId);
+
+		if (!existing) {
+			uniqueEntries.set(entry.eventId, entry);
+			continue;
+		}
+
+		const preferredEntry = entry.ticketTypeIds.length > existing.ticketTypeIds.length ? entry : existing;
+		const arena = preferredEntry.arena ?? existing.arena ?? entry.arena;
+
+		uniqueEntries.set(entry.eventId, arena === preferredEntry.arena ? preferredEntry : { ...preferredEntry, arena });
+	}
+
+	return Array.from(uniqueEntries.values());
 }
 
 export function normalizePerformance(
@@ -227,7 +251,13 @@ async function collectEntries(): Promise<TomixCollectionResult> {
 				const rawPerformancesDiscoveredCount = eventerData.events?.length ?? 0;
 
 				for (const event of eventerData.events ?? []) {
-					const entry = mapEventToEntry(source, await enrichEventWithArenaMetadata(event));
+					const enrichedEvent = await enrichEventWithArenaMetadata(event);
+
+					if (!enrichedEvent) {
+						continue;
+					}
+
+					const entry = mapEventToEntry(source, enrichedEvent);
 
 					if (entry) {
 						entries.push(entry);
@@ -252,7 +282,9 @@ async function collectEntries(): Promise<TomixCollectionResult> {
 			}
 		}
 	);
-	const entries = productDiscoveryResults.flatMap(result => result.entries);
+	const discoveredEntries = productDiscoveryResults.flatMap(result => result.entries);
+	const duplicatePerformanceCount = countDuplicatePerformanceIds(discoveredEntries);
+	const entries = deduplicateScheduleEntries(discoveredEntries);
 	const discoveryDurationMs = getDurationMs(discoveryStartedAt);
 	const sourceResolvedCount = productDiscoveryResults.filter(result => result.sourceResolved).length;
 	const sourceFailedCount = productDiscoveryResults.filter(result => result.sourceFailed).length;
@@ -263,7 +295,6 @@ async function collectEntries(): Promise<TomixCollectionResult> {
 	);
 	const relevantPerformancesCount = entries.length;
 	const irrelevantPerformancesCount = rawPerformancesDiscoveredCount - relevantPerformancesCount;
-	const duplicatePerformanceCount = countDuplicatePerformanceIds(entries);
 	const sourceSkippedCount = products.length - sourceResolvedCount - sourceFailedCount;
 
 	console.info('[tomix-discovery]', {
