@@ -12,7 +12,7 @@
 		"check": "npm run lint && npm run test && npm run build",
 		"check:updates": "node check-updates.mjs",
 		"format": "prettier --write \"**/*.{ts,tsx,js,jsx,scss,css,json,md,html}\"",
-		"open:browser": "node -e \"import('open').then(open => open.default('http://localhost:3000'))\"",
+		"open:browser": "wait-on tcp:3000 && powershell -NoProfile -Command \"Start-Process 'http://localhost:3000'\"",
 		"generate:icon-names": "tsx scripts/generate-icon-names.ts",
 		"generate:icon-list": "tsx scripts/generate-icon-list-from-names.ts",
 		"generate:colors": "tsx scripts/generate-colors-list.ts",

@@ -70,16 +70,14 @@ function getRowKey(performance: TheaterNormalizedPerformance): string {
 	return theaterId ? `${theaterId}-${performance.id}` : performance.id;
 }
 
-function formatAvailableAreas(performance: TheaterNormalizedPerformance, unavailableFallback: string): string {
+export function formatAvailableAreas(performance: TheaterNormalizedPerformance, unavailableFallback: string): string {
 	const matchedRows = performance.matchedRowDisplayLabels?.length
 		? performance.matchedRowDisplayLabels
 		: performance.matchedRows;
 	const matchedSections = performance.matchedSections;
 
 	if (performance.availabilityType === 'row' && matchedRows.length > 0) {
-		const areas = matchedSections.length > 1 ? [...matchedRows, ...matchedSections] : matchedRows;
-
-		return Array.from(new Set(areas)).join(', ');
+		return matchedRows.join(', ');
 	}
 
 	if (performance.availabilityType === 'section' && matchedSections.length > 0) {

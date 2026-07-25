@@ -183,9 +183,9 @@ export function parseTomixSeatAvailability(
 			}
 
 			const rowDisplayMetadata = getRowDisplayMetadata(rowDisplayLabels, parsedPlace.section, parsedPlace.row);
-			const preferredRowNumber = rowDisplayMetadata?.preferredRowNumber ?? parsedPlace.rowNumber;
+			const preferredRowNumber = rowDisplayMetadata ? rowDisplayMetadata.preferredRowNumber : parsedPlace.rowNumber;
 
-			if (!isPreferredRowNumber(preferredRowNumber)) {
+			if (preferredRowNumber === null || !isPreferredRowNumber(preferredRowNumber)) {
 				continue;
 			}
 

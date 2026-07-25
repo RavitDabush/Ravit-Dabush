@@ -9,6 +9,8 @@ const KALCHKIN_VENUE =
 const UNMAPPED_VENUE = 'Unmapped TOMIX venue';
 const RISHON_VENUE =
 	'\u05d4\u05d9\u05db\u05dc \u05d4\u05ea\u05e8\u05d1\u05d5\u05ea \u05e8\u05d0\u05e9\u05d5\u05df \u05dc\u05e6\u05d9\u05d5\u05df';
+const TOMIX_EXPO_VENUE =
+	'\u05ea\u05d9\u05d0\u05d8\u05e8\u05d5\u05df toMix, \u05d0\u05e7\u05e1\u05e4\u05d5 \u05ea"\u05d0';
 
 function createSeats(row: number, count: number, ticketTypeId: string, section = '1'): TomixEventerSeat[] {
 	return Array.from({ length: count }, (_, index) => ({
@@ -180,6 +182,55 @@ describe('tomix parseSeatAvailability', () => {
 		expect(result.matchedSections).toEqual(['1']);
 		expect(result.matchedRows).toEqual(['1', '3']);
 		expect(result.availableSeatCount).toBe(5);
+	});
+
+	it('returns only the live wjv7f rows backed by active ticket types at TOMIX Expo', () => {
+		const unrelatedTicketTypeId = '69de4fe92503ad9030056154';
+		const arena: TomixEventerArena = {
+			svg: {
+				sections: [
+					{
+						sectionId: 1,
+						lines: [
+							{ lineNumber: 1, lineName: '\u05e9\u05d5\u05e8\u05d4 A - \u05e0\u05d2\u05d9\u05e9' },
+							{ lineNumber: 3, lineName: '\u05e9\u05d5\u05e8\u05d4 1' },
+							{ lineNumber: 4, lineName: '\u05e9\u05d5\u05e8\u05d4 1' }
+						]
+					},
+					{
+						sectionId: 2,
+						lines: [
+							{ lineNumber: 1, lineName: '\u05e9\u05d5\u05e8\u05d4 2' },
+							{ lineNumber: 2, lineName: '\u05e9\u05d5\u05e8\u05d4 3' },
+							{ lineNumber: 3, lineName: '\u05e9\u05d5\u05e8\u05d4 4' },
+							{ lineNumber: 4, lineName: '\u05e9\u05d5\u05e8\u05d4 5' },
+							{ lineNumber: 5, lineName: '\u05e9\u05d5\u05e8\u05d4 6' }
+						]
+					},
+					{
+						sectionId: 3,
+						lines: [{ lineNumber: 3, lineName: '\u05e9\u05d5\u05e8\u05d4 4' }]
+					}
+				]
+			}
+		};
+		const seats = [
+			createSeat('1_1_1', ACTIVE_TICKET_TYPE_ID),
+			createSeat('1_3_1', ACTIVE_TICKET_TYPE_ID),
+			createSeat('1_4_1', ACTIVE_TICKET_TYPE_ID),
+			createSeat('2_1_1', unrelatedTicketTypeId),
+			createSeat('2_2_1', unrelatedTicketTypeId),
+			createSeat('2_3_1', ACTIVE_TICKET_TYPE_ID),
+			createSeat('2_4_1', ACTIVE_TICKET_TYPE_ID),
+			createSeat('2_5_1', ACTIVE_TICKET_TYPE_ID),
+			createSeat('3_3_1', ACTIVE_TICKET_TYPE_ID)
+		];
+
+		const result = parseTomixSeatAvailability(seats, TOMIX_EXPO_VENUE, [ACTIVE_TICKET_TYPE_ID], arena);
+
+		expect(result.matchedSections).toEqual(['1', '2', '3']);
+		expect(result.matchedRowDisplayLabels).toEqual(['1', '4', '5', '6']);
+		expect(result.availableSeatCount).toBe(6);
 	});
 
 	it('excludes seats when status is not available', () => {

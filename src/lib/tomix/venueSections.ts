@@ -47,7 +47,9 @@ const VENUE_ALLOWED_SECTIONS: Record<string, string[]> = {
 	'תיאטרון גבעתיים': ['1'],
 	'תיאטרון היהלום, רמת גן': ['1'],
 	'תיאטרון חולון - בית יד לבנים': ['1'],
-	'תיאטרון ירושלים': ['1']
+	'תיאטרון ירושלים': ['1'],
+	'בנייני האומה, ירושלים': ['1'],
+	'תיאטרון toMix, אקספו ת"א': ['1', '2', '3']
 };
 
 export function normalizeTomixVenueName(venue: string | undefined): string {
